@@ -1,0 +1,259 @@
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  models.Company:
+    properties:
+      address:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      dot:
+        type: integer
+      drivers:
+        items:
+          $ref: '#/definitions/models.Driver'
+        type: array
+      driversNumber:
+        type: integer
+      id:
+        type: string
+      mc:
+        type: integer
+      name:
+        type: string
+      number:
+        type: string
+      scac:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.Driver:
+    properties:
+      birthday:
+        type: string
+      company:
+        $ref: '#/definitions/models.Company'
+      companyId:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: string
+      mail:
+        type: string
+      name:
+        type: string
+      phoneNumber:
+        type: string
+      surname:
+        type: string
+      truckNumber:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  models.GetAllCompaniesResp:
+    properties:
+      companies:
+        items:
+          $ref: '#/definitions/models.Company'
+        type: array
+      count:
+        type: integer
+    type: object
+  models.ResponseError:
+    properties:
+      error_code:
+        type: string
+      error_message:
+        type: string
+    type: object
+  models.ResponseId:
+    properties:
+      id:
+        type: string
+    type: object
+  models.ResponseSuccess:
+    properties:
+      message:
+        type: string
+    type: object
+  swag.CreateUpdateCompany:
+    properties:
+      address:
+        type: string
+      dot:
+        type: integer
+      mc:
+        type: integer
+      name:
+        type: string
+      number:
+        type: string
+      scac:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/companies:
+    get:
+      description: API for retrieving all companies with pagination and search
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of companies per page
+        in: query
+        name: limit
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllCompaniesResp'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all companies
+      tags:
+      - company
+    post:
+      consumes:
+      - application/json
+      description: API for creating a new company
+      parameters:
+      - description: Company data
+        in: body
+        name: company
+        required: true
+        schema:
+          $ref: '#/definitions/swag.CreateUpdateCompany'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseId'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a company
+      tags:
+      - company
+    put:
+      consumes:
+      - application/json
+      description: API for updating a company
+      parameters:
+      - description: Company data
+        in: body
+        name: company
+        required: true
+        schema:
+          $ref: '#/definitions/swag.CreateUpdateCompany'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a company
+      tags:
+      - company
+  /v1/companies/{company_id}:
+    delete:
+      description: API for deleting a company
+      parameters:
+      - description: Company ID
+        in: path
+        name: company_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a company
+      tags:
+      - company
+    get:
+      description: API for retrieving a company by ID
+      parameters:
+      - description: Company ID
+        in: path
+        name: company_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Company'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a company by ID
+      tags:
+      - company
+swagger: "2.0"
