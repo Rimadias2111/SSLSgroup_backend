@@ -15,10 +15,10 @@ type Company struct {
 	DOT           int       `gorm:"type:int;not null;"`
 	MC            int       `gorm:"type:int;not null;"`
 	DriversNumber int       `gorm:"type:int;not null;"`
-	Drivers       []Driver  `gorm:"foreignKey:CompanyId;"`
+	Drivers       []Driver  `gorm:"foreignKey:CompanyId;" swaggerignore:"true"`
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
-	DeletedAt     gorm.DeletedAt `gorm:"index"`
+	DeletedAt     gorm.DeletedAt `gorm:"index" swaggerignore:"true"`
 }
 
 type GetAllCompaniesResp struct {

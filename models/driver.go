@@ -15,10 +15,10 @@ type Driver struct {
 	Mail        string    `gorm:"type:varchar(50);not null;"`
 	Birthday    time.Time `gorm:"type:date;not null;"`
 	CompanyId   uuid.UUID `gorm:"type:uuid;not null;"`
-	Company     Company   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Company     Company   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" swaggerignore:"true"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	DeletedAt   gorm.DeletedAt `gorm:"index"`
+	DeletedAt   gorm.DeletedAt `gorm:"index" swaggerignore:"true"`
 }
 
 type GetAllDriversResp struct {

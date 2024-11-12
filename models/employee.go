@@ -18,7 +18,7 @@ type Employee struct {
 	Birthday    time.Time `gorm:"type:date; not null"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	DeletedAt   gorm.DeletedAt `gorm:"index"`
+	DeletedAt   gorm.DeletedAt `gorm:"index" swaggerignore:"true"`
 }
 
 type GetAllEmployeesReq struct {

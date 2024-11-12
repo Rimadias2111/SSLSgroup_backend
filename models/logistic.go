@@ -21,7 +21,7 @@ type Logistic struct {
 	Emoji            string     `gorm:"type:varchar(30);not null;"`
 	DriverPhone      string     `gorm:"type:varchar(30);not null;"`
 	CargoId          *uuid.UUID `gorm:"type:uuid;"`
-	Cargo            Cargo      `gorm:"foreignKey:CargoId"`
+	Cargo            Cargo      `gorm:"foreignKey:CargoId" swaggerignore:"true"`
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
 	DeletedAt        gorm.DeletedAt `gorm:"index"`
