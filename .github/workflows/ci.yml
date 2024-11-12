@@ -36,7 +36,6 @@ jobs:
           export DOCKER_API_VERSION='1.43'
           docker-compose build
 
-  
 
   deploy:
     runs-on: ubuntu-latest
