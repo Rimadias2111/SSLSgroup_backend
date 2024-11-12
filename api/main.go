@@ -12,12 +12,9 @@ import (
 // @in header
 // @name Authorization
 func Construct(cont controllers.Controller) *gin.Engine {
-	r := gin.New()
+	r := gin.Default()
 
 	r.Static("/images", "./public/images")
-
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
 
 	r.GET("/", func(c *gin.Context) { c.JSON(200, gin.H{"message": "pong"}) })
 
@@ -30,7 +27,7 @@ func Construct(cont controllers.Controller) *gin.Engine {
 		api.GET("/companies/:company_id", cont.GetCompany)
 		api.GET("/companies", cont.GetAllCompanies)
 
-		//Driver endpoints
+		// Driver endpoints
 		api.POST("/drivers", cont.CreateDriver)
 		api.PUT("/drivers/:driver_id", cont.UpdateDriver)
 		api.DELETE("/drivers/:driver_id", cont.DeleteDriver)
@@ -44,7 +41,7 @@ func Construct(cont controllers.Controller) *gin.Engine {
 		api.GET("/employees", cont.GetAllEmployees)
 	}
 
-	url := ginSwagger.URL("swagger/doc.json")
+	url := ginSwagger.URL("/swagger/doc.json")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	return r
