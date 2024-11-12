@@ -63,6 +63,31 @@ definitions:
       updatedAt:
         type: string
     type: object
+  models.Employee:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        type: string
+      id:
+        type: string
+      logoId:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      phoneNumber:
+        type: string
+      surname:
+        type: string
+      updatedAt:
+        type: string
+      username:
+        type: string
+    type: object
   models.GetAllCompaniesResp:
     properties:
       companies:
@@ -71,6 +96,24 @@ definitions:
         type: array
       count:
         type: integer
+    type: object
+  models.GetAllDriversResp:
+    properties:
+      count:
+        type: integer
+      drivers:
+        items:
+          $ref: '#/definitions/models.Driver'
+        type: array
+    type: object
+  models.GetAllEmployeesResp:
+    properties:
+      count:
+        type: integer
+      employees:
+        items:
+          $ref: '#/definitions/models.Employee'
+        type: array
     type: object
   models.ResponseError:
     properties:
@@ -102,6 +145,40 @@ definitions:
       number:
         type: string
       scac:
+        type: string
+    type: object
+  swag.CreateUpdateDriver:
+    properties:
+      birthday:
+        type: string
+      company_id:
+        type: string
+      mail:
+        type: string
+      name:
+        type: string
+      phone_number:
+        type: string
+      surname:
+        type: string
+      truck_number:
+        type: integer
+    type: object
+  swag.CreateUpdateEmployee:
+    properties:
+      email:
+        type: string
+      logo_id:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      phone_number:
+        type: string
+      surname:
+        type: string
+      username:
         type: string
     type: object
 info:
@@ -172,37 +249,6 @@ paths:
       summary: Create a company
       tags:
       - company
-    put:
-      consumes:
-      - application/json
-      description: API for updating a company
-      parameters:
-      - description: Company data
-        in: body
-        name: company
-        required: true
-        schema:
-          $ref: '#/definitions/swag.CreateUpdateCompany'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.ResponseSuccess'
-        "400":
-          description: Invalid input
-          schema:
-            $ref: '#/definitions/models.ResponseError'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/models.ResponseError'
-      security:
-      - ApiKeyAuth: []
-      summary: Update a company
-      tags:
-      - company
   /v1/companies/{company_id}:
     delete:
       description: API for deleting a company
@@ -256,4 +302,356 @@ paths:
       summary: Get a company by ID
       tags:
       - company
+    put:
+      consumes:
+      - application/json
+      description: API for updating a company
+      parameters:
+      - description: Company ID
+        in: path
+        name: company_id
+        required: true
+        type: string
+      - description: Company data
+        in: body
+        name: company
+        required: true
+        schema:
+          $ref: '#/definitions/swag.CreateUpdateCompany'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a company
+      tags:
+      - company
+  /v1/drivers:
+    get:
+      description: API for retrieving all drivers with pagination and search
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of drivers per page
+        in: query
+        name: limit
+        type: integer
+      - description: Drivers Name
+        in: query
+        name: name
+        type: string
+      - description: Truck Number
+        in: query
+        name: truck_number
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllDriversResp'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all drivers
+      tags:
+      - driver
+    post:
+      consumes:
+      - application/json
+      description: API for creating a new driver
+      parameters:
+      - description: Driver data
+        in: body
+        name: driver
+        required: true
+        schema:
+          $ref: '#/definitions/swag.CreateUpdateDriver'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseId'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a driver
+      tags:
+      - driver
+  /v1/drivers/{driver_id}:
+    delete:
+      description: API for deleting a driver
+      parameters:
+      - description: Driver ID
+        in: path
+        name: driver_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a driver
+      tags:
+      - driver
+    get:
+      description: API for retrieving a driver by ID
+      parameters:
+      - description: Driver ID
+        in: path
+        name: driver_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Driver'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a driver by ID
+      tags:
+      - driver
+    put:
+      consumes:
+      - application/json
+      description: API for updating a driver
+      parameters:
+      - description: Driver ID
+        in: path
+        name: driver_id
+        required: true
+        type: string
+      - description: Driver data
+        in: body
+        name: driver
+        required: true
+        schema:
+          $ref: '#/definitions/swag.CreateUpdateDriver'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a driver
+      tags:
+      - driver
+  /v1/employees:
+    get:
+      description: API for retrieving all employees with pagination and search
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of employees per page
+        in: query
+        name: limit
+        type: integer
+      - description: Employee Username
+        in: query
+        name: username
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllEmployeesResp'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all employees
+      tags:
+      - employee
+    post:
+      consumes:
+      - application/json
+      description: API for creating a new employee
+      parameters:
+      - description: Employee data
+        in: body
+        name: employee
+        required: true
+        schema:
+          $ref: '#/definitions/swag.CreateUpdateEmployee'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseId'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create an employee
+      tags:
+      - employee
+  /v1/employees/{employee_id}:
+    delete:
+      description: API for deleting an employee
+      parameters:
+      - description: Employee ID
+        in: path
+        name: employee_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete an employee
+      tags:
+      - employee
+    get:
+      description: API for retrieving an employee by ID
+      parameters:
+      - description: Employee ID
+        in: path
+        name: employee_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Employee'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get an employee by ID
+      tags:
+      - employee
+    put:
+      consumes:
+      - application/json
+      description: API for updating an employee
+      parameters:
+      - description: Employee ID
+        in: path
+        name: employee_id
+        required: true
+        type: string
+      - description: Employee data
+        in: body
+        name: employee
+        required: true
+        schema:
+          $ref: '#/definitions/swag.CreateUpdateEmployee'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update an employee
+      tags:
+      - employee
 swagger: "2.0"

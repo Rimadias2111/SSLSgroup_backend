@@ -36,6 +36,12 @@ func Construct(cont controllers.Controller) *gin.Engine {
 		api.DELETE("/drivers/:driver_id", cont.DeleteDriver)
 		api.GET("/drivers/:driver_id", cont.GetDriver)
 		api.GET("/drivers", cont.GetAllDrivers)
+
+		api.POST("/employees", cont.CreateEmployee)
+		api.PUT("/employees/:employee_id", cont.UpdateEmployee)
+		api.DELETE("/employees/:employee_id", cont.DeleteEmployee)
+		api.GET("/employees/:employee_id", cont.GetEmployee)
+		api.GET("/employees", cont.GetAllEmployees)
 	}
 
 	url := ginSwagger.URL("swagger/doc.json")

@@ -29,22 +29,12 @@ func (h *Controller) CreateEmployee(c *gin.Context) {
 		return
 	}
 
-	logoId, err := uuid.Parse(employeeModel.LogoId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, models.ResponseError{
-			ErrorMessage: "Invalid Logo ID format: " + err.Error(),
-			ErrorCode:    "Bad Request",
-		})
-		return
-	}
-
 	employee := models.Employee{
-		Id:          uuid.New(),
 		Name:        employeeModel.Name,
 		Surname:     employeeModel.Surname,
 		Username:    employeeModel.Username,
 		Password:    employeeModel.Password,
-		LogoId:      logoId,
+		LogoId:      employeeModel.LogoId,
 		Email:       employeeModel.Email,
 		PhoneNumber: employeeModel.PhoneNumber,
 	}
@@ -94,22 +84,13 @@ func (h *Controller) UpdateEmployee(c *gin.Context) {
 		return
 	}
 
-	logoId, err := uuid.Parse(employeeModel.LogoId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, models.ResponseError{
-			ErrorMessage: "Invalid Logo ID format: " + err.Error(),
-			ErrorCode:    "Bad Request",
-		})
-		return
-	}
-
 	employee := models.Employee{
 		Id:          employeeId,
 		Name:        employeeModel.Name,
 		Surname:     employeeModel.Surname,
 		Username:    employeeModel.Username,
 		Password:    employeeModel.Password,
-		LogoId:      logoId,
+		LogoId:      employeeModel.LogoId,
 		Email:       employeeModel.Email,
 		PhoneNumber: employeeModel.PhoneNumber,
 	}
@@ -186,9 +167,7 @@ func (h *Controller) GetEmployee(c *gin.Context) {
 // @Tags employee
 // @Param page query int false "Page number"
 // @Param limit query int false "Number of employees per page"
-// @Param name query string false "Employee Name"
 // @Param username query string false "Employee Username"
-// @Param search query string false "Search term"
 // @Success 200 {object} models.GetAllEmployeesResp
 // @Failure 400 {object} models.ResponseError "Invalid input"
 // @Failure 500 {object} models.ResponseError "Internal server error"
@@ -211,14 +190,12 @@ func (h *Controller) GetAllEmployees(c *gin.Context) {
 		return
 	}
 
-	name := c.Query("name")
 	username := c.Query("username")
 
 	req := models.GetAllEmployeesReq{
-		Page:     page,
-		Limit:    limit,
-		Name:     name,
-		Username: username,
+		Page:   page,
+		Limit:  limit,
+		Search: username,
 	}
 
 	employees, err := h.service.Employee().GetAll(c.Request.Context(), req)
@@ -232,4 +209,3 @@ func (h *Controller) GetAllEmployees(c *gin.Context) {
 
 	c.JSON(http.StatusOK, employees)
 }
-

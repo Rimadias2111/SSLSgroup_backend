@@ -202,7 +202,7 @@ func (h *Controller) GetDriver(c *gin.Context) {
 // @Param page query int false "Page number"
 // @Param limit query int false "Number of drivers per page"
 // @Param name query string fasle "Drivers Name"
-// @Param truck_number int false "Truck Number"
+// @Param truck_number query int false "Truck Number"
 // @Param search query string false "Search term"
 // @Success 200 {object} models.GetAllDriversResp
 // @Failure 400 {object} models.ResponseError "Invalid input"
