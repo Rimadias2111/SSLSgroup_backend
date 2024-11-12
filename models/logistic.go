@@ -14,8 +14,8 @@ type Logistic struct {
 	SecDriverSurname *string    `gorm:"type:varchar(30);default:NULL;"`
 	Type             string     `gorm:"type:varchar(30);not null;"`
 	Status           string     `gorm:"type:varchar(30);not null;"`
-	UpdateTime       time.Time  `gorm:"type:datetime;not null;"`
-	StTime           time.Time  `gorm:"type:datetime;"`
+	UpdateTime       time.Time  `gorm:"type:timestamp;not null;"`
+	StTime           time.Time  `gorm:"type:timestamp;"`
 	State            string     `gorm:"type:varchar(90);not null;"`
 	Location         string     `gorm:"type:varchar(90);not null;"`
 	Emoji            string     `gorm:"type:varchar(30);not null;"`

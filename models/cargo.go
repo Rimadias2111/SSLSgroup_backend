@@ -16,8 +16,8 @@ type Cargo struct {
 	To           string    `gorm:"type:varchar(90); not null"`
 	Cost         int64     `gorm:"not null"`
 	Rate         float64   `gorm:"type:decimal(10,2);not null"`
-	PickUpTime   time.Time `gorm:"type:datetime;not null"`
-	DeliveryTime time.Time `gorm:"type:datetime;not null"`
+	PickUpTime   time.Time `gorm:"type:timestamp;not null"`
+	DeliveryTime time.Time `gorm:"type:timestamp;not null"`
 	EmployeeId   uuid.UUID `gorm:"type:uuid;"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time

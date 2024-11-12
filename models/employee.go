@@ -15,6 +15,7 @@ type Employee struct {
 	LogoId      string    `gorm:"size:255; default: NULL;"`
 	Email       string    `gorm:"type:varchar(50); unique; not null"`
 	PhoneNumber string    `gorm:"type:varchar(50); not null"`
+	Birthday    time.Time `gorm:"type:date; not null"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt `gorm:"index"`
