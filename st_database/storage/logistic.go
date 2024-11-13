@@ -18,9 +18,17 @@ func NewLogisticRepo(db *gorm.DB) Logistic {
 }
 
 func (s LogisticRepo) Create(ctx context.Context, update *models.Logistic, tx ...*gorm.DB) (string, error) {
-	id := uuid.New()
+	var (
+		id    = uuid.New()
+		query = s.db
+	)
 	update.Id = id
-	err := s.db.WithContext(ctx).Create(&update).Error
+
+	if len(tx) > 0 && tx[0] != nil {
+		query = tx[0]
+	}
+
+	err := query.WithContext(ctx).Create(&update).Error
 	if err != nil {
 		return "", err
 	}
@@ -28,10 +36,10 @@ func (s LogisticRepo) Create(ctx context.Context, update *models.Logistic, tx ..
 	return id.String(), nil
 }
 
-func (s LogisticRepo) Update(ctx context.Context, driver *models.Logistic, tx ...*gorm.DB) error {
-	var query = s.db.WithContext(ctx).Model(driver)
+func (s LogisticRepo) Update(ctx context.Context, update *models.Logistic, tx ...*gorm.DB) error {
+	var query = s.db.WithContext(ctx).Model(&update)
 	err := query.
-		Omit("Id", "DriverName", "DriverSurname", "DriverPhone", "Type", "CargoId").Updates(driver).Error
+		Omit("Id", "DriverName", "DriverSurname", "DriverPhone", "Type", "CargoId").Updates(update).Error
 	if err != nil {
 		return err
 	}

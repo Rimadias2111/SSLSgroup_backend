@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
+	"time"
 )
 
 // @Security ApiKeyAuth
@@ -29,13 +30,22 @@ func (h *Controller) CreateCompany(c *gin.Context) {
 		return
 	}
 
+	startDate, err := time.Parse("2006-01-02", companyModel.StartDate)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid Start date format: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+	}
+
 	company := models.Company{
-		Name:    companyModel.Name,
-		Address: companyModel.Address,
-		Number:  companyModel.Number,
-		SCAC:    companyModel.SCAC,
-		DOT:     companyModel.DOT,
-		MC:      companyModel.MC,
+		Name:      companyModel.Name,
+		Address:   companyModel.Address,
+		Number:    companyModel.Number,
+		SCAC:      companyModel.SCAC,
+		DOT:       companyModel.DOT,
+		MC:        companyModel.MC,
+		StartDate: &startDate,
 	}
 
 	id, err := h.service.Company().Create(c.Request.Context(), &company)

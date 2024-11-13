@@ -7,15 +7,19 @@ import (
 )
 
 type Employee struct {
-	Id          uuid.UUID `gorm:"primary_key;type:uuid;"`
-	Name        string    `gorm:"type:varchar(30); not null"`
-	Surname     string    `gorm:"type:varchar(30); not null"`
-	Username    string    `gorm:"type:varchar(50); unique; not null"`
-	Password    string    `gorm:"type:varchar(200); not null"`
-	LogoId      string    `gorm:"size:255; default: NULL;"`
-	Email       string    `gorm:"type:varchar(50); unique; not null"`
-	PhoneNumber string    `gorm:"type:varchar(50); not null"`
-	Birthday    time.Time `gorm:"type:date; not null"`
+	Id          uuid.UUID  `gorm:"primary_key;type:uuid;"`
+	Name        string     `gorm:"type:varchar(30); not null"`
+	Surname     string     `gorm:"type:varchar(30); not null"`
+	Username    string     `gorm:"type:varchar(50); unique; not null"`
+	Position    string     `gorm:"type:varchar(30); not null"`
+	AccessLevel int64      `gorm:"type:int; not null; default:3"`
+	Password    string     `gorm:"type:varchar(200); not null"`
+	LogoId      string     `gorm:"size:255; default: NULL;"`
+	Email       string     `gorm:"type:varchar(50); unique; not null"`
+	PhoneNumber string     `gorm:"type:varchar(50); not null"`
+	Birthday    time.Time  `gorm:"type:date; not null"`
+	Company     string     `gorm:"type:varchar(50); default: NULL"`
+	StartDate   *time.Time `gorm:"type:date;"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt `gorm:"index" swaggerignore:"true"`

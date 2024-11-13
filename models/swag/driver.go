@@ -8,4 +8,5 @@ type CreateUpdateDriver struct {
 	Mail        string `json:"mail"`
 	Birthday    string `json:"birthday"`
 	CompanyId   string `json:"company_id"`
+	StartDate   string `json:"start_date"`
 }

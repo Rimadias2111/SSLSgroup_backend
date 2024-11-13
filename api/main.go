@@ -34,6 +34,14 @@ func Construct(cont controllers.Controller) *gin.Engine {
 		api.GET("/drivers/:driver_id", cont.GetDriver)
 		api.GET("/drivers", cont.GetAllDrivers)
 
+		// Employee endpoints
+		api.POST("/employees", cont.CreateEmployee)
+		api.PUT("/employees/:employee_id", cont.UpdateEmployee)
+		api.DELETE("/employees/:employee_id", cont.DeleteEmployee)
+		api.GET("/employees/:employee_id", cont.GetEmployee)
+		api.GET("/employees", cont.GetAllEmployees)
+
+		// Logistic endpoints
 		api.POST("/employees", cont.CreateEmployee)
 		api.PUT("/employees/:employee_id", cont.UpdateEmployee)
 		api.DELETE("/employees/:employee_id", cont.DeleteEmployee)

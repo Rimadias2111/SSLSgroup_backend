@@ -7,15 +7,18 @@ import (
 )
 
 type Driver struct {
-	Id          uuid.UUID `gorm:"primary_key;type:uuid;"`
-	Name        string    `gorm:"type:varchar(50);not null;"`
-	Surname     string    `gorm:"type:varchar(50);not null;"`
-	TruckNumber int       `gorm:"type:int;not null;"`
-	PhoneNumber string    `gorm:"type:varchar(20);not null;"`
-	Mail        string    `gorm:"type:varchar(50);not null;"`
-	Birthday    time.Time `gorm:"type:date;not null;"`
-	CompanyId   uuid.UUID `gorm:"type:uuid;not null;"`
-	Company     Company   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" swaggerignore:"true"`
+	Id          uuid.UUID  `gorm:"primary_key;type:uuid;"`
+	Name        string     `gorm:"type:varchar(50);not null;"`
+	Surname     string     `gorm:"type:varchar(50);not null;"`
+	Type        string     `gorm:"type:varchar(50);not null;"`
+	Position    bool       `gorm:"default:false ;not null;"`
+	TruckNumber int        `gorm:"type:int;not null;"`
+	PhoneNumber string     `gorm:"type:varchar(20);not null;"`
+	Mail        string     `gorm:"type:varchar(50);not null;"`
+	Birthday    time.Time  `gorm:"type:date;not null;"`
+	StartDate   *time.Time `gorm:"type:date;"`
+	CompanyId   uuid.UUID  `gorm:"type:uuid;not null;"`
+	Company     Company    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" swaggerignore:"true"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt `gorm:"index" swaggerignore:"true"`

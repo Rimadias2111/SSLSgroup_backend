@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
+	"time"
 )
 
 // @Security ApiKeyAuth
@@ -29,6 +30,22 @@ func (h *Controller) CreateEmployee(c *gin.Context) {
 		return
 	}
 
+	bDay, err := time.Parse("2006-01-02", employeeModel.Birthday)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing birthday: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+	}
+
+	startDate, err := time.Parse("2006-01-02", employeeModel.StartDate)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing start date: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+	}
+
 	employee := models.Employee{
 		Name:        employeeModel.Name,
 		Surname:     employeeModel.Surname,
@@ -37,6 +54,10 @@ func (h *Controller) CreateEmployee(c *gin.Context) {
 		LogoId:      employeeModel.LogoId,
 		Email:       employeeModel.Email,
 		PhoneNumber: employeeModel.PhoneNumber,
+		Birthday:    bDay,
+		StartDate:   &startDate,
+		Position:    employeeModel.Position,
+		AccessLevel: employeeModel.AccessLevel,
 	}
 
 	id, err := h.service.Employee().Create(c.Request.Context(), &employee)
@@ -93,6 +114,8 @@ func (h *Controller) UpdateEmployee(c *gin.Context) {
 		LogoId:      employeeModel.LogoId,
 		Email:       employeeModel.Email,
 		PhoneNumber: employeeModel.PhoneNumber,
+		Position:    employeeModel.Position,
+		AccessLevel: employeeModel.AccessLevel,
 	}
 
 	if err := h.service.Employee().Update(c.Request.Context(), &employee); err != nil {

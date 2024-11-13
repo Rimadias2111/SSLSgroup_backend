@@ -17,11 +17,18 @@ func NewDriverRepo(db *gorm.DB) Driver {
 	}
 }
 
-func (s *DriverRepo) Create(ctx context.Context, driver *models.Driver) (string, error) {
-	id := uuid.New()
+func (s *DriverRepo) Create(ctx context.Context, driver *models.Driver, tx ...*gorm.DB) (string, error) {
+	var (
+		id    = uuid.New()
+		query = s.db
+	)
 	driver.Id = id
 
-	if err := s.db.WithContext(ctx).Create(&driver).Error; err != nil {
+	if len(tx) > 0 && tx[0] != nil {
+		query = tx[0]
+	}
+
+	if err := query.WithContext(ctx).Create(&driver).Error; err != nil {
 		return "", err
 	}
 

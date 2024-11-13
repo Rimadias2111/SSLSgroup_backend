@@ -46,6 +46,15 @@ func (h *Controller) CreateDriver(c *gin.Context) {
 			ErrorCode:    "Bad Request",
 		})
 	}
+
+	startDate, err := time.Parse("2006-01-02", driverModel.StartDate)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid Start Date format: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+	}
+
 	driver := models.Driver{
 		Name:        driverModel.Name,
 		Surname:     driverModel.Surname,
@@ -54,6 +63,7 @@ func (h *Controller) CreateDriver(c *gin.Context) {
 		Mail:        driverModel.Mail,
 		Birthday:    bTime,
 		CompanyId:   companyId,
+		StartDate:   &startDate,
 	}
 
 	id, err := h.service.Driver().Create(c.Request.Context(), &driver)

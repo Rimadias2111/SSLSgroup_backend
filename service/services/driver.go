@@ -4,6 +4,9 @@ import (
 	"backend/models"
 	database "backend/st_database"
 	"context"
+	"github.com/google/uuid"
+	"gorm.io/gorm"
+	"time"
 )
 
 type DriverService struct {
@@ -15,7 +18,26 @@ func NewDriverService(store database.IStore) *DriverService {
 }
 
 func (s *DriverService) Create(ctx context.Context, driver *models.Driver) (string, error) {
-	id, err := s.store.Driver().Create(ctx, driver)
+	var id string
+	db := s.store.DB()
+	err := db.Transaction(func(tx *gorm.DB) error {
+		idA, err := s.store.Driver().Create(ctx, driver, tx)
+		if err != nil {
+			return err
+		}
+		id = idA
+		driverId, err := uuid.Parse(id)
+		_, err = s.store.Logistic().Create(ctx, &models.Logistic{
+			DriverId:   driverId,
+			UpdateTime: time.Now(),
+			CargoId:    nil,
+		}, tx)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
 	if err != nil {
 		return "", err
 	}
