@@ -42,11 +42,11 @@ func Construct(cont controllers.Controller) *gin.Engine {
 		api.GET("/employees", cont.GetAllEmployees)
 
 		// Logistic endpoints
-		api.POST("/employees", cont.CreateEmployee)
-		api.PUT("/employees/:employee_id", cont.UpdateEmployee)
-		api.DELETE("/employees/:employee_id", cont.DeleteEmployee)
-		api.GET("/employees/:employee_id", cont.GetEmployee)
-		api.GET("/employees", cont.GetAllEmployees)
+		api.POST("/logistics", cont.CreateEmployee)
+		api.PUT("/logistics/:logistic_id", cont.UpdateEmployee)
+		api.DELETE("/logistics/:logistic_id", cont.DeleteEmployee)
+		api.GET("/logistics/:logistic_id", cont.GetEmployee)
+		api.GET("/logistics", cont.GetAllEmployees)
 	}
 
 	url := ginSwagger.URL("/swagger/doc.json")
