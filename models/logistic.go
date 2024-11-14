@@ -21,7 +21,7 @@ type Logistic struct {
 	Cargo      Cargo      `gorm:"foreignKey:CargoId" swaggerignore:"true"`
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
-	DeletedAt  gorm.DeletedAt `gorm:"index"`
+	DeletedAt  gorm.DeletedAt `gorm:"index" swaggerignore:"true"`
 }
 
 type GetAllLogisticsReq struct {

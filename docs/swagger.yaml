@@ -1,26 +1,12 @@
 definitions:
-  gorm.DeletedAt:
-    properties:
-      time:
-        type: string
-      valid:
-        description: Valid is true if Time is not NULL
-        type: boolean
-    type: object
   models.Company:
     properties:
       address:
         type: string
       createdAt:
         type: string
-      deletedAt:
-        $ref: '#/definitions/gorm.DeletedAt'
       dot:
         type: integer
-      drivers:
-        items:
-          $ref: '#/definitions/models.Driver'
-        type: array
       driversNumber:
         type: integer
       id:
@@ -33,6 +19,8 @@ definitions:
         type: string
       scac:
         type: string
+      startDate:
+        type: string
       updatedAt:
         type: string
     type: object
@@ -40,14 +28,10 @@ definitions:
     properties:
       birthday:
         type: string
-      company:
-        $ref: '#/definitions/models.Company'
       companyId:
         type: string
       createdAt:
         type: string
-      deletedAt:
-        $ref: '#/definitions/gorm.DeletedAt'
       id:
         type: string
       mail:
@@ -56,19 +40,29 @@ definitions:
         type: string
       phoneNumber:
         type: string
+      position:
+        type: boolean
+      startDate:
+        type: string
       surname:
         type: string
       truckNumber:
         type: integer
+      type:
+        type: string
       updatedAt:
         type: string
     type: object
   models.Employee:
     properties:
+      accessLevel:
+        type: integer
+      birthday:
+        type: string
+      company:
+        type: string
       createdAt:
         type: string
-      deletedAt:
-        $ref: '#/definitions/gorm.DeletedAt'
       email:
         type: string
       id:
@@ -80,6 +74,10 @@ definitions:
       password:
         type: string
       phoneNumber:
+        type: string
+      position:
+        type: string
+      startDate:
         type: string
       surname:
         type: string
@@ -115,6 +113,42 @@ definitions:
           $ref: '#/definitions/models.Employee'
         type: array
     type: object
+  models.GetAllLogisticsResp:
+    properties:
+      count:
+        type: integer
+      logistics:
+        items:
+          $ref: '#/definitions/models.Logistic'
+        type: array
+    type: object
+  models.Logistic:
+    properties:
+      cargoId:
+        type: string
+      createdAt:
+        type: string
+      driverId:
+        type: string
+      emoji:
+        type: string
+      id:
+        type: string
+      location:
+        type: string
+      notion:
+        type: string
+      stTime:
+        type: string
+      state:
+        type: string
+      status:
+        type: string
+      updateTime:
+        type: string
+      updatedAt:
+        type: string
+    type: object
   models.ResponseError:
     properties:
       error_code:
@@ -146,6 +180,8 @@ definitions:
         type: string
       scac:
         type: string
+      startDate:
+        type: string
     type: object
   swag.CreateUpdateDriver:
     properties:
@@ -159,6 +195,8 @@ definitions:
         type: string
       phone_number:
         type: string
+      start_date:
+        type: string
       surname:
         type: string
       truck_number:
@@ -166,6 +204,12 @@ definitions:
     type: object
   swag.CreateUpdateEmployee:
     properties:
+      access_level:
+        type: integer
+      birthday:
+        type: string
+      company:
+        type: string
       email:
         type: string
       logo_id:
@@ -176,9 +220,28 @@ definitions:
         type: string
       phone_number:
         type: string
+      position:
+        type: string
+      start_date:
+        type: string
       surname:
         type: string
       username:
+        type: string
+    type: object
+  swag.CreateUpdateLogistic:
+    properties:
+      cargo_id:
+        type: string
+      driver_id:
+        type: string
+      location:
+        type: string
+      notion:
+        type: string
+      st_time:
+        type: string
+      status:
         type: string
     type: object
 info:
@@ -654,4 +717,158 @@ paths:
       summary: Update an employee
       tags:
       - employee
+  /v1/logistics:
+    get:
+      description: API for retrieving all logistic records with pagination and search
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of logistics per page
+        in: query
+        name: limit
+        type: integer
+      - description: Driver ID
+        in: query
+        name: driver_id
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllLogisticsResp'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all logistic records
+      tags:
+      - logistic
+    post:
+      consumes:
+      - application/json
+      description: API for creating a new logistic record
+      parameters:
+      - description: Logistic data
+        in: body
+        name: logistic
+        required: true
+        schema:
+          $ref: '#/definitions/swag.CreateUpdateLogistic'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseId'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a logistic record
+      tags:
+      - logistic
+  /v1/logistics/{logistic_id}:
+    delete:
+      description: API for deleting a logistic record
+      parameters:
+      - description: Logistic ID
+        in: path
+        name: logistic_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a logistic record
+      tags:
+      - logistic
+    get:
+      description: API for retrieving a logistic record by ID
+      parameters:
+      - description: Logistic ID
+        in: path
+        name: logistic_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Logistic'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a logistic record by ID
+      tags:
+      - logistic
+    put:
+      consumes:
+      - application/json
+      description: API for updating a logistic record
+      parameters:
+      - description: Logistic ID
+        in: path
+        name: logistic_id
+        required: true
+        type: string
+      - description: Logistic data
+        in: body
+        name: logistic
+        required: true
+        schema:
+          $ref: '#/definitions/swag.CreateUpdateLogistic'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a logistic record
+      tags:
+      - logistic
 swagger: "2.0"

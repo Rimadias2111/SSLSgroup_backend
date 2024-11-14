@@ -755,21 +755,252 @@ const docTemplate = `{
                     }
                 }
             }
-        }
-    },
-    "definitions": {
-        "gorm.DeletedAt": {
-            "type": "object",
-            "properties": {
-                "time": {
-                    "type": "string"
-                },
-                "valid": {
-                    "description": "Valid is true if Time is not NULL",
-                    "type": "boolean"
+        },
+        "/v1/logistics": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for retrieving all logistic records with pagination and search",
+                "tags": [
+                    "logistic"
+                ],
+                "summary": "Get all logistic records",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of logistics per page",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Driver ID",
+                        "name": "driver_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GetAllLogisticsResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for creating a new logistic record",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "logistic"
+                ],
+                "summary": "Create a logistic record",
+                "parameters": [
+                    {
+                        "description": "Logistic data",
+                        "name": "logistic",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swag.CreateUpdateLogistic"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseId"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
                 }
             }
         },
+        "/v1/logistics/{logistic_id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for retrieving a logistic record by ID",
+                "tags": [
+                    "logistic"
+                ],
+                "summary": "Get a logistic record by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Logistic ID",
+                        "name": "logistic_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Logistic"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for updating a logistic record",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "logistic"
+                ],
+                "summary": "Update a logistic record",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Logistic ID",
+                        "name": "logistic_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Logistic data",
+                        "name": "logistic",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swag.CreateUpdateLogistic"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for deleting a logistic record",
+                "tags": [
+                    "logistic"
+                ],
+                "summary": "Delete a logistic record",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Logistic ID",
+                        "name": "logistic_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
         "models.Company": {
             "type": "object",
             "properties": {
@@ -779,17 +1010,8 @@ const docTemplate = `{
                 "createdAt": {
                     "type": "string"
                 },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
                 "dot": {
                     "type": "integer"
-                },
-                "drivers": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Driver"
-                    }
                 },
                 "driversNumber": {
                     "type": "integer"
@@ -809,6 +1031,9 @@ const docTemplate = `{
                 "scac": {
                     "type": "string"
                 },
+                "startDate": {
+                    "type": "string"
+                },
                 "updatedAt": {
                     "type": "string"
                 }
@@ -820,17 +1045,11 @@ const docTemplate = `{
                 "birthday": {
                     "type": "string"
                 },
-                "company": {
-                    "$ref": "#/definitions/models.Company"
-                },
                 "companyId": {
                     "type": "string"
                 },
                 "createdAt": {
                     "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
                 },
                 "id": {
                     "type": "string"
@@ -844,11 +1063,20 @@ const docTemplate = `{
                 "phoneNumber": {
                     "type": "string"
                 },
+                "position": {
+                    "type": "boolean"
+                },
+                "startDate": {
+                    "type": "string"
+                },
                 "surname": {
                     "type": "string"
                 },
                 "truckNumber": {
                     "type": "integer"
+                },
+                "type": {
+                    "type": "string"
                 },
                 "updatedAt": {
                     "type": "string"
@@ -858,11 +1086,17 @@ const docTemplate = `{
         "models.Employee": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "accessLevel": {
+                    "type": "integer"
+                },
+                "birthday": {
                     "type": "string"
                 },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
+                "company": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
                 },
                 "email": {
                     "type": "string"
@@ -880,6 +1114,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "phoneNumber": {
+                    "type": "string"
+                },
+                "position": {
+                    "type": "string"
+                },
+                "startDate": {
                     "type": "string"
                 },
                 "surname": {
@@ -935,6 +1175,61 @@ const docTemplate = `{
                 }
             }
         },
+        "models.GetAllLogisticsResp": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "logistics": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Logistic"
+                    }
+                }
+            }
+        },
+        "models.Logistic": {
+            "type": "object",
+            "properties": {
+                "cargoId": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "driverId": {
+                    "type": "string"
+                },
+                "emoji": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "notion": {
+                    "type": "string"
+                },
+                "stTime": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updateTime": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
         "models.ResponseError": {
             "type": "object",
             "properties": {
@@ -982,6 +1277,9 @@ const docTemplate = `{
                 },
                 "scac": {
                     "type": "string"
+                },
+                "startDate": {
+                    "type": "string"
                 }
             }
         },
@@ -1003,6 +1301,9 @@ const docTemplate = `{
                 "phone_number": {
                     "type": "string"
                 },
+                "start_date": {
+                    "type": "string"
+                },
                 "surname": {
                     "type": "string"
                 },
@@ -1014,6 +1315,15 @@ const docTemplate = `{
         "swag.CreateUpdateEmployee": {
             "type": "object",
             "properties": {
+                "access_level": {
+                    "type": "integer"
+                },
+                "birthday": {
+                    "type": "string"
+                },
+                "company": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },
@@ -1029,10 +1339,39 @@ const docTemplate = `{
                 "phone_number": {
                     "type": "string"
                 },
+                "position": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "string"
+                },
                 "surname": {
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "swag.CreateUpdateLogistic": {
+            "type": "object",
+            "properties": {
+                "cargo_id": {
+                    "type": "string"
+                },
+                "driver_id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "notion": {
+                    "type": "string"
+                },
+                "st_time": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 }
             }
