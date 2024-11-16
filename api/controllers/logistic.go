@@ -306,6 +306,15 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 	var logisticModel swag.UpdateLogisticWithCargo
 	logisticIdStr := c.Param("logistic_id")
 
+	err := c.ShouldBindJSON(&logisticModel)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing cargo id: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
 	logisticId, err := uuid.Parse(logisticIdStr)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
@@ -315,7 +324,7 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 		return
 	}
 
-	cargoId, err := uuid.Parse(logisticIdStr)
+	cargoId, err := uuid.Parse(logisticModel.CargoId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Error while parsing cargo id: " + err.Error(),
