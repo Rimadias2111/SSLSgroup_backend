@@ -47,6 +47,7 @@ func Construct(cont controllers.Controller) *gin.Engine {
 		api.DELETE("/logistics/:logistic_id", cont.DeleteLogistic)
 		api.GET("/logistics/:logistic_id", cont.GetLogistic)
 		api.GET("/logistics", cont.GetAllLogistics)
+		api.PUT("/logistics_with_cargo/:logistics_id", cont.UpdateLogisticCargo)
 	}
 
 	url := ginSwagger.URL("/swagger/doc.json")
