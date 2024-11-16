@@ -1365,7 +1365,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "position": {
-                    "type": "boolean"
+                    "type": "string"
                 },
                 "startDate": {
                     "type": "string"
@@ -1485,7 +1485,7 @@ const docTemplate = `{
                 "logistics": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Logistic"
+                        "$ref": "#/definitions/models.LogisticResponse"
                     }
                 }
             }
@@ -1544,6 +1544,56 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.LogisticResponse": {
+            "type": "object",
+            "properties": {
+                "cargoId": {
+                    "type": "string"
+                },
+                "driverId": {
+                    "type": "string"
+                },
+                "driverName": {
+                    "type": "string"
+                },
+                "driverPosition": {
+                    "type": "string"
+                },
+                "driverSurname": {
+                    "type": "string"
+                },
+                "driverType": {
+                    "type": "string"
+                },
+                "emoji": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "notion": {
+                    "type": "string"
+                },
+                "post": {
+                    "type": "boolean"
+                },
+                "stTime": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updateTime": {
                     "type": "string"
                 }
             }
@@ -1675,6 +1725,9 @@ const docTemplate = `{
                 "phone_number": {
                     "type": "string"
                 },
+                "position": {
+                    "type": "string"
+                },
                 "start_date": {
                     "type": "string"
                 },
@@ -1682,6 +1735,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "truck_number": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 }
             }

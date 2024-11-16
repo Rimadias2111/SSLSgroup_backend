@@ -1354,7 +1354,7 @@
                     "type": "string"
                 },
                 "position": {
-                    "type": "boolean"
+                    "type": "string"
                 },
                 "startDate": {
                     "type": "string"
@@ -1474,7 +1474,7 @@
                 "logistics": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Logistic"
+                        "$ref": "#/definitions/models.LogisticResponse"
                     }
                 }
             }
@@ -1533,6 +1533,56 @@
                     "type": "string"
                 },
                 "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.LogisticResponse": {
+            "type": "object",
+            "properties": {
+                "cargoId": {
+                    "type": "string"
+                },
+                "driverId": {
+                    "type": "string"
+                },
+                "driverName": {
+                    "type": "string"
+                },
+                "driverPosition": {
+                    "type": "string"
+                },
+                "driverSurname": {
+                    "type": "string"
+                },
+                "driverType": {
+                    "type": "string"
+                },
+                "emoji": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "notion": {
+                    "type": "string"
+                },
+                "post": {
+                    "type": "boolean"
+                },
+                "stTime": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updateTime": {
                     "type": "string"
                 }
             }
@@ -1664,6 +1714,9 @@
                 "phone_number": {
                     "type": "string"
                 },
+                "position": {
+                    "type": "string"
+                },
                 "start_date": {
                     "type": "string"
                 },
@@ -1671,6 +1724,9 @@
                     "type": "string"
                 },
                 "truck_number": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 }
             }
