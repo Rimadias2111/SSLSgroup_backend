@@ -37,8 +37,11 @@ func (s *LogisticRepo) Create(ctx context.Context, update *models.Logistic, tx .
 }
 
 func (s *LogisticRepo) Update(ctx context.Context, update *models.Logistic, tx ...*gorm.DB) error {
-	var query = s.db.WithContext(ctx).Model(&update)
-	err := query.
+	var query = s.db
+	if len(tx) > 0 && tx[0] != nil {
+		query = tx[0]
+	}
+	err := query.WithContext(ctx).Model(update).
 		Omit("Id", "DriverId").Updates(update).Error
 	if err != nil {
 		return err
