@@ -87,7 +87,7 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 	}
 
 	if req.Type != "" {
-		query = query.Where("drivers. type = ?", req.Type)
+		query = query.Where("drivers.type = ?", req.Type)
 	}
 
 	err := query.Select(`
@@ -105,7 +105,7 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 					drivers.name as driver__name,
 					drivers.surname as driver__surname,
 					drivers.type as driver__type,
-					drivers.Position as driver__position,
+					drivers.position as driver__position
 					`).
 		Order("drivers.company_id ASC").
 		Order(`
