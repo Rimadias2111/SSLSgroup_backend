@@ -35,3 +35,7 @@ type GetAllDriversReq struct {
 	TruckNumber int64  `json:"truck_number"`
 	Name        string `json:"name"`
 }
+
+func (Driver) TableName() string {
+	return "drivers"
+}

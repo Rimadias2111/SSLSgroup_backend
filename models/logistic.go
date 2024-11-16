@@ -10,7 +10,7 @@ type Logistic struct {
 	Id         uuid.UUID  `gorm:"primary_key;type:uuid;"`
 	Post       bool       `gorm:"default:false;"`
 	DriverId   uuid.UUID  `gorm:"type:uuid; unique; not null"`
-	Driver     Driver     `gorm:"foreignKey:DriverId" swaggerignore:"true"`
+	Driver     Driver     `gorm:"foreignKey:DriverId;references:Id" swaggerignore:"true"`
 	Status     string     `gorm:"type:varchar(30);not null; default: 'ready'"`
 	UpdateTime time.Time  `gorm:"type:timestamp;not null;"`
 	StTime     *time.Time `gorm:"type:timestamp;"`
@@ -19,7 +19,7 @@ type Logistic struct {
 	Emoji      string     `gorm:"type:varchar(30);not null; default: ''"`
 	Notion     string     `gorm:"type:varchar(255);not null; default: ''"`
 	CargoId    *uuid.UUID `gorm:"type:uuid;"`
-	Cargo      Cargo      `gorm:"foreignKey:CargoId" swaggerignore:"true"`
+	Cargo      Cargo      `gorm:"foreignKey:CargoId;references:Id" swaggerignore:"true"`
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 	DeletedAt  gorm.DeletedAt `gorm:"index" swaggerignore:"true"`
