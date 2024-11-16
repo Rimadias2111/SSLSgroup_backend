@@ -105,10 +105,10 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 					logistics.notion as notion,
 					logistics.emoji as emoji,
 					logistics.cargo_id as cargo_id,
-					drivers.name as driver__name,
-					drivers.surname as driver__surname,
-					drivers.type as driver__type,
-					drivers.position as driver__position
+					drivers.name as driver_name,
+					drivers.surname as driver_surname,
+					drivers.type as driver_type,
+					drivers.position as driver_position
 					`).
 		Order("drivers.company_id ASC").
 		Order(`
