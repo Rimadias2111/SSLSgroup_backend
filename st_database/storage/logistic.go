@@ -17,7 +17,7 @@ func NewLogisticRepo(db *gorm.DB) Logistic {
 	}
 }
 
-func (s LogisticRepo) Create(ctx context.Context, update *models.Logistic, tx ...*gorm.DB) (string, error) {
+func (s *LogisticRepo) Create(ctx context.Context, update *models.Logistic, tx ...*gorm.DB) (string, error) {
 	var (
 		id    = uuid.New()
 		query = s.db
@@ -36,10 +36,10 @@ func (s LogisticRepo) Create(ctx context.Context, update *models.Logistic, tx ..
 	return id.String(), nil
 }
 
-func (s LogisticRepo) Update(ctx context.Context, update *models.Logistic, tx ...*gorm.DB) error {
+func (s *LogisticRepo) Update(ctx context.Context, update *models.Logistic, tx ...*gorm.DB) error {
 	var query = s.db.WithContext(ctx).Model(&update)
 	err := query.
-		Omit("Id", "DriverName", "DriverSurname", "DriverPhone", "Type", "CargoId").Updates(update).Error
+		Omit("Id", "DriverId").Updates(update).Error
 	if err != nil {
 		return err
 	}
@@ -47,7 +47,7 @@ func (s LogisticRepo) Update(ctx context.Context, update *models.Logistic, tx ..
 	return nil
 }
 
-func (s LogisticRepo) Delete(ctx context.Context, req models.RequestId) error {
+func (s *LogisticRepo) Delete(ctx context.Context, req models.RequestId) error {
 	err := s.db.WithContext(ctx).Model(&models.Logistic{}).Where("id = ?", req.Id).Delete(&models.Logistic{}).Error
 	if err != nil {
 		return err
@@ -56,7 +56,7 @@ func (s LogisticRepo) Delete(ctx context.Context, req models.RequestId) error {
 	return nil
 }
 
-func (s LogisticRepo) Get(ctx context.Context, req models.RequestId) (*models.Logistic, error) {
+func (s *LogisticRepo) Get(ctx context.Context, req models.RequestId) (*models.Logistic, error) {
 	var update models.Logistic
 
 	err := s.db.WithContext(ctx).Model(&models.Logistic{}).Where("id = ?", req.Id).First(&update).Error
@@ -67,30 +67,67 @@ func (s LogisticRepo) Get(ctx context.Context, req models.RequestId) (*models.Lo
 	return &update, nil
 }
 
-func (s LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq) (*models.GetAllLogisticsResp, error) {
+func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq) (*models.GetAllLogisticsResp, error) {
 	var (
 		resp   models.GetAllLogisticsResp
-		query  = s.db.WithContext(ctx).Model(&models.Logistic{})
+		query  = s.db.WithContext(ctx).Model(&models.Logistic{}).Joins("Driver")
 		offset = (req.Page - 1) * req.Limit
 	)
 
 	if req.Name != "" {
-		query = query.Where("driver_name ILIKE ?", "%"+req.Name+"%")
+		query = query.Where("drivers.name ILIKE ?", "%"+req.Name+"%")
 	}
 
 	if req.Status != "" {
-		query = query.Where("status = ?", req.Status)
+		query = query.Where("logistics.status = ?", req.Status)
 	}
 
 	if req.Location != "" {
-		query = query.Where("location = ?", req.Location)
+		query = query.Where("logistics.location = ?", req.Location)
 	}
 
 	if req.Type != "" {
-		query = query.Where("type = ?", req.Type)
+		query = query.Where("drivers. type = ?", req.Type)
 	}
 
-	err := query.Find(&resp.Logistics).Offset(int(offset)).Limit(int(req.Limit)).Error
+	err := query.Select(`
+					logistics.id as id,
+					logistics.post as post,
+					logistics.driver_id as driver_id,
+					logistics.status as status,
+					logistics.update_time as update_time,
+					logistics.st_time as st_time,
+					logistics.state as state,
+					logistics.location as location,
+					logistics.notion as notion,
+					logistics.emoji as emoji,
+					logistics.cargo_id as cargo_id,
+					drivers.name as driver__name,
+					drivers.surname as driver__surname,
+					drivers.type as driver__type,
+					drivers.Position as driver__position,
+					`).
+		Order("drivers.company_id ASC").
+		Order(`
+             CASE logistics.status
+				WHEN 'READY' THEN 1
+				WHEN 'WILL BE READY' THEN 2
+				WHEN 'COVERED' THEN 3
+				WHEN 'AT PU'  THEN 4
+				WHEN 'ETA' THEN 5
+				WHEN 'AT DEL' THEN 6
+				WHEN 'ETA WILL BE LATE' THEN 7
+				WHEN 'TRUCK ISSUES' THEN 8
+				WHEN 'CANCELLED' THEN 9
+				WHEN 'AT HOME' THEN 10
+				WHEN 'LET US KNOW' THEN 11
+				ELSE 999
+			END
+			`).
+		Offset(int(offset)).
+		Limit(int(req.Limit)).
+		Scan(&resp.Logistics).
+		Error
 	if err != nil {
 		return nil, err
 	}

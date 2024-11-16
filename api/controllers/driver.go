@@ -55,6 +55,38 @@ func (h *Controller) CreateDriver(c *gin.Context) {
 		})
 	}
 
+	if driverModel.Name == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Name field is required",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if driverModel.Surname == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Surname field is required",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if driverModel.TruckNumber == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "TruckNumber field is required",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if driverModel.Mail == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Mail field is required",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
 	driver := models.Driver{
 		Name:        driverModel.Name,
 		Surname:     driverModel.Surname,
@@ -128,6 +160,38 @@ func (h *Controller) UpdateDriver(c *gin.Context) {
 		})
 	}
 
+	if driverModel.Name == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Name field is required",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if driverModel.Surname == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Surname field is required",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if driverModel.TruckNumber == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "TruckNumber field is required",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if driverModel.Mail == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Mail field is required",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
 	driver := models.Driver{
 		Id:          driverId,
 		Name:        driverModel.Name,
@@ -163,9 +227,16 @@ func (h *Controller) UpdateDriver(c *gin.Context) {
 // @Failure 500 {object} models.ResponseError "Internal server error"
 func (h *Controller) DeleteDriver(c *gin.Context) {
 	idStr := c.Param("driver_id")
-	id := uuid.MustParse(idStr)
+	id, err := uuid.Parse(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid driver ID format: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
 
-	err := h.service.Driver().Delete(c.Request.Context(), models.RequestId{Id: id})
+	err = h.service.Driver().Delete(c.Request.Context(), models.RequestId{Id: id})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ResponseError{
 			ErrorMessage: "Error while deleting the driver: " + err.Error(),
@@ -190,7 +261,14 @@ func (h *Controller) DeleteDriver(c *gin.Context) {
 // @Failure 500 {object} models.ResponseError "Internal server error"
 func (h *Controller) GetDriver(c *gin.Context) {
 	idStr := c.Param("driver_id")
-	id := uuid.MustParse(idStr)
+	id, err := uuid.Parse(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid driver ID format: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
 
 	driver, err := h.service.Driver().Get(c.Request.Context(), models.RequestId{Id: id})
 	if err != nil {

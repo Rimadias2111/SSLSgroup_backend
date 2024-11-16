@@ -37,3 +37,26 @@ type Logistic interface {
 	Get(ctx context.Context, req models.RequestId) (*models.Logistic, error)
 	GetAll(ctx context.Context, req models.GetAllLogisticsReq) (*models.GetAllLogisticsResp, error)
 }
+
+type Cargo interface {
+	Create(ctx context.Context, cargo *models.Cargo, tx ...*gorm.DB) (string, error)
+	Update(ctx context.Context, cargo *models.Cargo, tx ...*gorm.DB) error
+	Delete(ctx context.Context, req models.RequestId) error
+	Get(ctx context.Context, req models.RequestId) (*models.Cargo, error)
+}
+
+type Transaction interface {
+	Create(ctx context.Context, transaction *models.Transaction, tx ...*gorm.DB) (string, error)
+	Update(ctx context.Context, transaction *models.Transaction) error
+	Delete(ctx context.Context, req models.RequestId) error
+	Get(ctx context.Context, req models.RequestId) (*models.Transaction, error)
+	GetAll(ctx context.Context, req models.GetAllTransReq) (*models.GetAllTransResp, error)
+}
+
+type Performance interface {
+	Create(ctx context.Context, performance *models.Performance, tx ...*gorm.DB) (string, error)
+	Update(ctx context.Context, performance *models.Performance) error
+	Delete(ctx context.Context, req models.RequestId) error
+	Get(ctx context.Context, req models.RequestId) (*models.Performance, error)
+	GetAll(ctx context.Context, req models.GetAllPerformancesReq) (*models.GetAllPerformancesResp, error)
+}

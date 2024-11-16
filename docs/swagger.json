@@ -987,6 +987,307 @@
                     }
                 }
             }
+        },
+        "/v1/logistics_with_cargo/{logistic_id}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for updating a logistic record with a cargo",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "logistic"
+                ],
+                "summary": "Update a logistic record with a cargo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Logistic ID",
+                        "name": "logistic_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Logistic data",
+                        "name": "logistic",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swag.UpdateLogisticWithCargo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseId"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/transactions": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for retrieving all transactions with pagination and search",
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Get all transactions",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of transactions per page",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Service Provider",
+                        "name": "provider",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GetAllTransResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for creating a new transaction",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Create a transaction",
+                "parameters": [
+                    {
+                        "description": "Transaction data",
+                        "name": "transaction",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swag.CreateUpdateTransaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseId"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/transactions/{transaction_id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for retrieving a transaction by ID",
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Get a transaction by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Transaction ID",
+                        "name": "transaction_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Transaction"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for updating a transaction",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Update a transaction",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Transaction ID",
+                        "name": "transaction_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Transaction data",
+                        "name": "transaction",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swag.CreateUpdateTransaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for deleting a transaction",
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Delete a transaction",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Transaction ID",
+                        "name": "transaction_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1062,7 +1363,7 @@
                     "type": "string"
                 },
                 "truckNumber": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "type": {
                     "type": "string"
@@ -1178,6 +1479,20 @@
                 }
             }
         },
+        "models.GetAllTransResp": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "transactions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Transaction"
+                    }
+                }
+            }
+        },
         "models.Logistic": {
             "type": "object",
             "properties": {
@@ -1201,6 +1516,9 @@
                 },
                 "notion": {
                     "type": "string"
+                },
+                "post": {
+                    "type": "boolean"
                 },
                 "stTime": {
                     "type": "string"
@@ -1242,6 +1560,62 @@
             "type": "object",
             "properties": {
                 "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Transaction": {
+            "type": "object",
+            "properties": {
+                "cargoID": {
+                    "type": "string"
+                },
+                "cost": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deliverTime": {
+                    "type": "string"
+                },
+                "driver": {
+                    "$ref": "#/definitions/models.Driver"
+                },
+                "driverId": {
+                    "type": "string"
+                },
+                "employeeId": {
+                    "type": "string"
+                },
+                "from": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "loadedMiles": {
+                    "type": "integer"
+                },
+                "provider": {
+                    "type": "string"
+                },
+                "puTime": {
+                    "type": "string"
+                },
+                "rate": {
+                    "type": "number"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "to": {
+                    "type": "string"
+                },
+                "totalMiles": {
+                    "type": "integer"
+                },
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -1297,7 +1671,7 @@
                     "type": "string"
                 },
                 "truck_number": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -1357,10 +1731,119 @@
                 "notion": {
                     "type": "string"
                 },
+                "post": {
+                    "type": "boolean"
+                },
                 "st_time": {
                     "type": "string"
                 },
                 "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "swag.CreateUpdateTransaction": {
+            "type": "object",
+            "properties": {
+                "cargo_id": {
+                    "type": "string"
+                },
+                "cost": {
+                    "type": "integer"
+                },
+                "deliver_time": {
+                    "type": "string"
+                },
+                "driver_id": {
+                    "type": "string"
+                },
+                "employee_id": {
+                    "type": "string"
+                },
+                "from": {
+                    "type": "string"
+                },
+                "loaded_miles": {
+                    "type": "integer"
+                },
+                "provider": {
+                    "type": "string"
+                },
+                "pu_time": {
+                    "type": "string"
+                },
+                "rate": {
+                    "type": "number"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "to": {
+                    "type": "string"
+                },
+                "total_miles": {
+                    "type": "integer"
+                }
+            }
+        },
+        "swag.UpdateLogisticWithCargo": {
+            "type": "object",
+            "properties": {
+                "cargo_id": {
+                    "type": "string"
+                },
+                "cost": {
+                    "type": "integer"
+                },
+                "create": {
+                    "type": "boolean"
+                },
+                "delivery_time": {
+                    "type": "string"
+                },
+                "employee_id": {
+                    "type": "string"
+                },
+                "free_miles": {
+                    "type": "integer"
+                },
+                "from": {
+                    "type": "string"
+                },
+                "load_id": {
+                    "type": "string"
+                },
+                "loaded_miles": {
+                    "type": "integer"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "logistic_id": {
+                    "type": "string"
+                },
+                "notion": {
+                    "type": "string"
+                },
+                "pick_up_time": {
+                    "type": "string"
+                },
+                "post": {
+                    "type": "boolean"
+                },
+                "provider": {
+                    "type": "string"
+                },
+                "rate": {
+                    "type": "number"
+                },
+                "st_time": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "to": {
                     "type": "string"
                 }
             }

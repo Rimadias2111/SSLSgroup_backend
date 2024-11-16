@@ -47,7 +47,7 @@ definitions:
       surname:
         type: string
       truckNumber:
-        type: integer
+        type: string
       type:
         type: string
       updatedAt:
@@ -122,6 +122,15 @@ definitions:
           $ref: '#/definitions/models.Logistic'
         type: array
     type: object
+  models.GetAllTransResp:
+    properties:
+      count:
+        type: integer
+      transactions:
+        items:
+          $ref: '#/definitions/models.Transaction'
+        type: array
+    type: object
   models.Logistic:
     properties:
       cargoId:
@@ -138,6 +147,8 @@ definitions:
         type: string
       notion:
         type: string
+      post:
+        type: boolean
       stTime:
         type: string
       state:
@@ -164,6 +175,43 @@ definitions:
   models.ResponseSuccess:
     properties:
       message:
+        type: string
+    type: object
+  models.Transaction:
+    properties:
+      cargoID:
+        type: string
+      cost:
+        type: integer
+      createdAt:
+        type: string
+      deliverTime:
+        type: string
+      driver:
+        $ref: '#/definitions/models.Driver'
+      driverId:
+        type: string
+      employeeId:
+        type: string
+      from:
+        type: string
+      id:
+        type: string
+      loadedMiles:
+        type: integer
+      provider:
+        type: string
+      puTime:
+        type: string
+      rate:
+        type: number
+      status:
+        type: string
+      to:
+        type: string
+      totalMiles:
+        type: integer
+      updatedAt:
         type: string
     type: object
   swag.CreateUpdateCompany:
@@ -200,7 +248,7 @@ definitions:
       surname:
         type: string
       truck_number:
-        type: integer
+        type: string
     type: object
   swag.CreateUpdateEmployee:
     properties:
@@ -239,9 +287,81 @@ definitions:
         type: string
       notion:
         type: string
+      post:
+        type: boolean
       st_time:
         type: string
       status:
+        type: string
+    type: object
+  swag.CreateUpdateTransaction:
+    properties:
+      cargo_id:
+        type: string
+      cost:
+        type: integer
+      deliver_time:
+        type: string
+      driver_id:
+        type: string
+      employee_id:
+        type: string
+      from:
+        type: string
+      loaded_miles:
+        type: integer
+      provider:
+        type: string
+      pu_time:
+        type: string
+      rate:
+        type: number
+      status:
+        type: string
+      to:
+        type: string
+      total_miles:
+        type: integer
+    type: object
+  swag.UpdateLogisticWithCargo:
+    properties:
+      cargo_id:
+        type: string
+      cost:
+        type: integer
+      create:
+        type: boolean
+      delivery_time:
+        type: string
+      employee_id:
+        type: string
+      free_miles:
+        type: integer
+      from:
+        type: string
+      load_id:
+        type: string
+      loaded_miles:
+        type: integer
+      location:
+        type: string
+      logistic_id:
+        type: string
+      notion:
+        type: string
+      pick_up_time:
+        type: string
+      post:
+        type: boolean
+      provider:
+        type: string
+      rate:
+        type: number
+      st_time:
+        type: string
+      status:
+        type: string
+      to:
         type: string
     type: object
 info:
@@ -871,4 +991,195 @@ paths:
       summary: Update a logistic record
       tags:
       - logistic
+  /v1/logistics_with_cargo/{logistic_id}:
+    put:
+      consumes:
+      - application/json
+      description: API for updating a logistic record with a cargo
+      parameters:
+      - description: Logistic ID
+        in: path
+        name: logistic_id
+        required: true
+        type: string
+      - description: Logistic data
+        in: body
+        name: logistic
+        required: true
+        schema:
+          $ref: '#/definitions/swag.UpdateLogisticWithCargo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseId'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a logistic record with a cargo
+      tags:
+      - logistic
+  /v1/transactions:
+    get:
+      description: API for retrieving all transactions with pagination and search
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of transactions per page
+        in: query
+        name: limit
+        type: integer
+      - description: Service Provider
+        in: query
+        name: provider
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllTransResp'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all transactions
+      tags:
+      - transaction
+    post:
+      consumes:
+      - application/json
+      description: API for creating a new transaction
+      parameters:
+      - description: Transaction data
+        in: body
+        name: transaction
+        required: true
+        schema:
+          $ref: '#/definitions/swag.CreateUpdateTransaction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseId'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a transaction
+      tags:
+      - transaction
+  /v1/transactions/{transaction_id}:
+    delete:
+      description: API for deleting a transaction
+      parameters:
+      - description: Transaction ID
+        in: path
+        name: transaction_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a transaction
+      tags:
+      - transaction
+    get:
+      description: API for retrieving a transaction by ID
+      parameters:
+      - description: Transaction ID
+        in: path
+        name: transaction_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Transaction'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a transaction by ID
+      tags:
+      - transaction
+    put:
+      consumes:
+      - application/json
+      description: API for updating a transaction
+      parameters:
+      - description: Transaction ID
+        in: path
+        name: transaction_id
+        required: true
+        type: string
+      - description: Transaction data
+        in: body
+        name: transaction
+        required: true
+        schema:
+          $ref: '#/definitions/swag.CreateUpdateTransaction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a transaction
+      tags:
+      - transaction
 swagger: "2.0"

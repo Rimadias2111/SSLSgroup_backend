@@ -17,7 +17,7 @@ func NewEmployeeRepo(db *gorm.DB) Employee {
 	}
 }
 
-func (s EmployeeRepo) Create(ctx context.Context, employee *models.Employee) (string, error) {
+func (s *EmployeeRepo) Create(ctx context.Context, employee *models.Employee) (string, error) {
 	id := uuid.New()
 	employee.Id = id
 
@@ -29,7 +29,7 @@ func (s EmployeeRepo) Create(ctx context.Context, employee *models.Employee) (st
 	return id.String(), nil
 }
 
-func (s EmployeeRepo) Update(ctx context.Context, employee *models.Employee) error {
+func (s *EmployeeRepo) Update(ctx context.Context, employee *models.Employee) error {
 	err := s.db.WithContext(ctx).Model(employee).Omit("Id", "Password").
 		Updates(employee).Error
 	if err != nil {
@@ -39,7 +39,7 @@ func (s EmployeeRepo) Update(ctx context.Context, employee *models.Employee) err
 	return nil
 }
 
-func (s EmployeeRepo) Delete(ctx context.Context, req models.RequestId) error {
+func (s *EmployeeRepo) Delete(ctx context.Context, req models.RequestId) error {
 	err := s.db.WithContext(ctx).Where("id = ?", req.Id).Delete(&models.Employee{}).Error
 	if err != nil {
 		return err
@@ -48,7 +48,7 @@ func (s EmployeeRepo) Delete(ctx context.Context, req models.RequestId) error {
 	return nil
 }
 
-func (s EmployeeRepo) Get(ctx context.Context, req models.RequestId) (*models.Employee, error) {
+func (s *EmployeeRepo) Get(ctx context.Context, req models.RequestId) (*models.Employee, error) {
 	var employee models.Employee
 
 	err := s.db.WithContext(ctx).Where("id = ?", req.Id).First(&employee).Error
@@ -59,7 +59,7 @@ func (s EmployeeRepo) Get(ctx context.Context, req models.RequestId) (*models.Em
 	return &employee, nil
 }
 
-func (s EmployeeRepo) GetAll(ctx context.Context, req models.GetAllEmployeesReq) (*models.GetAllEmployeesResp, error) {
+func (s *EmployeeRepo) GetAll(ctx context.Context, req models.GetAllEmployeesReq) (*models.GetAllEmployeesResp, error) {
 	var (
 		resp   models.GetAllEmployeesResp
 		offset = (req.Page - 1) * req.Limit

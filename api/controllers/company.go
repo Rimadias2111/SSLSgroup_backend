@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"backend/etc/filters"
 	"backend/models"
 	"backend/models/swag"
 	"github.com/gin-gonic/gin"
@@ -36,6 +37,54 @@ func (h *Controller) CreateCompany(c *gin.Context) {
 			ErrorMessage: "Invalid Start date format: " + err.Error(),
 			ErrorCode:    "Bad Request",
 		})
+	}
+
+	if companyModel.Name == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Name can't be empty",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if companyModel.DOT <= 0 {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Dot must be greater than zero",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if companyModel.SCAC == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "SAC can't be empty",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if filters.ValidatePhoneNumber(companyModel.Number) {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid Number",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if companyModel.MC <= 0 {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Mc can't be zero",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if companyModel.Address == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Address can't be empty",
+			ErrorCode:    "Bad Request",
+		})
+		return
 	}
 
 	company := models.Company{
@@ -93,6 +142,54 @@ func (h *Controller) UpdateCompany(c *gin.Context) {
 		return
 	}
 
+	if companyModel.Name == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Name can't be empty",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if companyModel.DOT <= 0 {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Dot must be greater than zero",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if companyModel.SCAC == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "SAC can't be empty",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if filters.ValidatePhoneNumber(companyModel.Number) {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid Number",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if companyModel.MC <= 0 {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Mc can't be zero",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if companyModel.Address == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Address can't be empty",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
 	company := models.Company{
 		Id:      companyId,
 		Name:    companyModel.Name,
@@ -127,9 +224,16 @@ func (h *Controller) UpdateCompany(c *gin.Context) {
 // @Failure 500 {object} models.ResponseError "Internal server error"
 func (h *Controller) DeleteCompany(c *gin.Context) {
 	idStr := c.Param("company_id")
-	id := uuid.MustParse(idStr)
+	id, err := uuid.Parse(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid company ID format: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
 
-	err := h.service.Company().Delete(c.Request.Context(), models.RequestId{Id: id})
+	err = h.service.Company().Delete(c.Request.Context(), models.RequestId{Id: id})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ResponseError{
 			ErrorMessage: "Error while deleting the company: " + err.Error(),
@@ -154,7 +258,14 @@ func (h *Controller) DeleteCompany(c *gin.Context) {
 // @Failure 500 {object} models.ResponseError "Internal server error"
 func (h *Controller) GetCompany(c *gin.Context) {
 	idStr := c.Param("company_id")
-	id := uuid.MustParse(idStr)
+	id, err := uuid.Parse(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid company ID format: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
 
 	company, err := h.service.Company().Get(c.Request.Context(), models.RequestId{Id: id})
 	if err != nil {

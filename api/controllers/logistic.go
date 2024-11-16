@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -37,6 +38,7 @@ func (h *Controller) CreateLogistic(c *gin.Context) {
 			ErrorMessage: "Error while parsing driver id: " + err.Error(),
 			ErrorCode:    "Bad Request",
 		})
+		return
 	}
 
 	cargoId, err := uuid.Parse(logisticModel.CargoId)
@@ -45,12 +47,22 @@ func (h *Controller) CreateLogistic(c *gin.Context) {
 			ErrorMessage: "Error while parsing cargo id: " + err.Error(),
 			ErrorCode:    "Bad Request",
 		})
+		return
 	}
 
-	stTime, err := time.Parse("2006-01-02T15:04:05Z07:00", logisticModel.StTime)
+	stTime, err := time.Parse("2006-01-02T15:04:05", logisticModel.StTime)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Error while parsing start time: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	parts := strings.Split(logisticModel.Location, ",")
+	if len(parts) != 2 {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing location: ",
 			ErrorCode:    "Bad Request",
 		})
 		return
@@ -63,7 +75,9 @@ func (h *Controller) CreateLogistic(c *gin.Context) {
 		StTime:     &stTime,
 		UpdateTime: Utime.Now(),
 		Location:   logisticModel.Location,
+		State:      strings.TrimSpace(parts[1]),
 		Notion:     logisticModel.Notion,
+		Post:       logisticModel.Post,
 	}
 
 	id, err := h.service.Logistic().Create(c.Request.Context(), &logistic)
@@ -111,23 +125,16 @@ func (h *Controller) UpdateLogistic(c *gin.Context) {
 		return
 	}
 
-	driverId, err := uuid.Parse(logisticModel.DriverId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, models.ResponseError{
-			ErrorMessage: "Error while parsing driver id: " + err.Error(),
-			ErrorCode:    "Bad Request",
-		})
-	}
-
 	cargoId, err := uuid.Parse(logisticModel.CargoId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Error while parsing cargo id: " + err.Error(),
 			ErrorCode:    "Bad Request",
 		})
+		return
 	}
 
-	stTime, err := time.Parse("2006-01-02T15:04:05Z07:00", logisticModel.StTime)
+	stTime, err := time.Parse("2006-01-02T15:04:05", logisticModel.StTime)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Error while parsing start time: " + err.Error(),
@@ -136,15 +143,25 @@ func (h *Controller) UpdateLogistic(c *gin.Context) {
 		return
 	}
 
+	parts := strings.Split(logisticModel.Location, ",")
+	if len(parts) != 2 {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing location: ",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
 	logistic := models.Logistic{
 		Id:         logisticId,
-		DriverId:   driverId,
 		CargoId:    &cargoId,
 		Status:     logisticModel.Status,
 		StTime:     &stTime,
 		UpdateTime: Utime.Now(),
 		Location:   logisticModel.Location,
+		State:      strings.TrimSpace(parts[1]),
 		Notion:     logisticModel.Notion,
+		Post:       logisticModel.Post,
 	}
 
 	if err := h.service.Logistic().Update(c.Request.Context(), &logistic); err != nil {
@@ -171,9 +188,16 @@ func (h *Controller) UpdateLogistic(c *gin.Context) {
 // @Failure 500 {object} models.ResponseError "Internal server error"
 func (h *Controller) DeleteLogistic(c *gin.Context) {
 	logisticIdStr := c.Param("logistic_id")
-	logisticId := uuid.MustParse(logisticIdStr)
+	logisticId, err := uuid.Parse(logisticIdStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid logistic ID format: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
 
-	err := h.service.Logistic().Delete(c.Request.Context(), models.RequestId{Id: logisticId})
+	err = h.service.Logistic().Delete(c.Request.Context(), models.RequestId{Id: logisticId})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ResponseError{
 			ErrorMessage: "Error while deleting the logistic record: " + err.Error(),
@@ -198,7 +222,14 @@ func (h *Controller) DeleteLogistic(c *gin.Context) {
 // @Failure 500 {object} models.ResponseError "Internal server error"
 func (h *Controller) GetLogistic(c *gin.Context) {
 	logisticIdStr := c.Param("logistic_id")
-	logisticId := uuid.MustParse(logisticIdStr)
+	logisticId, err := uuid.Parse(logisticIdStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing logistic ID: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
 
 	logistic, err := h.service.Logistic().Get(c.Request.Context(), models.RequestId{Id: logisticId})
 	if err != nil {
@@ -257,4 +288,153 @@ func (h *Controller) GetAllLogistics(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, logistics)
+}
+
+// @Security ApiKeyAuth
+// @Router /v1/logistics_with_cargo/{logistic_id} [put]
+// @Summary Update a logistic record with a cargo
+// @Description API for updating a logistic record with a cargo
+// @Tags logistic
+// @Accept json
+// @Produce json
+// @Param logistic_id path string true "Logistic ID"
+// @Param logistic body swag.UpdateLogisticWithCargo true "Logistic data"
+// @Success 200 {object} models.ResponseId
+// @Failure 400 {object} models.ResponseError "Invalid input"
+// @Failure 500 {object} models.ResponseError "Internal server error"
+func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
+	var logisticModel swag.UpdateLogisticWithCargo
+	logisticIdStr := c.Param("logistic_id")
+
+	logisticId, err := uuid.Parse(logisticIdStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid logistic ID format: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	cargoId, err := uuid.Parse(logisticIdStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing cargo id: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	stTime, err := time.Parse("2006-01-02T15:04:05", logisticModel.StTime)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing start time: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+	var updateTime time.Time
+	if logisticModel.Status == "COVERED" {
+		updateTime, err = time.Parse("2006-01-02T15:04:05", logisticModel.PickUpTime)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, models.ResponseError{
+				ErrorMessage: "Error while parsing pick up time: " + err.Error(),
+				ErrorCode:    "Bad Request",
+			})
+			return
+		}
+	} else {
+		updateTime = Utime.Now()
+	}
+
+	parts := strings.Split(logisticModel.Location, ",")
+	if len(parts) != 2 {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing location: ",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	logistic := models.Logistic{
+		Id:         logisticId,
+		CargoId:    &cargoId,
+		Status:     logisticModel.Status,
+		Post:       logisticModel.Post,
+		Notion:     logisticModel.Notion,
+		UpdateTime: updateTime,
+		StTime:     &stTime,
+		Location:   logisticModel.Location,
+		State:      strings.TrimSpace(parts[1]),
+	}
+
+	pickUpTime, err := time.Parse("2006-01-02T15:04:05", logisticModel.PickUpTime)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing pick up time: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	deliveryTime, err := time.Parse("2006-01-02T15:04:05", logisticModel.DeliveryTime)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing delivery time: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	employeeId, err := uuid.Parse(logisticModel.EmployeeId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing employee ID: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if logisticModel.Provider == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing provider: ",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	cargo := models.Cargo{
+		Id:           cargoId,
+		PickUpTime:   pickUpTime,
+		DeliveryTime: deliveryTime,
+		Provider:     logisticModel.Provider,
+		FreeMiles:    logisticModel.FreeMiles,
+		LoadedMiles:  logisticModel.LoadedMiles,
+		From:         logisticModel.From,
+		To:           logisticModel.To,
+		Cost:         logisticModel.Cost,
+		Rate:         logisticModel.Rate,
+		EmployeeId:   employeeId,
+		CargoID:      logisticModel.LoadId,
+	}
+
+	if stTime.After(deliveryTime) {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error delivery time cannot be less than ETA",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	id, err := h.service.Logistic().UpdateWithCargo(c.Request.Context(), &logistic, &cargo, logisticModel.Create)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.ResponseError{
+			ErrorMessage: "Error while updating logistic: " + err.Error(),
+			ErrorCode:    "Internal Server Error",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, models.ResponseId{
+		Id: id,
+	})
 }

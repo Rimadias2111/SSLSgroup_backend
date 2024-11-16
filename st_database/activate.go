@@ -12,5 +12,6 @@ func New(db *gorm.DB) *Store {
 		driver:   storage.NewDriverRepo(db),
 		employee: storage.NewEmployeeRepo(db),
 		logistic: storage.NewLogisticRepo(db),
+		cargo:    storage.NewCargoRepo(db),
 	}
 }

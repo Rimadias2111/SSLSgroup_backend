@@ -36,6 +36,7 @@ func (h *Controller) CreateEmployee(c *gin.Context) {
 			ErrorMessage: "Error while parsing birthday: " + err.Error(),
 			ErrorCode:    "Bad Request",
 		})
+		return
 	}
 
 	startDate, err := time.Parse("2006-01-02", employeeModel.StartDate)
@@ -44,6 +45,7 @@ func (h *Controller) CreateEmployee(c *gin.Context) {
 			ErrorMessage: "Error while parsing start date: " + err.Error(),
 			ErrorCode:    "Bad Request",
 		})
+		return
 	}
 
 	employee := models.Employee{
@@ -142,9 +144,16 @@ func (h *Controller) UpdateEmployee(c *gin.Context) {
 // @Failure 500 {object} models.ResponseError "Internal server error"
 func (h *Controller) DeleteEmployee(c *gin.Context) {
 	employeeIdStr := c.Param("employee_id")
-	employeeId := uuid.MustParse(employeeIdStr)
+	employeeId, err := uuid.Parse(employeeIdStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid employee ID format: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
 
-	err := h.service.Employee().Delete(c.Request.Context(), models.RequestId{Id: employeeId})
+	err = h.service.Employee().Delete(c.Request.Context(), models.RequestId{Id: employeeId})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ResponseError{
 			ErrorMessage: "Error while deleting the employee: " + err.Error(),
@@ -169,7 +178,14 @@ func (h *Controller) DeleteEmployee(c *gin.Context) {
 // @Failure 500 {object} models.ResponseError "Internal server error"
 func (h *Controller) GetEmployee(c *gin.Context) {
 	employeeIdStr := c.Param("employee_id")
-	employeeId := uuid.MustParse(employeeIdStr)
+	employeeId, err := uuid.Parse(employeeIdStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid employee ID format: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
 
 	employee, err := h.service.Employee().Get(c.Request.Context(), models.RequestId{Id: employeeId})
 	if err != nil {

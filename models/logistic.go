@@ -8,6 +8,7 @@ import (
 
 type Logistic struct {
 	Id         uuid.UUID  `gorm:"primary_key;type:uuid;"`
+	Post       bool       `gorm:"default:false;"`
 	DriverId   uuid.UUID  `gorm:"type:uuid; unique; not null"`
 	Driver     Driver     `gorm:"foreignKey:DriverId" swaggerignore:"true"`
 	Status     string     `gorm:"type:varchar(30);not null; default: 'ready'"`
