@@ -62,7 +62,7 @@ func (s *LogisticRepo) Delete(ctx context.Context, req models.RequestId) error {
 func (s *LogisticRepo) Get(ctx context.Context, req models.RequestId) (*models.Logistic, error) {
 	var update models.Logistic
 
-	err := s.db.WithContext(ctx).Model(&models.Logistic{}).Where("id = ?", req.Id).First(&update).Error
+	err := s.db.WithContext(ctx).Model(&models.Logistic{}).Preload("Driver").Where("id = ?", req.Id).First(&update).Error
 	if err != nil {
 		return nil, err
 	}

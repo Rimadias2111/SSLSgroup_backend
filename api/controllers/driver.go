@@ -87,6 +87,22 @@ func (h *Controller) CreateDriver(c *gin.Context) {
 		return
 	}
 
+	if driverModel.Type == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Type field is required",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if driverModel.Position == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Position field is required",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
 	driver := models.Driver{
 		Name:        driverModel.Name,
 		Surname:     driverModel.Surname,
@@ -96,6 +112,8 @@ func (h *Controller) CreateDriver(c *gin.Context) {
 		Birthday:    bTime,
 		CompanyId:   companyId,
 		StartDate:   &startDate,
+		Type:        driverModel.Type,
+		Position:    driverModel.Position,
 	}
 
 	id, err := h.service.Driver().Create(c.Request.Context(), &driver)
@@ -192,6 +210,22 @@ func (h *Controller) UpdateDriver(c *gin.Context) {
 		return
 	}
 
+	if driverModel.Type == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Type field is required",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if driverModel.Position == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Position field is required",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
 	driver := models.Driver{
 		Id:          driverId,
 		Name:        driverModel.Name,
@@ -201,6 +235,8 @@ func (h *Controller) UpdateDriver(c *gin.Context) {
 		Mail:        driverModel.Mail,
 		Birthday:    bTime,
 		CompanyId:   companyId,
+		Type:        driverModel.Type,
+		Position:    driverModel.Position,
 	}
 
 	if err := h.service.Driver().Update(c.Request.Context(), &driver); err != nil {

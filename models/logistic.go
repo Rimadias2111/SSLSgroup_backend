@@ -25,6 +25,24 @@ type Logistic struct {
 	DeletedAt  gorm.DeletedAt `gorm:"index" swaggerignore:"true"`
 }
 
+type LogisticResponse struct {
+	Id             uuid.UUID
+	Post           bool
+	DriverId       uuid.UUID
+	Status         string
+	UpdateTime     time.Time
+	StTime         *time.Time
+	State          string
+	Location       string
+	Emoji          string
+	Notion         string
+	CargoId        *uuid.UUID
+	DriverName     string
+	DriverSurname  string
+	DriverType     string
+	DriverPosition string
+}
+
 type GetAllLogisticsReq struct {
 	Page     uint64 `json:"page"`
 	Limit    uint64 `json:"limit"`
@@ -35,6 +53,6 @@ type GetAllLogisticsReq struct {
 }
 
 type GetAllLogisticsResp struct {
-	Logistics []Logistic
+	Logistics []LogisticResponse
 	Count     int64
 }

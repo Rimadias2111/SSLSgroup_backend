@@ -11,7 +11,7 @@ type Driver struct {
 	Name        string     `gorm:"type:varchar(50);not null;"`
 	Surname     string     `gorm:"type:varchar(50);not null;"`
 	Type        string     `gorm:"type:varchar(50);not null;"`
-	Position    bool       `gorm:"default:false ;not null;"`
+	Position    string     `gorm:"type:varchar(50);not null;"`
 	TruckNumber string     `gorm:"type:varchar; not null;"`
 	PhoneNumber string     `gorm:"type:varchar(20);not null;"`
 	Mail        string     `gorm:"type:varchar(50);not null;"`
