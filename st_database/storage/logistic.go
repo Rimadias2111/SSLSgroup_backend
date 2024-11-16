@@ -73,7 +73,7 @@ func (s *LogisticRepo) Get(ctx context.Context, req models.RequestId) (*models.L
 func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq) (*models.GetAllLogisticsResp, error) {
 	var (
 		resp   models.GetAllLogisticsResp
-		query  = s.db.WithContext(ctx).Model(&models.Logistic{}).Joins("JOIN drivers ON drivers.id = logistics.driver_id")
+		query  = s.db.WithContext(ctx).Model(&models.Logistic{}).Joins("drivers")
 		offset = (req.Page - 1) * req.Limit
 	)
 
@@ -135,7 +135,21 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 		return nil, err
 	}
 
-	err = query.Count(&resp.Count).Error
+	countQuery := s.db.WithContext(ctx).Model(&models.Logistic{})
+	if req.Name != "" {
+		countQuery = countQuery.Joins("JOIN drivers AS d ON d.id = logistics.driver_id").
+			Where("d.name ILIKE ?", "%"+req.Name+"%")
+	}
+	if req.Status != "" {
+		countQuery = countQuery.Where("logistics.status = ?", req.Status)
+	}
+	if req.Location != "" {
+		countQuery = countQuery.Where("logistics.location = ?", req.Location)
+	}
+	if req.Type != "" {
+		countQuery = countQuery.Where("d.type = ?", req.Type)
+	}
+	err = countQuery.Count(&resp.Count).Error
 	if err != nil {
 		return nil, err
 	}
