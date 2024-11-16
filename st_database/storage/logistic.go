@@ -73,7 +73,7 @@ func (s *LogisticRepo) Get(ctx context.Context, req models.RequestId) (*models.L
 func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq) (*models.GetAllLogisticsResp, error) {
 	var (
 		resp   models.GetAllLogisticsResp
-		query  = s.db.WithContext(ctx).Model(&models.Logistic{}).Joins("Driver")
+		query  = s.db.WithContext(ctx).Model(&models.Logistic{}).Joins("JOIN drivers ON drivers.id = logistics.driver_id")
 		offset = (req.Page - 1) * req.Limit
 	)
 
