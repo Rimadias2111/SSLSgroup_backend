@@ -63,7 +63,7 @@ func (h *Controller) CreateCompany(c *gin.Context) {
 		return
 	}
 
-	if filters.ValidatePhoneNumber(companyModel.Number) {
+	if !filters.ValidatePhoneNumber(companyModel.Number) {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Invalid Number",
 			ErrorCode:    "Bad Request",
@@ -166,7 +166,7 @@ func (h *Controller) UpdateCompany(c *gin.Context) {
 		return
 	}
 
-	if filters.ValidatePhoneNumber(companyModel.Number) {
+	if !filters.ValidatePhoneNumber(companyModel.Number) {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Invalid Number",
 			ErrorCode:    "Bad Request",
