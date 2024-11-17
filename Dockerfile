@@ -11,6 +11,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /app/myapp .
 
 FROM scratch
 
+COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
+
 COPY --from=builder /app/myapp /myapp
 
 EXPOSE 8080
