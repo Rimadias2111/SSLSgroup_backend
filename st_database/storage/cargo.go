@@ -41,7 +41,7 @@ func (s *CargoRepo) Update(ctx context.Context, cargo *models.Cargo, tx ...*gorm
 		query = tx[0]
 	}
 
-	result := query.WithContext(ctx).Model(&cargo).Omit("Id", "EmployeeId").Updates(cargo)
+	result := query.WithContext(ctx).Model(cargo).Omit("Id", "EmployeeId").Updates(cargo)
 	if result.Error != nil {
 		return result.Error
 	} else if result.RowsAffected == 0 {
