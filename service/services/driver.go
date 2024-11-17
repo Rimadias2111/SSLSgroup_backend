@@ -1,12 +1,12 @@
 package services
 
 import (
+	"backend/etc/Utime"
 	"backend/models"
 	database "backend/st_database"
 	"context"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"time"
 )
 
 type DriverService struct {
@@ -29,7 +29,7 @@ func (s *DriverService) Create(ctx context.Context, driver *models.Driver) (stri
 		driverId, err := uuid.Parse(id)
 		_, err = s.store.Logistic().Create(ctx, &models.Logistic{
 			DriverId:   driverId,
-			UpdateTime: time.Now(),
+			UpdateTime: Utime.Now(),
 			CargoId:    nil,
 		}, tx)
 		if err != nil {

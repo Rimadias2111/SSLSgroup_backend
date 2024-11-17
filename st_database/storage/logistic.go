@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"backend/etc/helpers"
 	"backend/models"
 	"context"
 	"github.com/google/uuid"
@@ -157,6 +158,8 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 			resp.Logistics[i].CompanyName = name
 		}
 	}
+
+	helpers.CountDown(&resp)
 
 	countQuery := s.db.WithContext(ctx).Model(&models.Logistic{})
 	if req.Name != "" {

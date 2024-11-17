@@ -351,6 +351,15 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 			})
 			return
 		}
+	} else if logisticModel.Status == "ETA" || logisticModel.Status == "ETA WILL BE LATE" {
+		updateTime, err = time.Parse("2006-01-02T15:04:05", logisticModel.DeliveryTime)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, models.ResponseError{
+				ErrorMessage: "Error while parsing delivery time: " + err.Error(),
+				ErrorCode:    "Bad Request",
+			})
+			return
+		}
 	} else {
 		updateTime = Utime.Now()
 	}
