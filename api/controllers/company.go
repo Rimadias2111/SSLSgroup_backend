@@ -37,6 +37,7 @@ func (h *Controller) CreateCompany(c *gin.Context) {
 			ErrorMessage: "Invalid Start date format: " + err.Error(),
 			ErrorCode:    "Bad Request",
 		})
+		return
 	}
 
 	if companyModel.Name == "" {
