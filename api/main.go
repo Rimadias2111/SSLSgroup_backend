@@ -3,6 +3,7 @@ package api
 import (
 	"backend/api/controllers"
 	_ "backend/docs" //for swagger
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -13,6 +14,13 @@ import (
 // @name Authorization
 func Construct(cont controllers.Controller) *gin.Engine {
 	r := gin.Default()
+
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Content-Type", "Authorization"},
+		AllowCredentials: false,
+	}))
 
 	r.Static("/images", "./public/images")
 
