@@ -148,6 +148,10 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 	}
 
 	companyMap := make(map[uuid.UUID]string)
+	for _, company := range companies {
+		companyMap[company.Id] = company.Name
+	}
+
 	for i := range resp.Logistics {
 		if name, exists := companyMap[resp.Logistics[i].CompanyId]; exists {
 			resp.Logistics[i].CompanyName = name
