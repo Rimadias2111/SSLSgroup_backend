@@ -41,7 +41,7 @@ type LogisticResponse struct {
 	DriverSurname  string
 	DriverType     string
 	DriverPosition string
-	Countdown      time.Duration
+	Countdown      string
 	CompanyId      uuid.UUID
 	CompanyName    string
 }
