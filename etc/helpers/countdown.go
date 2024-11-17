@@ -7,7 +7,7 @@ import (
 
 func CountDown(resp *models.GetAllLogisticsResp) {
 	for _, logistic := range resp.Logistics {
-		if logistic.Status == "READY" || logistic.Status == "AT HOME" ||
+		if logistic.Status == "READY" || logistic.Status == "AT HOME" || logistic.Status == "ready" ||
 			logistic.Status == "READY AT HOME" || logistic.Status == "LET US KNOW" {
 			logistic.Countdown = Utime.Now().Sub(logistic.UpdateTime)
 		} else if logistic.Status == "COVERED" {

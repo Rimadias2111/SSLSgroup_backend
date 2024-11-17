@@ -11,7 +11,7 @@ type Logistic struct {
 	Post       bool       `gorm:"default:false;"`
 	DriverId   uuid.UUID  `gorm:"type:uuid; unique; not null"`
 	Driver     Driver     `gorm:"foreignKey:DriverId;references:Id" swaggerignore:"true"`
-	Status     string     `gorm:"type:varchar(30);not null; default: 'ready'"`
+	Status     string     `gorm:"type:varchar(30);not null; default: 'READY'"`
 	UpdateTime time.Time  `gorm:"type:timestamp;not null;"`
 	StTime     *time.Time `gorm:"type:timestamp;"`
 	State      string     `gorm:"type:varchar(90);not null;"`
