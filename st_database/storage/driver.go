@@ -64,7 +64,7 @@ func (s *DriverRepo) GetAll(ctx context.Context, req models.GetAllDriversReq) (*
 	var (
 		resp   models.GetAllDriversResp
 		offset = (req.Page - 1) * req.Limit
-		query  = s.db.WithContext(ctx).Model(&models.Driver{})
+		query  = s.db.WithContext(ctx).Model(&models.Driver{}).Preload("Company")
 	)
 	if req.TruckNumber != 0 {
 		query = query.Where("truck_number = ?", req.TruckNumber)

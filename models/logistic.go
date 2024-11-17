@@ -41,6 +41,9 @@ type LogisticResponse struct {
 	DriverSurname  string
 	DriverType     string
 	DriverPosition string
+	Countdown      time.Duration
+	CompanyId      uuid.UUID
+	CompanyName    string
 }
 
 type GetAllLogisticsReq struct {

@@ -62,7 +62,7 @@ func (s *LogisticRepo) Delete(ctx context.Context, req models.RequestId) error {
 func (s *LogisticRepo) Get(ctx context.Context, req models.RequestId) (*models.Logistic, error) {
 	var update models.Logistic
 
-	err := s.db.WithContext(ctx).Model(&models.Logistic{}).Preload("Driver").Where("id = ?", req.Id).First(&update).Error
+	err := s.db.WithContext(ctx).Model(&models.Logistic{}).Preload("Driver").Preload("Cargo").Where("id = ?", req.Id).First(&update).Error
 	if err != nil {
 		return nil, err
 	}
@@ -109,6 +109,7 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 					drivers.surname as driver_surname,
 					drivers.type as driver_type,
 					drivers.position as driver_position
+					drivers.company_id as company_id
 					`).
 		Order("drivers.company_id ASC").
 		Order(`
@@ -135,10 +136,32 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 		return nil, err
 	}
 
+	var companyIds []uuid.UUID
+	var companies []models.Company
+	for _, body := range resp.Logistics {
+		companyIds = append(companyIds, body.CompanyId)
+	}
+
+	err = s.db.WithContext(ctx).Model(&models.Company{}).Where("id IN (?)", companyIds).Find(&companies).Error
+	if err != nil {
+		return nil, err
+	}
+
+	companyMap := make(map[uuid.UUID]string)
+	for i := range resp.Logistics {
+		if name, exists := companyMap[resp.Logistics[i].CompanyId]; exists {
+			resp.Logistics[i].CompanyName = name
+		}
+	}
+
 	countQuery := s.db.WithContext(ctx).Model(&models.Logistic{})
 	if req.Name != "" {
 		countQuery = countQuery.Joins("Driver").
 			Where("drivers.name ILIKE ?", "%"+req.Name+"%")
+
+		if req.Type != "" {
+			countQuery = countQuery.Where("drivers.type = ?", req.Type)
+		}
 	}
 	if req.Status != "" {
 		countQuery = countQuery.Where("logistics.status = ?", req.Status)
@@ -146,9 +169,7 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 	if req.Location != "" {
 		countQuery = countQuery.Where("logistics.location = ?", req.Location)
 	}
-	if req.Type != "" {
-		countQuery = countQuery.Where("drivers.type = ?", req.Type)
-	}
+
 	err = countQuery.Count(&resp.Count).Error
 	if err != nil {
 		return nil, err
