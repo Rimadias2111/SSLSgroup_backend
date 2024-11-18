@@ -7,5 +7,5 @@ type CreateUpdateCompany struct {
 	SCAC      string `json:"scac"`
 	DOT       int    `json:"dot"`
 	MC        int    `json:"mc"`
-	StartDate string `json:"startDate"`
+	StartDate string `json:"start_date"`
 }
