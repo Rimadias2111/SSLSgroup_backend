@@ -47,7 +47,7 @@ func (s *DriverRepo) Create(ctx context.Context, driver *models.Driver, tx ...*g
 }
 
 func (s *DriverRepo) Update(ctx context.Context, driver *models.Driver) error {
-	if err := s.db.WithContext(ctx).Model(&driver).Omit("Id", "CompanyId").Updates(driver).Error; err != nil {
+	if err := s.db.WithContext(ctx).Model(&driver).Omit("Id").Updates(driver).Error; err != nil {
 		return err
 	}
 
