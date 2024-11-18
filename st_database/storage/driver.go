@@ -37,7 +37,7 @@ func (s *DriverRepo) Create(ctx context.Context, driver *models.Driver, tx ...*g
 		Uquery = tx[0]
 	}
 	if Uquery != nil {
-		if err := Uquery.WithContext(ctx).Model(&models.Company{}).UpdateColumn("drivers_number",
+		if err := Uquery.WithContext(ctx).Model(&models.Company{}).Where("id = ?", driver.CompanyId).UpdateColumn("drivers_number",
 			gorm.Expr("drivers_number + ?", 1)).Error; err != nil {
 			return "", err
 		}
