@@ -164,6 +164,12 @@ definitions:
     properties:
       cargoId:
         type: string
+      companyId:
+        type: string
+      companyName:
+        type: string
+      countdown:
+        type: string
       driverId:
         type: string
       driverName:
@@ -261,7 +267,7 @@ definitions:
         type: string
       scac:
         type: string
-      startDate:
+      start_date:
         type: string
     type: object
   swag.CreateUpdateDriver:

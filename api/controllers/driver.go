@@ -161,15 +161,6 @@ func (h *Controller) UpdateDriver(c *gin.Context) {
 		return
 	}
 
-	companyId, err := uuid.Parse(driverModel.CompanyId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, models.ResponseError{
-			ErrorMessage: "Invalid Company ID format: " + err.Error(),
-			ErrorCode:    "Bad Request",
-		})
-		return
-	}
-
 	bTime, err := time.Parse("2006-01-02", driverModel.Birthday)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
@@ -234,7 +225,6 @@ func (h *Controller) UpdateDriver(c *gin.Context) {
 		PhoneNumber: driverModel.PhoneNumber,
 		Mail:        driverModel.Mail,
 		Birthday:    bTime,
-		CompanyId:   companyId,
 		Type:        driverModel.Type,
 		Position:    driverModel.Position,
 	}

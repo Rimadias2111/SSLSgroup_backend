@@ -1554,6 +1554,15 @@ const docTemplate = `{
                 "cargoId": {
                     "type": "string"
                 },
+                "companyId": {
+                    "type": "string"
+                },
+                "companyName": {
+                    "type": "string"
+                },
+                "countdown": {
+                    "type": "string"
+                },
                 "driverId": {
                     "type": "string"
                 },
@@ -1702,7 +1711,7 @@ const docTemplate = `{
                 "scac": {
                     "type": "string"
                 },
-                "startDate": {
+                "start_date": {
                     "type": "string"
                 }
             }

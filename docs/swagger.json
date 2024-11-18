@@ -1543,6 +1543,15 @@
                 "cargoId": {
                     "type": "string"
                 },
+                "companyId": {
+                    "type": "string"
+                },
+                "companyName": {
+                    "type": "string"
+                },
+                "countdown": {
+                    "type": "string"
+                },
                 "driverId": {
                     "type": "string"
                 },
@@ -1691,7 +1700,7 @@
                 "scac": {
                     "type": "string"
                 },
-                "startDate": {
+                "start_date": {
                     "type": "string"
                 }
             }
