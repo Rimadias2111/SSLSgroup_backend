@@ -13,6 +13,7 @@ func New(db *gorm.DB) *Store {
 		employee:    storage.NewEmployeeRepo(db),
 		logistic:    storage.NewLogisticRepo(db),
 		cargo:       storage.NewCargoRepo(db),
+		transaction: storage.NewTransactionRepo(db),
 		performance: storage.NewPerformanceRepo(db),
 	}
 }
