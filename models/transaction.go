@@ -22,7 +22,7 @@ type Transaction struct {
 	EmployeeId   uuid.UUID `gorm:"type:uuid;not null"`
 	Employee     uuid.UUID `gorm:"foreignKey:EmployeeId" swaggerignore:"true"`
 	CargoID      string    `gorm:"type:varchar(90); not null"`
-	Success      bool      `gorm:"type:varchar(50); not null"`
+	Success      bool      `gorm:"not null"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 	DeletedAt    gorm.DeletedAt `gorm:"index" swaggerignore:"true"`
