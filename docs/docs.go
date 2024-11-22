@@ -15,6 +15,57 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/v1/cancel_late_logistics": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for canceling or marking late logistic record",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "logistic"
+                ],
+                "summary": "Cancel or late logistics",
+                "parameters": [
+                    {
+                        "description": "Logistic data",
+                        "name": "logistic",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swag.CancelLogistic"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/companies": {
             "get": {
                 "security": [
@@ -756,6 +807,57 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/login": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Log in",
+                "parameters": [
+                    {
+                        "description": "Employee data",
+                        "name": "employee",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.AuthReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.AuthResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/logistics": {
             "get": {
                 "security": [
@@ -1057,6 +1159,294 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/performances": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for retrieving all performances with pagination and search",
+                "tags": [
+                    "performance"
+                ],
+                "summary": "Get all performances",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of performances per page",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GetAllPerformancesResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for creating a new performance",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "performance"
+                ],
+                "summary": "Create a performance",
+                "parameters": [
+                    {
+                        "description": "Performance data",
+                        "name": "performance",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swag.CreateUpdatePerformance"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseId"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/performances/{performance_id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for retrieving a performance by ID",
+                "tags": [
+                    "performance"
+                ],
+                "summary": "Get a performance by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Performance ID",
+                        "name": "performance_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Performance"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for updating a performance",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "performance"
+                ],
+                "summary": "Update a performance",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Performance ID",
+                        "name": "performance_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Performance data",
+                        "name": "performance",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swag.CreateUpdatePerformance"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for deleting a performance",
+                "tags": [
+                    "performance"
+                ],
+                "summary": "Delete a performance",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Performance ID",
+                        "name": "performance_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/terminate_logistics": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for terminating logistic record",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "logistic"
+                ],
+                "summary": "Terminate logistics",
+                "parameters": [
+                    {
+                        "description": "Logistic data",
+                        "name": "logistic",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swag.TerminateLogistic"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/transactions": {
             "get": {
                 "security": [
@@ -1302,6 +1692,28 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.AuthReq": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.AuthResp": {
+            "type": "object",
+            "properties": {
+                "employee": {
+                    "$ref": "#/definitions/models.Employee"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Company": {
             "type": "object",
             "properties": {
@@ -1490,6 +1902,20 @@ const docTemplate = `{
                 }
             }
         },
+        "models.GetAllPerformancesResp": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "performances": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Performance"
+                    }
+                }
+            }
+        },
         "models.GetAllTransResp": {
             "type": "object",
             "properties": {
@@ -1607,6 +2033,41 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Performance": {
+            "type": "object",
+            "properties": {
+                "company": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "disputedBy": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "loadId": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "section": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "whoseFault": {
+                    "type": "string"
+                }
+            }
+        },
         "models.ResponseError": {
             "type": "object",
             "properties": {
@@ -1646,7 +2107,7 @@ const docTemplate = `{
                 "createdAt": {
                     "type": "string"
                 },
-                "deliverTime": {
+                "deliveryTime": {
                     "type": "string"
                 },
                 "driver": {
@@ -1676,8 +2137,8 @@ const docTemplate = `{
                 "rate": {
                     "type": "number"
                 },
-                "status": {
-                    "type": "string"
+                "success": {
+                    "type": "boolean"
                 },
                 "to": {
                     "type": "string"
@@ -1686,6 +2147,32 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "swag.CancelLogistic": {
+            "type": "object",
+            "properties": {
+                "cancel": {
+                    "type": "boolean"
+                },
+                "company": {
+                    "type": "string"
+                },
+                "logistic_id": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "section": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "whose_fault": {
                     "type": "string"
                 }
             }
@@ -1818,6 +2305,32 @@ const docTemplate = `{
                 }
             }
         },
+        "swag.CreateUpdatePerformance": {
+            "type": "object",
+            "properties": {
+                "company": {
+                    "type": "string"
+                },
+                "disputed_by": {
+                    "type": "string"
+                },
+                "load_id": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "section": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "whose_fault": {
+                    "type": "string"
+                }
+            }
+        },
         "swag.CreateUpdateTransaction": {
             "type": "object",
             "properties": {
@@ -1827,7 +2340,7 @@ const docTemplate = `{
                 "cost": {
                     "type": "integer"
                 },
-                "deliver_time": {
+                "delivery_time": {
                     "type": "string"
                 },
                 "driver_id": {
@@ -1851,14 +2364,25 @@ const docTemplate = `{
                 "rate": {
                     "type": "number"
                 },
-                "status": {
-                    "type": "string"
+                "success": {
+                    "type": "boolean"
                 },
                 "to": {
                     "type": "string"
                 },
                 "total_miles": {
                     "type": "integer"
+                }
+            }
+        },
+        "swag.TerminateLogistic": {
+            "type": "object",
+            "properties": {
+                "logistic_id": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
                 }
             }
         },

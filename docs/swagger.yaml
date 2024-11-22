@@ -1,4 +1,18 @@
 definitions:
+  models.AuthReq:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  models.AuthResp:
+    properties:
+      employee:
+        $ref: '#/definitions/models.Employee'
+      token:
+        type: string
+    type: object
   models.Company:
     properties:
       address:
@@ -122,6 +136,15 @@ definitions:
           $ref: '#/definitions/models.LogisticResponse'
         type: array
     type: object
+  models.GetAllPerformancesResp:
+    properties:
+      count:
+        type: integer
+      performances:
+        items:
+          $ref: '#/definitions/models.Performance'
+        type: array
+    type: object
   models.GetAllTransResp:
     properties:
       count:
@@ -199,6 +222,29 @@ definitions:
       updateTime:
         type: string
     type: object
+  models.Performance:
+    properties:
+      company:
+        type: string
+      createdAt:
+        type: string
+      disputedBy:
+        type: string
+      id:
+        type: string
+      loadId:
+        type: string
+      reason:
+        type: string
+      section:
+        type: string
+      status:
+        type: string
+      updatedAt:
+        type: string
+      whoseFault:
+        type: string
+    type: object
   models.ResponseError:
     properties:
       error_code:
@@ -224,7 +270,7 @@ definitions:
         type: integer
       createdAt:
         type: string
-      deliverTime:
+      deliveryTime:
         type: string
       driver:
         $ref: '#/definitions/models.Driver'
@@ -244,13 +290,30 @@ definitions:
         type: string
       rate:
         type: number
-      status:
-        type: string
+      success:
+        type: boolean
       to:
         type: string
       totalMiles:
         type: integer
       updatedAt:
+        type: string
+    type: object
+  swag.CancelLogistic:
+    properties:
+      cancel:
+        type: boolean
+      company:
+        type: string
+      logistic_id:
+        type: string
+      reason:
+        type: string
+      section:
+        type: string
+      status:
+        type: string
+      whose_fault:
         type: string
     type: object
   swag.CreateUpdateCompany:
@@ -337,13 +400,30 @@ definitions:
       status:
         type: string
     type: object
+  swag.CreateUpdatePerformance:
+    properties:
+      company:
+        type: string
+      disputed_by:
+        type: string
+      load_id:
+        type: string
+      reason:
+        type: string
+      section:
+        type: string
+      status:
+        type: string
+      whose_fault:
+        type: string
+    type: object
   swag.CreateUpdateTransaction:
     properties:
       cargo_id:
         type: string
       cost:
         type: integer
-      deliver_time:
+      delivery_time:
         type: string
       driver_id:
         type: string
@@ -359,12 +439,19 @@ definitions:
         type: string
       rate:
         type: number
-      status:
-        type: string
+      success:
+        type: boolean
       to:
         type: string
       total_miles:
         type: integer
+    type: object
+  swag.TerminateLogistic:
+    properties:
+      logistic_id:
+        type: string
+      success:
+        type: boolean
     type: object
   swag.UpdateLogisticWithCargo:
     properties:
@@ -410,6 +497,38 @@ definitions:
 info:
   contact: {}
 paths:
+  /v1/cancel_late_logistics:
+    post:
+      consumes:
+      - application/json
+      description: API for canceling or marking late logistic record
+      parameters:
+      - description: Logistic data
+        in: body
+        name: logistic
+        required: true
+        schema:
+          $ref: '#/definitions/swag.CancelLogistic'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Cancel or late logistics
+      tags:
+      - logistic
   /v1/companies:
     get:
       description: API for retrieving all companies with pagination and search
@@ -880,6 +999,38 @@ paths:
       summary: Update an employee
       tags:
       - employee
+  /v1/login:
+    post:
+      consumes:
+      - application/json
+      description: API for login
+      parameters:
+      - description: Employee data
+        in: body
+        name: employee
+        required: true
+        schema:
+          $ref: '#/definitions/models.AuthReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AuthResp'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Log in
+      tags:
+      - auth
   /v1/logistics:
     get:
       description: API for retrieving all logistic records with pagination and search
@@ -1069,6 +1220,188 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Update a logistic record with a cargo
+      tags:
+      - logistic
+  /v1/performances:
+    get:
+      description: API for retrieving all performances with pagination and search
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of performances per page
+        in: query
+        name: limit
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllPerformancesResp'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all performances
+      tags:
+      - performance
+    post:
+      consumes:
+      - application/json
+      description: API for creating a new performance
+      parameters:
+      - description: Performance data
+        in: body
+        name: performance
+        required: true
+        schema:
+          $ref: '#/definitions/swag.CreateUpdatePerformance'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseId'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a performance
+      tags:
+      - performance
+  /v1/performances/{performance_id}:
+    delete:
+      description: API for deleting a performance
+      parameters:
+      - description: Performance ID
+        in: path
+        name: performance_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a performance
+      tags:
+      - performance
+    get:
+      description: API for retrieving a performance by ID
+      parameters:
+      - description: Performance ID
+        in: path
+        name: performance_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Performance'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a performance by ID
+      tags:
+      - performance
+    put:
+      consumes:
+      - application/json
+      description: API for updating a performance
+      parameters:
+      - description: Performance ID
+        in: path
+        name: performance_id
+        required: true
+        type: string
+      - description: Performance data
+        in: body
+        name: performance
+        required: true
+        schema:
+          $ref: '#/definitions/swag.CreateUpdatePerformance'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a performance
+      tags:
+      - performance
+  /v1/terminate_logistics:
+    post:
+      consumes:
+      - application/json
+      description: API for terminating logistic record
+      parameters:
+      - description: Logistic data
+        in: body
+        name: logistic
+        required: true
+        schema:
+          $ref: '#/definitions/swag.TerminateLogistic'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Terminate logistics
       tags:
       - logistic
   /v1/transactions:

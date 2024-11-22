@@ -60,6 +60,7 @@ func Construct(cont controllers.Controller) *gin.Engine {
 		api.GET("/logistics", cont.GetAllLogistics)
 		api.PUT("/logistics_with_cargo/:logistic_id", cont.UpdateLogisticCargo)
 		api.POST("/terminate_logistics", cont.TerminateLogistic)
+		api.POST("/cancel_late_logistics", cont.CancelLateLogistic)
 
 		// Transaction endpoints
 		api.POST("/transactions", cont.CreateTransaction)

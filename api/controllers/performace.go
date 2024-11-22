@@ -179,7 +179,7 @@ func (h *Controller) GetPerformance(c *gin.Context) {
 // @Tags performance
 // @Param page query int false "Page number"
 // @Param limit query int false "Number of performances per page"
-// @Success 200 {object} models.GetAllPerformancesResponse
+// @Success 200 {object} models.GetAllPerformancesResp
 // @Failure 400 {object} models.ResponseError "Invalid input"
 // @Failure 500 {object} models.ResponseError "Internal server error"
 func (h *Controller) GetAllPerformances(c *gin.Context) {
