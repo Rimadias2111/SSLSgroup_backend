@@ -28,6 +28,9 @@ func Construct(cont controllers.Controller) *gin.Engine {
 
 	api := r.Group("/v1")
 	{
+		//Auth endpoints
+		api.POST("/login", cont.Login)
+
 		// Company endpoints
 		api.POST("/companies", cont.CreateCompany)
 		api.PUT("/companies/:company_id", cont.UpdateCompany)
@@ -56,6 +59,21 @@ func Construct(cont controllers.Controller) *gin.Engine {
 		api.GET("/logistics/:logistic_id", cont.GetLogistic)
 		api.GET("/logistics", cont.GetAllLogistics)
 		api.PUT("/logistics_with_cargo/:logistic_id", cont.UpdateLogisticCargo)
+		api.POST("/terminate_logistics", cont.TerminateLogistic)
+
+		// Transaction endpoints
+		api.POST("/transactions", cont.CreateTransaction)
+		api.PUT("/transactions/:transaction_id", cont.UpdateTransaction)
+		api.DELETE("/transactions/:transaction_id", cont.DeleteTransaction)
+		api.GET("/transactions/:transaction_id", cont.GetTransaction)
+		api.GET("/transactions", cont.GetAllTransactions)
+
+		// Performance endpoints
+		api.POST("/performances", cont.CreatePerformance)
+		api.PUT("/performances/:performance_id", cont.UpdatePerformance)
+		api.DELETE("/performances/:performance_id", cont.DeletePerformance)
+		api.GET("/performances/:performance_id", cont.GetPerformance)
+		api.GET("/performances", cont.GetAllPerformances)
 	}
 
 	url := ginSwagger.URL("/swagger/doc.json")

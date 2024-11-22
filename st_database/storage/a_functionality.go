@@ -28,6 +28,7 @@ type Employee interface {
 	Delete(ctx context.Context, req models.RequestId) error
 	Get(ctx context.Context, req models.RequestId) (*models.Employee, error)
 	GetAll(ctx context.Context, req models.GetAllEmployeesReq) (*models.GetAllEmployeesResp, error)
+	GetByUsername(ctx context.Context, username string) (*models.Employee, error)
 }
 
 type Logistic interface {

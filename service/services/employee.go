@@ -1,9 +1,12 @@
 package services
 
 import (
+	"backend/etc/helpers"
+	"backend/etc/jwt"
 	"backend/models"
 	database "backend/st_database"
 	"context"
+	"errors"
 )
 
 type EmployeeService struct {
@@ -58,5 +61,28 @@ func (s *EmployeeService) GetAll(ctx context.Context, req models.GetAllEmployees
 		return nil, err
 	}
 
+	return resp, nil
+}
+
+func (s *EmployeeService) Auth(ctx context.Context, req models.AuthReq) (models.AuthResp, error) {
+	var resp models.AuthResp
+	employee, err := s.store.Employee().GetByUsername(ctx, req.Username)
+	if err != nil {
+		return resp, errors.New("did not find employee")
+	}
+
+	matched, err := helpers.CheckPassword(req.Password, employee.Password)
+	if err != nil {
+		return resp, err
+	}
+	if !matched {
+		return resp, errors.New("password not match")
+	}
+
+	resp.Token, err = jwt.GenerateToken(employee.Id.String(), employee.Username, int(employee.AccessLevel))
+	if err != nil {
+		return resp, err
+	}
+	resp.Employee = employee
 	return resp, nil
 }

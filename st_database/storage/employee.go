@@ -82,3 +82,13 @@ func (s *EmployeeRepo) GetAll(ctx context.Context, req models.GetAllEmployeesReq
 
 	return &resp, nil
 }
+
+func (s *EmployeeRepo) GetByUsername(ctx context.Context, username string) (*models.Employee, error) {
+	var employee models.Employee
+	err := s.db.WithContext(ctx).Where("username = ?", username).First(&employee).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &employee, nil
+}

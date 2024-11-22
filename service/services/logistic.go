@@ -1,9 +1,12 @@
 package services
 
 import (
+	"backend/etc/Utime"
 	"backend/models"
+	"backend/models/swag"
 	database "backend/st_database"
 	"context"
+	"errors"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -100,4 +103,148 @@ func (s *LogisticService) UpdateWithCargo(ctx context.Context, logistic *models.
 	}
 
 	return id, nil
+}
+
+func (s *LogisticService) Terminate(ctx context.Context, req models.RequestId, success bool) error {
+	db := s.store.DB()
+	err := db.Transaction(func(tx *gorm.DB) error {
+		logistic, err := s.store.Logistic().Get(ctx, req)
+		if err != nil {
+			return err
+		}
+		_, err = s.store.Transaction().Create(ctx, &models.Transaction{
+			From:         logistic.Cargo.From,
+			To:           logistic.Cargo.To,
+			PuTime:       logistic.Cargo.PickUpTime,
+			DeliveryTime: logistic.Cargo.DeliveryTime,
+			LoadedMiles:  logistic.Cargo.LoadedMiles,
+			TotalMiles:   logistic.Cargo.LoadedMiles + logistic.Cargo.FreeMiles,
+			Provider:     logistic.Cargo.Provider,
+			Cost:         logistic.Cargo.Cost,
+			Rate:         logistic.Cargo.Rate,
+			DriverId:     logistic.DriverId,
+			EmployeeId:   logistic.Cargo.EmployeeId,
+			CargoID:      logistic.Cargo.CargoID,
+			Success:      success,
+		}, tx)
+		if err != nil {
+			return err
+		}
+
+		errU := s.store.Logistic().Update(ctx, &models.Logistic{
+			Id:         logistic.Id,
+			Post:       false,
+			Status:     "READY",
+			UpdateTime: Utime.Now(),
+			StTime:     nil,
+			State:      logistic.State,
+			Location:   logistic.Location,
+			Emoji:      "",
+			Notion:     "",
+			CargoId:    nil,
+		}, tx)
+		if errU != nil {
+			return errU
+		}
+
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogistic, reqId models.RequestId, idEmp models.RequestId) error {
+	db := s.store.DB()
+
+	err := db.Transaction(func(tx *gorm.DB) error {
+		logistic, getErr := s.store.Logistic().Get(ctx, reqId)
+		if getErr != nil {
+			return getErr
+		}
+
+		if logistic.CargoId == nil {
+			return errors.New("cargo not found")
+		}
+
+		var employee *models.Employee
+		if idEmp.Id != uuid.Nil {
+			employee, getErr = s.store.Employee().Get(ctx, idEmp)
+			if getErr != nil {
+				return getErr
+			}
+		}
+
+		if req.Cancel {
+			_, err := s.store.Performance().Create(ctx, &models.Performance{
+				Reason:     req.Reason,
+				WhoseFault: req.WhoseFault,
+				Status:     req.Status,
+				Section:    req.Section,
+				DisputedBy: employee.Name + employee.Surname,
+				Company:    req.Company,
+				LoadId:     logistic.Cargo.CargoID,
+			}, tx)
+			if err != nil {
+				return err
+			}
+
+			_, err = s.store.Transaction().Create(ctx, &models.Transaction{
+				From:         logistic.Cargo.From,
+				To:           logistic.Cargo.To,
+				PuTime:       logistic.Cargo.PickUpTime,
+				DeliveryTime: logistic.Cargo.DeliveryTime,
+				LoadedMiles:  logistic.Cargo.LoadedMiles,
+				TotalMiles:   logistic.Cargo.LoadedMiles + logistic.Cargo.FreeMiles,
+				Provider:     logistic.Cargo.Provider,
+				Cost:         logistic.Cargo.Cost,
+				Rate:         logistic.Cargo.Rate,
+				DriverId:     logistic.DriverId,
+				EmployeeId:   logistic.Cargo.EmployeeId,
+				CargoID:      logistic.Cargo.CargoID,
+				Success:      false,
+			}, tx)
+			if err != nil {
+				return err
+			}
+
+			errU := s.store.Logistic().Update(ctx, &models.Logistic{
+				Id:         logistic.Id,
+				Post:       false,
+				Status:     "READY",
+				UpdateTime: Utime.Now(),
+				StTime:     nil,
+				State:      logistic.State,
+				Location:   logistic.Location,
+				Emoji:      "",
+				Notion:     "",
+				CargoId:    nil,
+			}, tx)
+			if errU != nil {
+				return errU
+			}
+		} else {
+			_, err := s.store.Performance().Create(ctx, &models.Performance{
+				Reason:     req.Reason,
+				WhoseFault: req.WhoseFault,
+				Status:     req.Status,
+				Section:    req.Section,
+				DisputedBy: employee.Name + employee.Surname,
+				Company:    req.Company,
+				LoadId:     logistic.Cargo.CargoID,
+			}, db)
+			if err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

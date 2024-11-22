@@ -8,6 +8,7 @@ type IService interface {
 	Employee() *services.EmployeeService
 	Logistic() *services.LogisticService
 	Transaction() *services.TransactionService
+	Performance() *services.PerformanceService
 }
 
 type Service struct {
@@ -16,4 +17,5 @@ type Service struct {
 	employeeService    *services.EmployeeService
 	logisticService    *services.LogisticService
 	transactionService *services.TransactionService
+	performanceService *services.PerformanceService
 }

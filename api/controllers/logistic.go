@@ -435,12 +435,14 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 		CargoID:      logisticModel.LoadId,
 	}
 
-	if stTime.After(deliveryTime) {
-		c.JSON(http.StatusBadRequest, models.ResponseError{
-			ErrorMessage: "Error delivery time cannot be less than ETA",
-			ErrorCode:    "Bad Request",
-		})
-		return
+	if logisticModel.Status != "ETA, WILL BE LATE" {
+		if stTime.After(deliveryTime) {
+			c.JSON(http.StatusBadRequest, models.ResponseError{
+				ErrorMessage: "Error delivery time cannot be less than ETA",
+				ErrorCode:    "Bad Request",
+			})
+			return
+		}
 	}
 
 	id, err := h.service.Logistic().UpdateWithCargo(c.Request.Context(), &logistic, &cargo, logisticModel.Create)
@@ -454,5 +456,134 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 
 	c.JSON(http.StatusOK, models.ResponseId{
 		Id: id,
+	})
+}
+
+// @Security ApiKeyAuth
+// @Router /v1/terminate_logistics [post]
+// @Summary Terminate logistics
+// @Description API for terminating logistic record
+// @Tags logistic
+// @Accept json
+// @Produce json
+// @Param logistic body swag.TerminateLogistic true "Logistic data"
+// @Success 200 {object} models.ResponseSuccess
+// @Failure 400 {object} models.ResponseError "Invalid input"
+// @Failure 500 {object} models.ResponseError "Internal server error"
+func (h *Controller) TerminateLogistic(c *gin.Context) {
+	var req swag.TerminateLogistic
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	logisticId, err := uuid.Parse(req.LogisticId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	err = h.service.Logistic().Terminate(c.Request.Context(), models.RequestId{Id: logisticId}, req.Success)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.ResponseError{
+			ErrorMessage: err.Error(),
+			ErrorCode:    "Internal Server Error",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, models.ResponseSuccess{
+		Message: "Logistic Terminated",
+	})
+}
+
+// @Security ApiKeyAuth
+// @Router /v1/cancel_late_logistics [post]
+// @Summary Cancel or late logistics
+// @Description API for canceling or marking late logistic record
+// @Tags logistic
+// @Accept json
+// @Produce json
+// @Param logistic body swag.CancelLogistic true "Logistic data"
+// @Success 200 {object} models.ResponseSuccess
+// @Failure 400 {object} models.ResponseError "Invalid input"
+// @Failure 500 {object} models.ResponseError "Internal server error"
+func (h *Controller) CancelLateLogistic(c *gin.Context) {
+	var req swag.CancelLogistic
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	logisticId, err := uuid.Parse(req.LogisticId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if req.Company == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing company: ",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if req.Section == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing section: ",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if req.Status != "success" || req.Status != "canceled" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing status: ",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if req.WhoseFault != "Dispatcher" || req.WhoseFault != "Driver" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing whose fault: ",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	if req.Reason == "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing reason: ",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	err = h.service.Logistic().CancelLate(c.Request.Context(), req, models.RequestId{Id: logisticId}, models.RequestId{Id: uuid.Nil})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.ResponseError{
+			ErrorMessage: err.Error(),
+			ErrorCode:    "Internal Server Error",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, models.ResponseSuccess{
+		Message: "Logistic Cancelled",
 	})
 }

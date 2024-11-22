@@ -12,3 +12,8 @@ type ResponseError struct {
 type ResponseSuccess struct {
 	Message string `json:"message"`
 }
+
+type AuthResp struct {
+	Token    string    `json:"token"`
+	Employee *Employee `json:"employee"`
+}

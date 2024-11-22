@@ -31,3 +31,18 @@ type UpdateLogisticWithCargo struct {
 	EmployeeId   string  `json:"employee_id"`
 	Create       bool    `json:"create"`
 }
+
+type TerminateLogistic struct {
+	LogisticId string `json:"logistic_id"`
+	Success    bool   `json:"success"`
+}
+
+type CancelLogistic struct {
+	LogisticId string `json:"logistic_id"`
+	Cancel     bool   `json:"cancel"`
+	WhoseFault string `json:"whose_fault"`
+	Status     string `json:"status"`
+	Section    string `json:"section"`
+	Reason     string `json:"reason"`
+	Company    string `json:"company"`
+}

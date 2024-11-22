@@ -12,6 +12,7 @@ type IStore interface {
 	Logistic() storage.Logistic
 	Cargo() storage.Cargo
 	Transaction() storage.Transaction
+	Performance() storage.Performance
 	DB() *gorm.DB
 }
 
@@ -23,6 +24,7 @@ type Store struct {
 	logistic    storage.Logistic
 	cargo       storage.Cargo
 	transaction storage.Transaction
+	performance storage.Performance
 }
 
 func (s *Store) Company() storage.Company { return s.company }
@@ -36,5 +38,7 @@ func (s *Store) Logistic() storage.Logistic { return s.logistic }
 func (s *Store) Cargo() storage.Cargo { return s.cargo }
 
 func (s *Store) Transaction() storage.Transaction { return s.transaction }
+
+func (s *Store) Performance() storage.Performance { return s.performance }
 
 func (s *Store) DB() *gorm.DB { return s.db }

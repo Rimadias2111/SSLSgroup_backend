@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"backend/etc/helpers"
 	"backend/models"
 	"backend/models/swag"
 	"github.com/gin-gonic/gin"
@@ -48,11 +49,20 @@ func (h *Controller) CreateEmployee(c *gin.Context) {
 		return
 	}
 
+	passwordHash, err := helpers.GeneratePassword(employeeModel.Password)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while generating password: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
 	employee := models.Employee{
 		Name:        employeeModel.Name,
 		Surname:     employeeModel.Surname,
 		Username:    employeeModel.Username,
-		Password:    employeeModel.Password,
+		Password:    string(passwordHash),
 		LogoId:      employeeModel.LogoId,
 		Email:       employeeModel.Email,
 		PhoneNumber: employeeModel.PhoneNumber,
@@ -112,7 +122,6 @@ func (h *Controller) UpdateEmployee(c *gin.Context) {
 		Name:        employeeModel.Name,
 		Surname:     employeeModel.Surname,
 		Username:    employeeModel.Username,
-		Password:    employeeModel.Password,
 		LogoId:      employeeModel.LogoId,
 		Email:       employeeModel.Email,
 		PhoneNumber: employeeModel.PhoneNumber,

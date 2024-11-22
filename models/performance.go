@@ -14,6 +14,7 @@ type Performance struct {
 	Section    string    `gorm:"type:varchar(255);"`
 	DisputedBy string    `gorm:"type:varchar(255);"`
 	Company    string    `gorm:"type:varchar(255);"`
+	LoadId     string    `gorm:"type:varchar(255); not null;"`
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 	DeletedAt  gorm.DeletedAt `gorm:"index" swaggerignore:"true"`

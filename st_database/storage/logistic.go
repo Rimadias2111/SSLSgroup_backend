@@ -4,6 +4,7 @@ import (
 	"backend/etc/helpers"
 	"backend/models"
 	"context"
+	"errors"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -117,15 +118,16 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
              CASE logistics.status
 				WHEN 'READY' THEN 1
 				WHEN 'WILL BE READY' THEN 2
-				WHEN 'COVERED' THEN 3
-				WHEN 'AT PU'  THEN 4
-				WHEN 'ETA' THEN 5
-				WHEN 'AT DEL' THEN 6
-				WHEN 'ETA WILL BE LATE' THEN 7
-				WHEN 'TRUCK ISSUES' THEN 8
-				WHEN 'CANCELLED' THEN 9
-				WHEN 'AT HOME' THEN 10
-				WHEN 'LET US KNOW' THEN 11
+				WHEN 'READY AT HOME' THEN 3
+				WHEN 'COVERED' THEN 4
+				WHEN 'AT PU'  THEN 5
+				WHEN 'ETA' THEN 6
+				WHEN 'AT DEL' THEN 7
+				WHEN 'ETA WILL BE LATE' THEN 8
+				WHEN 'TRUCK ISSUES' THEN 9
+				WHEN 'CANCELLED' THEN 10
+				WHEN 'AT HOME' THEN 11
+				WHEN 'LET US KNOW' THEN 12
 				ELSE 999
 			END
 			`).
@@ -134,7 +136,7 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 		Scan(&resp.Logistics).
 		Error
 	if err != nil {
-		return nil, err
+		return nil, errors.New("cannot get all logistics")
 	}
 
 	var companyIds []uuid.UUID

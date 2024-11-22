@@ -39,7 +39,7 @@ func (h *Controller) CreateTransaction(c *gin.Context) {
 		return
 	}
 
-	deliverTime, err := time.Parse(time.RFC3339, transactionModel.DeliverTime)
+	deliveryTime, err := time.Parse(time.RFC3339, transactionModel.DeliveryTime)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Invalid delivery time format: " + err.Error(),
@@ -67,19 +67,19 @@ func (h *Controller) CreateTransaction(c *gin.Context) {
 	}
 
 	transaction := models.Transaction{
-		From:        transactionModel.From,
-		To:          transactionModel.To,
-		PuTime:      puTime,
-		DeliverTime: deliverTime,
-		Status:      transactionModel.Status,
-		LoadedMiles: transactionModel.LoadedMiles,
-		TotalMiles:  transactionModel.TotalMiles,
-		Provider:    transactionModel.Provider,
-		Cost:        transactionModel.Cost,
-		Rate:        transactionModel.Rate,
-		DriverId:    driverId,
-		EmployeeId:  employeeId,
-		CargoID:     transactionModel.CargoID,
+		From:         transactionModel.From,
+		To:           transactionModel.To,
+		PuTime:       puTime,
+		DeliveryTime: deliveryTime,
+		Success:      transactionModel.Success,
+		LoadedMiles:  transactionModel.LoadedMiles,
+		TotalMiles:   transactionModel.TotalMiles,
+		Provider:     transactionModel.Provider,
+		Cost:         transactionModel.Cost,
+		Rate:         transactionModel.Rate,
+		DriverId:     driverId,
+		EmployeeId:   employeeId,
+		CargoID:      transactionModel.CargoID,
 	}
 
 	id, err := h.service.Transaction().Create(c.Request.Context(), &transaction)
@@ -136,7 +136,7 @@ func (h *Controller) UpdateTransaction(c *gin.Context) {
 		return
 	}
 
-	deliverTime, err := time.Parse(time.RFC3339, transactionModel.DeliverTime)
+	deliveryTime, err := time.Parse(time.RFC3339, transactionModel.DeliveryTime)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Invalid delivery time format: " + err.Error(),
@@ -164,20 +164,20 @@ func (h *Controller) UpdateTransaction(c *gin.Context) {
 	}
 
 	transaction := models.Transaction{
-		Id:          transactionId,
-		From:        transactionModel.From,
-		To:          transactionModel.To,
-		PuTime:      puTime,
-		DeliverTime: deliverTime,
-		Status:      transactionModel.Status,
-		LoadedMiles: transactionModel.LoadedMiles,
-		TotalMiles:  transactionModel.TotalMiles,
-		Provider:    transactionModel.Provider,
-		Cost:        transactionModel.Cost,
-		Rate:        transactionModel.Rate,
-		DriverId:    driverId,
-		EmployeeId:  employeeId,
-		CargoID:     transactionModel.CargoID,
+		Id:           transactionId,
+		From:         transactionModel.From,
+		To:           transactionModel.To,
+		PuTime:       puTime,
+		DeliveryTime: deliveryTime,
+		Success:      transactionModel.Success,
+		LoadedMiles:  transactionModel.LoadedMiles,
+		TotalMiles:   transactionModel.TotalMiles,
+		Provider:     transactionModel.Provider,
+		Cost:         transactionModel.Cost,
+		Rate:         transactionModel.Rate,
+		DriverId:     driverId,
+		EmployeeId:   employeeId,
+		CargoID:      transactionModel.CargoID,
 	}
 
 	if err := h.service.Transaction().Update(c.Request.Context(), &transaction); err != nil {

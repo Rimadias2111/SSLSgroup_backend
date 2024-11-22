@@ -45,6 +45,7 @@ func (h *Controller) CreateDriver(c *gin.Context) {
 			ErrorMessage: "Invalid Birthday format: " + err.Error(),
 			ErrorCode:    "Bad Request",
 		})
+		return
 	}
 
 	startDate, err := time.Parse("2006-01-02", driverModel.StartDate)
@@ -53,6 +54,7 @@ func (h *Controller) CreateDriver(c *gin.Context) {
 			ErrorMessage: "Invalid Start Date format: " + err.Error(),
 			ErrorCode:    "Bad Request",
 		})
+		return
 	}
 
 	if driverModel.Name == "" {
@@ -176,6 +178,7 @@ func (h *Controller) UpdateDriver(c *gin.Context) {
 			ErrorMessage: "Invalid Birthday format: " + err.Error(),
 			ErrorCode:    "Bad Request",
 		})
+		return
 	}
 
 	if driverModel.Name == "" {

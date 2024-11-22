@@ -7,11 +7,12 @@ import (
 
 func New(db *gorm.DB) *Store {
 	return &Store{
-		db:       db,
-		company:  storage.NewCompanyRepo(db),
-		driver:   storage.NewDriverRepo(db),
-		employee: storage.NewEmployeeRepo(db),
-		logistic: storage.NewLogisticRepo(db),
-		cargo:    storage.NewCargoRepo(db),
+		db:          db,
+		company:     storage.NewCompanyRepo(db),
+		driver:      storage.NewDriverRepo(db),
+		employee:    storage.NewEmployeeRepo(db),
+		logistic:    storage.NewLogisticRepo(db),
+		cargo:       storage.NewCargoRepo(db),
+		performance: storage.NewPerformanceRepo(db),
 	}
 }
