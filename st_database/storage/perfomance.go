@@ -46,7 +46,7 @@ func (s *PerformanceRepo) Delete(ctx context.Context, req models.RequestId) erro
 
 func (s *PerformanceRepo) Get(ctx context.Context, req models.RequestId) (*models.Performance, error) {
 	var performance models.Performance
-	err := s.db.WithContext(ctx).Where("id = ?", req).First(&performance).Error
+	err := s.db.WithContext(ctx).Where("id = ?", req.Id).First(&performance).Error
 	if err != nil {
 		return nil, err
 	}

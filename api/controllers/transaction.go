@@ -30,7 +30,7 @@ func (h *Controller) CreateTransaction(c *gin.Context) {
 		return
 	}
 
-	puTime, err := time.Parse(time.RFC3339, transactionModel.PuTime)
+	puTime, err := time.Parse("2006-01-02T15:04:05", transactionModel.PuTime)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Invalid pickup time format: " + err.Error(),
@@ -39,7 +39,7 @@ func (h *Controller) CreateTransaction(c *gin.Context) {
 		return
 	}
 
-	deliveryTime, err := time.Parse(time.RFC3339, transactionModel.DeliveryTime)
+	deliveryTime, err := time.Parse("2006-01-02T15:04:05", transactionModel.DeliveryTime)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Invalid delivery time format: " + err.Error(),
@@ -290,7 +290,7 @@ func (h *Controller) GetAllTransactions(c *gin.Context) {
 	}
 
 	cargoIdStr := c.Query("cargo_id")
-	var cargoId uuid.UUID
+	var cargoId = uuid.Nil
 	if cargoIdStr != "" {
 		cargoId, err = uuid.Parse(cargoIdStr)
 		if err != nil {

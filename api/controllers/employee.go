@@ -66,6 +66,7 @@ func (h *Controller) CreateEmployee(c *gin.Context) {
 		LogoId:      employeeModel.LogoId,
 		Email:       employeeModel.Email,
 		PhoneNumber: employeeModel.PhoneNumber,
+		Company:     employeeModel.Company,
 		Birthday:    bDay,
 		StartDate:   &startDate,
 		Position:    employeeModel.Position,
@@ -125,6 +126,7 @@ func (h *Controller) UpdateEmployee(c *gin.Context) {
 		LogoId:      employeeModel.LogoId,
 		Email:       employeeModel.Email,
 		PhoneNumber: employeeModel.PhoneNumber,
+		Company:     employeeModel.Company,
 		Position:    employeeModel.Position,
 		AccessLevel: employeeModel.AccessLevel,
 	}

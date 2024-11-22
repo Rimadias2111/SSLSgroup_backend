@@ -64,7 +64,7 @@ func (s *DriverRepo) Delete(ctx context.Context, req models.RequestId) error {
 
 func (s *DriverRepo) Get(ctx context.Context, req models.RequestId) (*models.Driver, error) {
 	var driver models.Driver
-	if err := s.db.WithContext(ctx).Where("id = ?", req.Id).First(&driver).Error; err != nil {
+	if err := s.db.WithContext(ctx).Where("id = ?", req.Id).Preload("Company").First(&driver).Error; err != nil {
 		return nil, err
 	}
 
@@ -75,7 +75,7 @@ func (s *DriverRepo) GetAll(ctx context.Context, req models.GetAllDriversReq) (*
 	var (
 		resp   models.GetAllDriversResp
 		offset = (req.Page - 1) * req.Limit
-		query  = s.db.WithContext(ctx).Model(&models.Driver{}).Preload("Company")
+		query  = s.db.WithContext(ctx).Model(&models.Driver{})
 	)
 	if req.TruckNumber != 0 {
 		query = query.Where("truck_number = ?", req.TruckNumber)
