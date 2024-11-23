@@ -44,7 +44,17 @@ func (s *LogisticRepo) Update(ctx context.Context, update *models.Logistic, tx .
 		query = tx[0]
 	}
 	err := query.WithContext(ctx).Model(update).
-		Omit("Id", "DriverId").Updates(update).Error
+		Omit("Id", "DriverId").Updates(map[string]interface{}{
+		"Post":       update.Post,
+		"Status":     update.Status,
+		"UpdateTime": update.UpdateTime,
+		"StTime":     update.StTime,
+		"State":      update.State,
+		"Location":   update.Location,
+		"Emoji":      update.Emoji,
+		"Notion":     update.Notion,
+		"CargoId":    update.CargoId,
+	}).Error
 	if err != nil {
 		return err
 	}
