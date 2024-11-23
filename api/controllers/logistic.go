@@ -550,7 +550,7 @@ func (h *Controller) CancelLateLogistic(c *gin.Context) {
 		return
 	}
 
-	if req.Status != "success" || req.Status != "canceled" {
+	if req.Status != "success" && req.Status != "canceled" {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Error while parsing status: ",
 			ErrorCode:    "Bad Request",
@@ -558,7 +558,7 @@ func (h *Controller) CancelLateLogistic(c *gin.Context) {
 		return
 	}
 
-	if req.WhoseFault != "Dispatcher" || req.WhoseFault != "Driver" {
+	if req.WhoseFault != "Dispatcher" && req.WhoseFault != "Driver" {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Error while parsing whose fault: ",
 			ErrorCode:    "Bad Request",
