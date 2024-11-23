@@ -169,12 +169,15 @@ func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogisti
 			return errors.New("cargo not found")
 		}
 
-		var employee *models.Employee
+		var employee *models.Employee = &models.Employee{}
 		if idEmp.Id != uuid.Nil {
 			employee, getErr = s.store.Employee().Get(ctx, idEmp)
 			if getErr != nil {
 				return getErr
 			}
+		} else {
+			employee.Name = ""
+			employee.Surname = ""
 		}
 
 		if req.Cancel {
@@ -234,7 +237,7 @@ func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogisti
 				DisputedBy: employee.Name + employee.Surname,
 				Company:    req.Company,
 				LoadId:     logistic.Cargo.CargoID,
-			}, db)
+			}, tx)
 			if err != nil {
 				return err
 			}

@@ -574,7 +574,16 @@ func (h *Controller) CancelLateLogistic(c *gin.Context) {
 		return
 	}
 
-	err = h.service.Logistic().CancelLate(c.Request.Context(), req, models.RequestId{Id: logisticId}, models.RequestId{Id: uuid.Nil})
+	empId, err := uuid.Parse("80c1d220-67b7-4dc9-82e4-393687b734a4")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	err = h.service.Logistic().CancelLate(c.Request.Context(), req, models.RequestId{Id: logisticId}, models.RequestId{Id: empId})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ResponseError{
 			ErrorMessage: err.Error(),
@@ -584,6 +593,6 @@ func (h *Controller) CancelLateLogistic(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, models.ResponseSuccess{
-		Message: "Logistic Cancelled",
+		Message: "Logistic Cancelled or made late",
 	})
 }
