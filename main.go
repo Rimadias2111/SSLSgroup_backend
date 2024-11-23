@@ -47,6 +47,9 @@ func setupDatabase() (*gorm.DB, error) {
 	return db, nil
 }
 
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	godotenv.Load(".env")
 	db, err := setupDatabase()
