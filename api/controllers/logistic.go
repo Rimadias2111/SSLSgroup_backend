@@ -369,13 +369,16 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 		return
 	}
 
-	cargoId, err := uuid.Parse(logisticModel.CargoId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, models.ResponseError{
-			ErrorMessage: "Error while parsing cargo id: " + err.Error(),
-			ErrorCode:    "Bad Request",
-		})
-		return
+	var cargoId = uuid.Nil
+	if logisticModel.CargoId != "" {
+		cargoId, err = uuid.Parse(logisticModel.CargoId)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, models.ResponseError{
+				ErrorMessage: "Error while parsing cargo id: " + err.Error(),
+				ErrorCode:    "Bad Request",
+			})
+			return
+		}
 	}
 
 	stTime, err := time.Parse("2006-01-02T15:04:05", logisticModel.StTime)
