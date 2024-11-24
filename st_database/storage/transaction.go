@@ -65,7 +65,7 @@ func (t *TransactionRepo) GetAll(ctx context.Context, req models.GetAllTransReq)
 	}
 
 	if req.Provider != "" {
-		query = query.Where("company = ?", req.Provider)
+		query = query.Where("provider = ?", req.Provider)
 	}
 
 	if req.Success != "" {
