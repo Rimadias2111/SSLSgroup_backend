@@ -248,6 +248,5 @@ func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogisti
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
