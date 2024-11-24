@@ -44,7 +44,7 @@ func (s *LogisticRepo) Update(ctx context.Context, update *models.Logistic, tx .
 	if len(tx) > 0 && tx[0] != nil {
 		query = tx[0]
 	}
-	err := query.WithContext(ctx).Model(update).
+	err := query.WithContext(ctx).Model(update).Where("id = ?", update.Id).
 		Omit("Id", "DriverId").Updates(map[string]interface{}{
 		"Post":       update.Post,
 		"Status":     update.Status,
