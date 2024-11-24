@@ -45,7 +45,7 @@ func (t *TransactionRepo) Delete(ctx context.Context, req models.RequestId) erro
 
 func (t *TransactionRepo) Get(ctx context.Context, req models.RequestId) (*models.Transaction, error) {
 	var transaction models.Transaction
-	err := t.db.WithContext(ctx).Where("id = ?", req.Id).First(&transaction).Error
+	err := t.db.WithContext(ctx).Where("id = ?", req.Id).Preload("Driver").First(&transaction).Error
 	if err != nil {
 		return nil, err
 	}
