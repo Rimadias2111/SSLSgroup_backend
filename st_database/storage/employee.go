@@ -67,7 +67,11 @@ func (s *EmployeeRepo) GetAll(ctx context.Context, req models.GetAllEmployeesReq
 	)
 
 	if req.Search != "" {
-		query.Where("Username LIKE ?", "%"+req.Search+"%")
+		query.Where("name ILIKE ?", "%"+req.Search+"%")
+	}
+
+	if req.Position != "" {
+		query.Where("position ILIKE ?", "%"+req.Position+"%")
 	}
 
 	err := query.Find(&resp.Employees).Offset(int(offset)).Limit(int(req.Page)).Error

@@ -695,6 +695,18 @@ paths:
         in: query
         name: limit
         type: integer
+      - description: Type of driver
+        in: query
+        name: type
+        type: string
+      - description: Position of driver
+        in: query
+        name: position
+        type: string
+      - description: Company id
+        in: query
+        name: company_id
+        type: string
       - description: Drivers Name
         in: query
         name: name
@@ -702,7 +714,7 @@ paths:
       - description: Truck Number
         in: query
         name: truck_number
-        type: integer
+        type: string
       - description: Search term
         in: query
         name: search
@@ -857,9 +869,13 @@ paths:
         in: query
         name: limit
         type: integer
-      - description: Employee Username
+      - description: Employee name
         in: query
-        name: username
+        name: name
+        type: string
+      - description: Employee position
+        in: query
+        name: position
         type: string
       responses:
         "200":
@@ -1043,9 +1059,33 @@ paths:
         in: query
         name: limit
         type: integer
-      - description: Driver ID
+      - description: Post
         in: query
-        name: driver_id
+        name: post
+        type: boolean
+      - description: Driver Type
+        in: query
+        name: type
+        type: string
+      - description: Driver Position
+        in: query
+        name: position
+        type: string
+      - description: Driver Name
+        in: query
+        name: name
+        type: string
+      - description: Status
+        in: query
+        name: status
+        type: string
+      - description: Location
+        in: query
+        name: location
+        type: string
+      - description: state
+        in: query
+        name: state
         type: string
       responses:
         "200":
@@ -1234,6 +1274,26 @@ paths:
         in: query
         name: limit
         type: integer
+      - description: Company
+        in: query
+        name: company
+        type: string
+      - description: Whose fault
+        in: query
+        name: whose_fault
+        type: string
+      - description: Status
+        in: query
+        name: status
+        type: string
+      - description: Section
+        in: query
+        name: section
+        type: string
+      - description: Disputed by
+        in: query
+        name: disputed_by
+        type: string
       responses:
         "200":
           description: OK
@@ -1419,6 +1479,22 @@ paths:
       - description: Service Provider
         in: query
         name: provider
+        type: string
+      - description: Success
+        in: query
+        name: success
+        type: boolean
+      - description: Cargo Id
+        in: query
+        name: cargo_id
+        type: string
+      - description: Driver Name
+        in: query
+        name: driver_name
+        type: string
+      - description: Dispatcher Name
+        in: query
+        name: dispatcher_name
         type: string
       responses:
         "200":

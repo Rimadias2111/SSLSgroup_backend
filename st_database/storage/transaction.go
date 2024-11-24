@@ -5,6 +5,7 @@ import (
 	"context"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"strconv"
 )
 
 type TransactionRepo struct {
@@ -65,6 +66,14 @@ func (t *TransactionRepo) GetAll(ctx context.Context, req models.GetAllTransReq)
 
 	if req.Provider != "" {
 		query = query.Where("company = ?", req.Provider)
+	}
+
+	if req.Success != "" {
+		success, err := strconv.ParseBool(req.Success)
+		if err != nil {
+			return nil, err
+		}
+		query = query.Where("success = ?", success)
 	}
 
 	err := query.Find(&resp.Transactions).Offset(int(offset)).Limit(int(req.Page)).Error

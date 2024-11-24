@@ -27,6 +27,7 @@ type GetAllPerformancesReq struct {
 	WhoseFault string `json:"whose_fault"`
 	Status     string `json:"status"`
 	Section    string `json:"section"`
+	DisputedBy string `json:"disputed_by"`
 }
 
 type GetAllPerformancesResp struct {

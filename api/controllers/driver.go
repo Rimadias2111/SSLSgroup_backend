@@ -328,8 +328,11 @@ func (h *Controller) GetDriver(c *gin.Context) {
 // @Tags driver
 // @Param page query int false "Page number"
 // @Param limit query int false "Number of drivers per page"
+// @Param type query string false "Type of driver"
+// @Param position query string false "Position of driver"
+// @Param company_id query string false "Company id"
 // @Param name query string fasle "Drivers Name"
-// @Param truck_number query int false "Truck Number"
+// @Param truck_number query string false "Truck Number"
 // @Param search query string false "Search term"
 // @Success 200 {object} models.GetAllDriversResp
 // @Failure 400 {object} models.ResponseError "Invalid input"
@@ -353,12 +356,36 @@ func (h *Controller) GetAllDrivers(c *gin.Context) {
 		return
 	}
 
-	truckNumber, err := ParseIntegerQueryParam(c, "truck_number")
-	if err != nil {
+	truckNumber := c.Query("truck_number")
+	typeOfDriver := c.Query("type")
+	if typeOfDriver != "" && typeOfDriver != "SOLO" && typeOfDriver != "TEAM" {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
-			ErrorMessage: "Invalid truck_number: " + err.Error(),
+			ErrorMessage: "Invalid type of driver: " + typeOfDriver,
 			ErrorCode:    "Bad Request",
 		})
+		return
+	}
+
+	position := c.Query("position")
+	if position != "" && position != "CO" && position != "OW" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid position: " + position,
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	companyIdStr := c.Query("company_id")
+	var companyId = uuid.Nil
+	if companyIdStr != "" {
+		companyId, err = uuid.Parse(companyIdStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, models.ResponseError{
+				ErrorMessage: "Invalid company ID format: " + err.Error(),
+				ErrorCode:    "Bad Request",
+			})
+			return
+		}
 	}
 
 	name := c.Query("name")
@@ -368,6 +395,9 @@ func (h *Controller) GetAllDrivers(c *gin.Context) {
 		Limit:       limit,
 		TruckNumber: truckNumber,
 		Name:        name,
+		Type:        typeOfDriver,
+		Position:    position,
+		CompanyId:   companyId,
 	}
 
 	drivers, err := h.service.Driver().GetAll(c.Request.Context(), req)

@@ -217,7 +217,8 @@ func (h *Controller) GetEmployee(c *gin.Context) {
 // @Tags employee
 // @Param page query int false "Page number"
 // @Param limit query int false "Number of employees per page"
-// @Param username query string false "Employee Username"
+// @Param name query string false "Employee name"
+// @Param position query string false "Employee position"
 // @Success 200 {object} models.GetAllEmployeesResp
 // @Failure 400 {object} models.ResponseError "Invalid input"
 // @Failure 500 {object} models.ResponseError "Internal server error"
@@ -240,12 +241,21 @@ func (h *Controller) GetAllEmployees(c *gin.Context) {
 		return
 	}
 
-	username := c.Query("username")
+	name := c.Query("name")
+	position := c.Query("position")
+	if position != "Dispatcher" && position != "Updater" && position != "" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid position: ",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
 
 	req := models.GetAllEmployeesReq{
-		Page:   page,
-		Limit:  limit,
-		Search: username,
+		Page:     page,
+		Limit:    limit,
+		Search:   name,
+		Position: position,
 	}
 
 	employees, err := h.service.Employee().GetAll(c.Request.Context(), req)

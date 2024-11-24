@@ -181,6 +181,11 @@ func (h *Controller) GetPerformance(c *gin.Context) {
 // @Tags performance
 // @Param page query int false "Page number"
 // @Param limit query int false "Number of performances per page"
+// @Param company query string false "Company"
+// @Param whose_fault query string false "Whose fault"
+// @Param status query string false "Status"
+// @Param section query string false "Section"
+// @Param disputed_by query string false "Disputed by"
 // @Success 200 {object} models.GetAllPerformancesResp
 // @Failure 400 {object} models.ResponseError "Invalid input"
 // @Failure 500 {object} models.ResponseError "Internal server error"
@@ -203,9 +208,34 @@ func (h *Controller) GetAllPerformances(c *gin.Context) {
 		return
 	}
 
+	company := c.Query("company")
+	disputedBy := c.Query("disputed_by")
+	section := c.Query("section")
+	whoseFault := c.Query("whose_fault")
+	if whoseFault != "" && whoseFault != "Driver" && whoseFault != "Dispatcher" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid query parameter: ",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	status := c.Query("status")
+	if status != "" && status != "success" && status != "cancelled" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid query parameter: ",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
 	req := models.GetAllPerformancesReq{
-		Page:  page,
-		Limit: limit,
+		Page:       page,
+		Limit:      limit,
+		Company:    company,
+		Section:    section,
+		WhoseFault: whoseFault,
+		Status:     status,
+		DisputedBy: disputedBy,
 	}
 
 	performances, err := h.service.Performance().GetAll(c.Request.Context(), req)

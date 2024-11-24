@@ -49,7 +49,10 @@ type LogisticResponse struct {
 type GetAllLogisticsReq struct {
 	Page     uint64 `json:"page"`
 	Limit    uint64 `json:"limit"`
+	Post     string `json:"post"`
 	Type     string `json:"type"`
+	Position string `json:"position"`
+	State    string `json:"state"`
 	Location string `json:"location"`
 	Name     string `json:"name"`
 	Status   string `json:"status"`

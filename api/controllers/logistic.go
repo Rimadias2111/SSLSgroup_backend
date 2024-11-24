@@ -250,7 +250,13 @@ func (h *Controller) GetLogistic(c *gin.Context) {
 // @Tags logistic
 // @Param page query int false "Page number"
 // @Param limit query int false "Number of logistics per page"
-// @Param driver_id query string false "Driver ID"
+// @Param post query bool false "Post"
+// @Param type query string false "Driver Type"
+// @Param position query string false "Driver Position"
+// @Param name query string false "Driver Name"
+// @Param status query string false "Status"
+// @Param location query string false "Location"
+// @Param state query string false "state"
 // @Success 200 {object} models.GetAllLogisticsResp
 // @Failure 400 {object} models.ResponseError "Invalid input"
 // @Failure 500 {object} models.ResponseError "Internal server error"
@@ -273,9 +279,48 @@ func (h *Controller) GetAllLogistics(c *gin.Context) {
 		return
 	}
 
+	post := c.Query("post")
+	if post != "" && post != "true" && post != "false" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid post: ",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	driverType := c.Query("type")
+	if driverType != "" && driverType != "SOLO" && driverType != "TEAM" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid type: ",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	position := c.Query("position")
+	if position != "" && position != "OW" && position != "CO" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid position: ",
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	name := c.Query("name")
+	status := c.Query("status")
+	location := c.Query("location")
+	state := c.Query("state")
+
 	req := models.GetAllLogisticsReq{
-		Page:  page,
-		Limit: limit,
+		Page:     page,
+		Limit:    limit,
+		Post:     post,
+		Type:     driverType,
+		Position: position,
+		Name:     name,
+		Status:   status,
+		Location: location,
+		State:    state,
 	}
 
 	logistics, err := h.service.Logistic().GetAll(c.Request.Context(), req)
@@ -550,7 +595,7 @@ func (h *Controller) CancelLateLogistic(c *gin.Context) {
 		return
 	}
 
-	if req.Status != "success" && req.Status != "canceled" {
+	if req.Status != "success" && req.Status != "cancelled" {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Error while parsing status: ",
 			ErrorCode:    "Bad Request",

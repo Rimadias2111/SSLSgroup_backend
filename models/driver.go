@@ -30,10 +30,13 @@ type GetAllDriversResp struct {
 }
 
 type GetAllDriversReq struct {
-	Page        uint64 `json:"page"`
-	Limit       uint64 `json:"limit"`
-	TruckNumber int64  `json:"truck_number"`
-	Name        string `json:"name"`
+	Page        uint64    `json:"page"`
+	Limit       uint64    `json:"limit"`
+	TruckNumber string    `json:"truck_number"`
+	Name        string    `json:"name"`
+	Type        string    `json:"type"`
+	Position    string    `json:"position"`
+	CompanyId   uuid.UUID `json:"company_id"`
 }
 
 func (Driver) TableName() string {

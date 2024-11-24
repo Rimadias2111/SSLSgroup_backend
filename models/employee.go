@@ -26,9 +26,10 @@ type Employee struct {
 }
 
 type GetAllEmployeesReq struct {
-	Page   uint64 `json:"page"`
-	Limit  uint64 `json:"limit"`
-	Search string `json:"search"`
+	Page     uint64 `json:"page"`
+	Limit    uint64 `json:"limit"`
+	Search   string `json:"search"`
+	Position string `json:"position"`
 }
 
 type GetAllEmployeesResp struct {

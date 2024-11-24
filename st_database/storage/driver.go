@@ -77,12 +77,24 @@ func (s *DriverRepo) GetAll(ctx context.Context, req models.GetAllDriversReq) (*
 		offset = (req.Page - 1) * req.Limit
 		query  = s.db.WithContext(ctx).Model(&models.Driver{})
 	)
-	if req.TruckNumber != 0 {
+	if req.TruckNumber != "" {
 		query = query.Where("truck_number = ?", req.TruckNumber)
 	}
 
 	if req.Name != "" {
 		query = query.Where("name = ?", req.Name)
+	}
+
+	if req.Type != "" {
+		query = query.Where("type = ?", req.Type)
+	}
+
+	if req.Position != "" {
+		query = query.Where("position = ?", req.Position)
+	}
+
+	if req.CompanyId != uuid.Nil {
+		query = query.Where("company_id = ?", req.CompanyId)
 	}
 
 	if err := query.Find(&resp.Drivers).Offset(int(offset)).Limit(int(req.Limit)).Error; err != nil {

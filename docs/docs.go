@@ -336,12 +336,30 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "description": "Type of driver",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Position of driver",
+                        "name": "position",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Company id",
+                        "name": "company_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "description": "Drivers Name",
                         "name": "name",
                         "in": "query"
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Truck Number",
                         "name": "truck_number",
                         "in": "query"
@@ -591,8 +609,14 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Employee Username",
-                        "name": "username",
+                        "description": "Employee name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Employee position",
+                        "name": "position",
                         "in": "query"
                     }
                 ],
@@ -884,9 +908,45 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
+                        "type": "boolean",
+                        "description": "Post",
+                        "name": "post",
+                        "in": "query"
+                    },
+                    {
                         "type": "string",
-                        "description": "Driver ID",
-                        "name": "driver_id",
+                        "description": "Driver Type",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Driver Position",
+                        "name": "position",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Driver Name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Location",
+                        "name": "location",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "state",
+                        "name": "state",
                         "in": "query"
                     }
                 ],
@@ -1183,6 +1243,36 @@ const docTemplate = `{
                         "description": "Number of performances per page",
                         "name": "limit",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Company",
+                        "name": "company",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Whose fault",
+                        "name": "whose_fault",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Section",
+                        "name": "section",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Disputed by",
+                        "name": "disputed_by",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1476,6 +1566,30 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Service Provider",
                         "name": "provider",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Success",
+                        "name": "success",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Cargo Id",
+                        "name": "cargo_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Driver Name",
+                        "name": "driver_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Dispatcher Name",
+                        "name": "dispatcher_name",
                         "in": "query"
                     }
                 ],

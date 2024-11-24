@@ -35,7 +35,7 @@ type GetAllTransReq struct {
 	Provider       string    `json:"provider"`
 	DriverName     string    `json:"driver_name"`
 	DispatcherName string    `json:"dispatcher_name"`
-	Success        bool      `json:"success"`
+	Success        string    `json:"success"`
 }
 
 type GetAllTransResp struct {

@@ -77,6 +77,10 @@ func (s *PerformanceRepo) GetAll(ctx context.Context, req models.GetAllPerforman
 		query = query.Where("whose_fault = ?", req.WhoseFault)
 	}
 
+	if req.DisputedBy != "" {
+		query = query.Where("disputed_by = ?", req.DisputedBy)
+	}
+
 	err := query.Find(&resp.Performances).Offset(int(offset)).Limit(int(req.Limit)).Error
 	if err != nil {
 		return nil, err

@@ -7,6 +7,7 @@ import (
 	"errors"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"strconv"
 )
 
 type LogisticRepo struct {
@@ -103,6 +104,22 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 
 	if req.Type != "" {
 		query = query.Where("drivers.type = ?", req.Type)
+	}
+
+	if req.Position != "" {
+		query = query.Where("drivers.position = ?", req.Position)
+	}
+
+	if req.State != "" {
+		query = query.Where("logistics.state = ?", req.State)
+	}
+
+	if req.Post != "" {
+		post, err := strconv.ParseBool(req.Post)
+		if err != nil {
+			return nil, err
+		}
+		query = query.Where("logistics.post = ?", post)
 	}
 
 	err := query.Select(`

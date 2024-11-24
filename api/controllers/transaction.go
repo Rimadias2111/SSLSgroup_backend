@@ -267,6 +267,10 @@ func (h *Controller) GetTransaction(c *gin.Context) {
 // @Param page query int false "Page number"
 // @Param limit query int false "Number of transactions per page"
 // @Param provider query string false "Service Provider"
+// @Param success query bool false "Success"
+// @Param cargo_id query string false "Cargo Id"
+// @Param driver_name query string false "Driver Name"
+// @Param dispatcher_name query string false "Dispatcher Name"
 // @Success 200 {object} models.GetAllTransResp
 // @Failure 400 {object} models.ResponseError "Invalid input"
 // @Failure 500 {object} models.ResponseError "Internal server error"
@@ -305,6 +309,14 @@ func (h *Controller) GetAllTransactions(c *gin.Context) {
 	provider := c.Query("provider")
 	driverName := c.Query("driver_name")
 	dispatcherName := c.Query("dispatcher_name")
+	success := c.Query("success")
+	if success != "" && success != "true" && success != "false" {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid success: " + success,
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
 
 	req := models.GetAllTransReq{
 		Page:           page,
@@ -313,6 +325,7 @@ func (h *Controller) GetAllTransactions(c *gin.Context) {
 		CargoID:        cargoId,
 		DriverName:     driverName,
 		DispatcherName: dispatcherName,
+		Success:        success,
 	}
 
 	transactions, err := h.service.Transaction().GetAll(c.Request.Context(), req)
