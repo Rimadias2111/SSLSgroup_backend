@@ -212,7 +212,7 @@ func (h *Controller) GetAllPerformances(c *gin.Context) {
 	disputedBy := c.Query("disputed_by")
 	section := c.Query("section")
 	whoseFault := c.Query("whose_fault")
-	if whoseFault != "" && whoseFault != "Driver" && whoseFault != "Dispatcher" {
+	if whoseFault != "" && whoseFault != "Driver" && whoseFault != "Dispatcher" && whoseFault != "Company" {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Invalid query parameter: ",
 			ErrorCode:    "Bad Request",
