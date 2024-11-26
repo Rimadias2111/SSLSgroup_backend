@@ -1021,6 +1021,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/logistics/overview": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API to get an overview of driver statuses by company",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "logistic"
+                ],
+                "summary": "Get driver overview",
+                "responses": {
+                    "200": {
+                        "description": "Overview data",
+                        "schema": {
+                            "$ref": "#/definitions/models.GetOverview"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/logistics/{logistic_id}": {
             "get": {
                 "security": [
@@ -2040,6 +2074,37 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.Transaction"
+                    }
+                }
+            }
+        },
+        "models.GetOverview": {
+            "type": "object",
+            "properties": {
+                "companies": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "freeDrivers": {
+                                "type": "integer"
+                            },
+                            "id": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "notWorking": {
+                                "type": "integer"
+                            },
+                            "occupiedDrivers": {
+                                "type": "integer"
+                            },
+                            "willBeSoonDrivers": {
+                                "type": "integer"
+                            }
+                        }
                     }
                 }
             }

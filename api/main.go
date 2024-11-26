@@ -5,7 +5,7 @@ import (
 	_ "backend/docs" //for swagger
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/swaggo/files"
+	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
@@ -62,6 +62,7 @@ func Construct(cont controllers.Controller) *gin.Engine {
 		api.PUT("/logistics_with_cargo/:logistic_id", cont.UpdateLogisticCargo)
 		api.POST("/terminate_logistics", cont.TerminateLogistic)
 		api.POST("/cancel_late_logistics", cont.CancelLateLogistic)
+		api.GET("/logistics/overview", cont.Overview)
 
 		// Transaction endpoints
 		api.POST("/transactions", cont.CreateTransaction)

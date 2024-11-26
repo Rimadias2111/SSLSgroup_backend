@@ -1,6 +1,7 @@
 package jwt
 
 import (
+	"backend/etc/Utime"
 	"github.com/golang-jwt/jwt/v4"
 	"os"
 	"time"
@@ -16,7 +17,7 @@ type Claims struct {
 }
 
 func GenerateToken(userID string, username string, accessLevel int) (string, error) {
-	expirationTime := time.Now().Add(24 * time.Hour)
+	expirationTime := Utime.Now().Add(24 * time.Hour)
 	claims := &Claims{
 		UserID:      userID,
 		AccessLevel: accessLevel,

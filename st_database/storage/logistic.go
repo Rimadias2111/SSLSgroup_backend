@@ -213,3 +213,36 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 
 	return &resp, nil
 }
+
+func (s *LogisticRepo) Overview(ctx context.Context) (models.GetOverview, error) {
+	var (
+		resp  models.GetOverview
+		query = s.db.WithContext(ctx).Model(&models.Logistic{}).Joins("JOIN drivers ON drivers.id = logistics.driver_id")
+	)
+
+	err := query.
+		Select(`
+            '' AS name,
+            drivers.company_id AS id,
+            COUNT(CASE 
+                WHEN logistics.status IN ('READY', 'READY AT HOME') THEN 1 
+                END) AS free_drivers,
+            COUNT(CASE 
+                WHEN (logistics.status IN ('ETA', 'ETA, WILL BE LATE') AND logistics."st_time" <= NOW() + INTERVAL '1 hour') OR logistics.status IN ('WILL BE READY', 'AT DEL') THEN 1 
+                END) AS will_be_soon_drivers,
+            COUNT(CASE 
+                WHEN logistics.status IN ('COVERED', 'AT PU') THEN 1 
+                END) AS occupied_drivers
+			COUNT(CASE
+				WHEN logistics.status IN ('LET US KNOW', 'AT HOME') THEN 1
+				END) as not_working
+        `).
+		Group("logistics.driver_id").
+		Scan(&resp.Companies).Error
+
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}

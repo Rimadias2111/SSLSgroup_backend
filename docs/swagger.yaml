@@ -154,6 +154,26 @@ definitions:
           $ref: '#/definitions/models.Transaction'
         type: array
     type: object
+  models.GetOverview:
+    properties:
+      companies:
+        items:
+          properties:
+            freeDrivers:
+              type: integer
+            id:
+              type: string
+            name:
+              type: string
+            notWorking:
+              type: integer
+            occupiedDrivers:
+              type: integer
+            willBeSoonDrivers:
+              type: integer
+          type: object
+        type: array
+    type: object
   models.Logistic:
     properties:
       cargoId:
@@ -1223,6 +1243,27 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Update a logistic record
+      tags:
+      - logistic
+  /v1/logistics/overview:
+    get:
+      consumes:
+      - application/json
+      description: API to get an overview of driver statuses by company
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Overview data
+          schema:
+            $ref: '#/definitions/models.GetOverview'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get driver overview
       tags:
       - logistic
   /v1/logistics_with_cargo/{logistic_id}:

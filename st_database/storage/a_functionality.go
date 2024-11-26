@@ -37,6 +37,7 @@ type Logistic interface {
 	Delete(ctx context.Context, req models.RequestId) error
 	Get(ctx context.Context, req models.RequestId) (*models.Logistic, error)
 	GetAll(ctx context.Context, req models.GetAllLogisticsReq) (*models.GetAllLogisticsResp, error)
+	Overview(ctx context.Context) (models.GetOverview, error)
 }
 
 type Cargo interface {

@@ -62,3 +62,14 @@ type GetAllLogisticsResp struct {
 	Logistics []LogisticResponse
 	Count     int64
 }
+
+type GetOverview struct {
+	Companies []struct {
+		Id                uuid.UUID
+		Name              string
+		FreeDrivers       int64
+		WillBeSoonDrivers int64
+		OccupiedDrivers   int64
+		NotWorking        int64
+	} `json:"companies"`
+}

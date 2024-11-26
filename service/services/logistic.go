@@ -250,3 +250,25 @@ func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogisti
 	}
 	return nil
 }
+
+func (s *LogisticService) GetOverview(ctx context.Context) (models.GetOverview, error) {
+	resp, err := s.store.Logistic().Overview(ctx)
+	if err != nil {
+		return models.GetOverview{}, err
+	}
+
+	companies, err := s.store.Company().GetAll(ctx, models.GetAllCompaniesReq{Page: 1, Limit: 50})
+	if err != nil {
+		return models.GetOverview{}, err
+	}
+
+	CompanyMap := make(map[uuid.UUID]string)
+	for _, company := range companies.Companies {
+		CompanyMap[company.Id] = company.Name
+	}
+
+	for _, company := range resp.Companies {
+		company.Name = CompanyMap[company.Id]
+	}
+	return resp, nil
+}
