@@ -267,8 +267,9 @@ func (s *LogisticService) GetOverview(ctx context.Context) (models.GetOverview, 
 		CompanyMap[company.Id] = company.Name
 	}
 
-	for _, company := range resp.Companies {
-		company.Name = CompanyMap[company.Id]
+	for i := 0; i < len(resp.Companies); i++ {
+		resp.Companies[i].Name = CompanyMap[resp.Companies[i].Id]
 	}
+
 	return resp, nil
 }
