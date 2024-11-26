@@ -228,16 +228,17 @@ func (s *LogisticRepo) Overview(ctx context.Context) (models.GetOverview, error)
                 WHEN logistics.status IN ('READY', 'READY AT HOME') THEN 1 
                 END) AS free_drivers,
             COUNT(CASE 
-                WHEN (logistics.status IN ('ETA', 'ETA, WILL BE LATE') AND logistics."st_time" <= NOW() + INTERVAL '1 hour') OR logistics.status IN ('WILL BE READY', 'AT DEL') THEN 1 
+                WHEN (logistics.status IN ('ETA', 'ETA, WILL BE LATE') AND logistics.st_time <= NOW() + INTERVAL '1 hour') 
+                     OR logistics.status IN ('WILL BE READY', 'AT DEL') THEN 1 
                 END) AS will_be_soon_drivers,
             COUNT(CASE 
                 WHEN logistics.status IN ('COVERED', 'AT PU') THEN 1 
-                END) AS occupied_drivers
-			COUNT(CASE
-				WHEN logistics.status IN ('LET US KNOW', 'AT HOME') THEN 1
-				END) as not_working
+                END) AS occupied_drivers,
+            COUNT(CASE
+                WHEN logistics.status IN ('LET US KNOW', 'AT HOME') THEN 1
+                END) AS not_working
         `).
-		Group("logistics.driver_id").
+		Group("drivers.company_id").
 		Scan(&resp.Companies).Error
 
 	if err != nil {
