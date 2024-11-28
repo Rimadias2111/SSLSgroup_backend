@@ -43,7 +43,7 @@ func (h *Controller) CreateCompany(c *gin.Context) {
 	if companyModel.Name == "" {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Name can't be empty",
-			ErrorCode:    "Bad Request",
+			ErrorCode:    "Bad Request - Name can't be empty",
 		})
 		return
 	}
