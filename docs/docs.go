@@ -2274,10 +2274,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "fromCargo": {
-                    "$ref": "#/definitions/models.Cargo"
+                    "$ref": "#/definitions/models.JSONBCargo"
                 },
                 "fromLogistic": {
-                    "$ref": "#/definitions/models.Logistic"
+                    "$ref": "#/definitions/models.JSONBLogistic"
                 },
                 "id": {
                     "type": "string"
@@ -2286,13 +2286,29 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "toCargo": {
-                    "$ref": "#/definitions/models.Cargo"
+                    "$ref": "#/definitions/models.JSONBCargo"
                 },
                 "toLogistic": {
-                    "$ref": "#/definitions/models.Logistic"
+                    "$ref": "#/definitions/models.JSONBLogistic"
                 },
                 "updatedAt": {
                     "type": "string"
+                }
+            }
+        },
+        "models.JSONBCargo": {
+            "type": "object",
+            "properties": {
+                "cargo": {
+                    "$ref": "#/definitions/models.Cargo"
+                }
+            }
+        },
+        "models.JSONBLogistic": {
+            "type": "object",
+            "properties": {
+                "logistic": {
+                    "$ref": "#/definitions/models.Logistic"
                 }
             }
         },

@@ -27,15 +27,19 @@ type Cargo struct {
 	DeletedAt    gorm.DeletedAt `gorm:"index" swaggerignore:"true"`
 }
 
-func (l *Cargo) Scan(value interface{}) error {
+type JSONBCargo struct {
+	Cargo Cargo
+}
+
+func (j *JSONBCargo) Scan(value interface{}) error {
 	bytes, ok := value.([]byte)
 	if !ok {
 		return fmt.Errorf("failed to unmarshal JSONB value: %v", value)
 	}
 
-	return json.Unmarshal(bytes, l)
+	return json.Unmarshal(bytes, &j.Cargo)
 }
 
-func (l *Cargo) Value() (driver.Value, error) {
-	return json.Marshal(l)
+func (j *JSONBCargo) Value() (driver.Value, error) {
+	return json.Marshal(j.Cargo)
 }

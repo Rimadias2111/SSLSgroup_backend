@@ -223,19 +223,29 @@ definitions:
       employeeId:
         type: string
       fromCargo:
-        $ref: '#/definitions/models.Cargo'
+        $ref: '#/definitions/models.JSONBCargo'
       fromLogistic:
-        $ref: '#/definitions/models.Logistic'
+        $ref: '#/definitions/models.JSONBLogistic'
       id:
         type: string
       logisticId:
         type: string
       toCargo:
-        $ref: '#/definitions/models.Cargo'
+        $ref: '#/definitions/models.JSONBCargo'
       toLogistic:
-        $ref: '#/definitions/models.Logistic'
+        $ref: '#/definitions/models.JSONBLogistic'
       updatedAt:
         type: string
+    type: object
+  models.JSONBCargo:
+    properties:
+      cargo:
+        $ref: '#/definitions/models.Cargo'
+    type: object
+  models.JSONBLogistic:
+    properties:
+      logistic:
+        $ref: '#/definitions/models.Logistic'
     type: object
   models.Logistic:
     properties:

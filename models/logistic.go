@@ -77,15 +77,19 @@ type GetOverview struct {
 	} `json:"companies"`
 }
 
-func (l *Logistic) Scan(value interface{}) error {
+type JSONBLogistic struct {
+	Logistic Logistic
+}
+
+func (j *JSONBLogistic) Scan(value interface{}) error {
 	bytes, ok := value.([]byte)
 	if !ok {
 		return fmt.Errorf("failed to unmarshal JSONB value: %v", value)
 	}
 
-	return json.Unmarshal(bytes, l)
+	return json.Unmarshal(bytes, &j.Logistic)
 }
 
-func (l *Logistic) Value() (driver.Value, error) {
-	return json.Marshal(l)
+func (j *JSONBLogistic) Value() (driver.Value, error) {
+	return json.Marshal(j.Logistic)
 }

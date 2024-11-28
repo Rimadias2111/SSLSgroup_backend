@@ -44,8 +44,8 @@ func (s *LogisticService) Update(ctx context.Context, req *models.Logistic, by m
 		_, err = s.store.History().Create(ctx, &models.History{
 			DriverName:   oldLogistic.Driver.Name + oldLogistic.Driver.Surname,
 			LogisticId:   req.Id,
-			FromLogistic: *oldLogistic,
-			ToLogistic:   *req,
+			FromLogistic: models.JSONBLogistic{Logistic: *oldLogistic},
+			ToLogistic:   models.JSONBLogistic{Logistic: *req},
 			FromCargo:    nil,
 			ToCargo:      nil,
 			EmployeeId:   by.Id,
@@ -116,10 +116,10 @@ func (s *LogisticService) UpdateWithCargo(ctx context.Context, logistic *models.
 			_, errH := s.store.History().Create(ctx, &models.History{
 				DriverName:   oldLogistic.Driver.Name + oldLogistic.Driver.Surname,
 				LogisticId:   logistic.Id,
-				FromLogistic: *oldLogistic,
-				ToLogistic:   *logistic,
+				FromLogistic: models.JSONBLogistic{Logistic: *oldLogistic},
+				ToLogistic:   models.JSONBLogistic{Logistic: *logistic},
 				FromCargo:    nil,
-				ToCargo:      cargo,
+				ToCargo:      &models.JSONBCargo{Cargo: *cargo},
 				EmployeeId:   by.Id,
 			})
 			if errH != nil {
@@ -142,10 +142,10 @@ func (s *LogisticService) UpdateWithCargo(ctx context.Context, logistic *models.
 			_, errH := s.store.History().Create(ctx, &models.History{
 				DriverName:   oldLogistic.Driver.Name + oldLogistic.Driver.Surname,
 				LogisticId:   logistic.Id,
-				FromLogistic: *oldLogistic,
-				ToLogistic:   *logistic,
-				FromCargo:    oldCargo,
-				ToCargo:      cargo,
+				FromLogistic: models.JSONBLogistic{Logistic: *oldLogistic},
+				ToLogistic:   models.JSONBLogistic{Logistic: *logistic},
+				FromCargo:    &models.JSONBCargo{Cargo: *oldCargo},
+				ToCargo:      &models.JSONBCargo{Cargo: *cargo},
 				EmployeeId:   by.Id,
 			})
 			if errH != nil {
@@ -212,8 +212,8 @@ func (s *LogisticService) Terminate(ctx context.Context, req models.RequestId, s
 		_, errH := s.store.History().Create(ctx, &models.History{
 			DriverName:   logistic.Driver.Name + logistic.Driver.Surname,
 			LogisticId:   logistic.Id,
-			FromLogistic: *logistic,
-			ToLogistic: models.Logistic{
+			FromLogistic: models.JSONBLogistic{Logistic: *logistic},
+			ToLogistic: models.JSONBLogistic{Logistic: models.Logistic{
 				Id:         logistic.Id,
 				Post:       false,
 				Status:     "READY",
@@ -224,8 +224,8 @@ func (s *LogisticService) Terminate(ctx context.Context, req models.RequestId, s
 				Emoji:      "",
 				Notion:     "",
 				CargoId:    nil,
-			},
-			FromCargo:  &logistic.Cargo,
+			}},
+			FromCargo:  &models.JSONBCargo{Cargo: logistic.Cargo},
 			ToCargo:    nil,
 			EmployeeId: by.Id,
 		}, tx)
@@ -316,8 +316,8 @@ func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogisti
 			_, errH := s.store.History().Create(ctx, &models.History{
 				DriverName:   logistic.Driver.Name + logistic.Driver.Surname,
 				LogisticId:   logistic.Id,
-				FromLogistic: *logistic,
-				ToLogistic: models.Logistic{
+				FromLogistic: models.JSONBLogistic{Logistic: *logistic},
+				ToLogistic: models.JSONBLogistic{Logistic: models.Logistic{
 					Id:         logistic.Id,
 					Post:       false,
 					Status:     "READY",
@@ -328,8 +328,8 @@ func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogisti
 					Emoji:      "",
 					Notion:     "",
 					CargoId:    nil,
-				},
-				FromCargo:  &logistic.Cargo,
+				}},
+				FromCargo:  &models.JSONBCargo{Cargo: logistic.Cargo},
 				ToCargo:    nil,
 				EmployeeId: idEmp.Id,
 			}, tx)

@@ -7,15 +7,15 @@ import (
 )
 
 type History struct {
-	Id           uuid.UUID `gorm:"primary_key;type:uuid"`
-	DriverName   string    `gorm:"size:255;not null"`
-	LogisticId   uuid.UUID `gorm:"type:uuid; not null"`
-	FromLogistic Logistic  `gorm:"type:jsonb;"`
-	ToLogistic   Logistic  `gorm:"type:jsonb;"`
-	FromCargo    *Cargo    `gorm:"type:jsonb;"`
-	ToCargo      *Cargo    `gorm:"type:jsonb;"`
-	EmployeeId   uuid.UUID `gorm:"type:uuid; not null"`
-	Employee     Employee  `gorm:"foreignKey:EmployeeId;references:Id" swaggerignore:"true"`
+	Id           uuid.UUID     `gorm:"primary_key;type:uuid"`
+	DriverName   string        `gorm:"size:255;not null"`
+	LogisticId   uuid.UUID     `gorm:"type:uuid; not null"`
+	FromLogistic JSONBLogistic `gorm:"type:jsonb;"`
+	ToLogistic   JSONBLogistic `gorm:"type:jsonb;"`
+	FromCargo    *JSONBCargo   `gorm:"type:jsonb;"`
+	ToCargo      *JSONBCargo   `gorm:"type:jsonb;"`
+	EmployeeId   uuid.UUID     `gorm:"type:uuid; not null"`
+	Employee     Employee      `gorm:"foreignKey:EmployeeId;references:Id" swaggerignore:"true"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 	DeletedAt    gorm.DeletedAt `gorm:"index" swaggerignore:"true"`
