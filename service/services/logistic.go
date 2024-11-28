@@ -7,6 +7,7 @@ import (
 	database "backend/st_database"
 	"context"
 	"errors"
+	"fmt"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -34,6 +35,10 @@ func (s *LogisticService) Update(ctx context.Context, req *models.Logistic, by m
 		oldLogistic, getErr := s.store.Logistic().Get(ctx, models.RequestId{Id: req.Id})
 		if getErr != nil {
 			return getErr
+		}
+
+		if oldLogistic == nil {
+			return fmt.Errorf("logistic with ID %s not found", req.Id)
 		}
 
 		err := s.store.Logistic().Update(ctx, req, tx)
