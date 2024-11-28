@@ -482,6 +482,7 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 		c.JSON(http.StatusOK, models.ResponseSuccess{
 			Message: "Logistic updated",
 		})
+		return
 	}
 
 	pickUpTime, err := time.Parse("2006-01-02T15:04:05", logisticModel.PickUpTime)
