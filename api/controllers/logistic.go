@@ -488,7 +488,7 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 	pickUpTime, err := time.Parse("2006-01-02T15:04:05", logisticModel.PickUpTime)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
-			ErrorMessage: "Error while parsing pick up time: " + err.Error(),
+			ErrorMessage: "Error while parsing pick up time for cargo: " + err.Error(),
 			ErrorCode:    "Bad Request",
 		})
 		return
