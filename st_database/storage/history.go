@@ -65,7 +65,7 @@ func (s *HistoryRepo) Get(ctx context.Context, req models.RequestId) (*models.Hi
 func (s *HistoryRepo) GetAll(ctx context.Context, req models.GetAllHistoryReq) (*models.GetAllHistoryResp, error) {
 	var (
 		resp   models.GetAllHistoryResp
-		offset = int((req.Page - 1) * req.Page)
+		offset = int((req.Page - 1) * req.Limit)
 		query  = s.db.WithContext(ctx).Model(&models.History{})
 	)
 
