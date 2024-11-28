@@ -831,6 +831,97 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/histories": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for retrieving all history records with pagination and filters",
+                "tags": [
+                    "history"
+                ],
+                "summary": "Get all history records",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GetAllHistoryResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/histories/{history_id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "API for retrieving a single history record by ID",
+                "tags": [
+                    "history"
+                ],
+                "summary": "Get a history record by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "History ID",
+                        "name": "history_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.History"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/login": {
             "post": {
                 "security": [
@@ -1235,7 +1326,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.ResponseId"
+                            "$ref": "#/definitions/models.ResponseSuccess"
                         }
                     },
                     "400": {
@@ -1862,6 +1953,53 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Cargo": {
+            "type": "object",
+            "properties": {
+                "cargoID": {
+                    "type": "string"
+                },
+                "cost": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deliveryTime": {
+                    "type": "string"
+                },
+                "employeeId": {
+                    "type": "string"
+                },
+                "freeMiles": {
+                    "type": "integer"
+                },
+                "from": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "loadedMiles": {
+                    "type": "integer"
+                },
+                "pickUpTime": {
+                    "type": "string"
+                },
+                "provider": {
+                    "type": "string"
+                },
+                "rate": {
+                    "type": "number"
+                },
+                "to": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Company": {
             "type": "object",
             "properties": {
@@ -2036,6 +2174,20 @@ const docTemplate = `{
                 }
             }
         },
+        "models.GetAllHistoryResp": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "histories": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.History"
+                    }
+                }
+            }
+        },
         "models.GetAllLogisticsResp": {
             "type": "object",
             "properties": {
@@ -2106,6 +2258,41 @@ const docTemplate = `{
                             }
                         }
                     }
+                }
+            }
+        },
+        "models.History": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "driverName": {
+                    "type": "string"
+                },
+                "employeeId": {
+                    "type": "string"
+                },
+                "fromCargo": {
+                    "$ref": "#/definitions/models.Cargo"
+                },
+                "fromLogistic": {
+                    "$ref": "#/definitions/models.Logistic"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "logisticId": {
+                    "type": "string"
+                },
+                "toCargo": {
+                    "$ref": "#/definitions/models.Cargo"
+                },
+                "toLogistic": {
+                    "$ref": "#/definitions/models.Logistic"
+                },
+                "updatedAt": {
+                    "type": "string"
                 }
             }
         },

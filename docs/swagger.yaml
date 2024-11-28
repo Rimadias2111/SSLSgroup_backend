@@ -13,6 +13,37 @@ definitions:
       token:
         type: string
     type: object
+  models.Cargo:
+    properties:
+      cargoID:
+        type: string
+      cost:
+        type: integer
+      createdAt:
+        type: string
+      deliveryTime:
+        type: string
+      employeeId:
+        type: string
+      freeMiles:
+        type: integer
+      from:
+        type: string
+      id:
+        type: string
+      loadedMiles:
+        type: integer
+      pickUpTime:
+        type: string
+      provider:
+        type: string
+      rate:
+        type: number
+      to:
+        type: string
+      updatedAt:
+        type: string
+    type: object
   models.Company:
     properties:
       address:
@@ -127,6 +158,15 @@ definitions:
           $ref: '#/definitions/models.Employee'
         type: array
     type: object
+  models.GetAllHistoryResp:
+    properties:
+      count:
+        type: integer
+      histories:
+        items:
+          $ref: '#/definitions/models.History'
+        type: array
+    type: object
   models.GetAllLogisticsResp:
     properties:
       count:
@@ -173,6 +213,29 @@ definitions:
               type: integer
           type: object
         type: array
+    type: object
+  models.History:
+    properties:
+      createdAt:
+        type: string
+      driverName:
+        type: string
+      employeeId:
+        type: string
+      fromCargo:
+        $ref: '#/definitions/models.Cargo'
+      fromLogistic:
+        $ref: '#/definitions/models.Logistic'
+      id:
+        type: string
+      logisticId:
+        type: string
+      toCargo:
+        $ref: '#/definitions/models.Cargo'
+      toLogistic:
+        $ref: '#/definitions/models.Logistic'
+      updatedAt:
+        type: string
     type: object
   models.Logistic:
     properties:
@@ -1035,6 +1098,63 @@ paths:
       summary: Update an employee
       tags:
       - employee
+  /v1/histories:
+    get:
+      description: API for retrieving all history records with pagination and filters
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: limit
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllHistoryResp'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all history records
+      tags:
+      - history
+  /v1/histories/{history_id}:
+    get:
+      description: API for retrieving a single history record by ID
+      parameters:
+      - description: History ID
+        in: path
+        name: history_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.History'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a history record by ID
+      tags:
+      - history
   /v1/login:
     post:
       consumes:
@@ -1289,7 +1409,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.ResponseId'
+            $ref: '#/definitions/models.ResponseSuccess'
         "400":
           description: Invalid input
           schema:

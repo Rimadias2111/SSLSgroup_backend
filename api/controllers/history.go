@@ -46,7 +46,7 @@ func (h *Controller) GetHistory(c *gin.Context) {
 // @Tags history
 // @Param page query int false "Page number"
 // @Param limit query int false "Number of records per page"
-// @Success 200 {object} models.GetAllHistoriesResp
+// @Success 200 {object} models.GetAllHistoryResp
 // @Failure 400 {object} models.ResponseError "Invalid input"
 // @Failure 500 {object} models.ResponseError "Internal server error"
 func (h *Controller) GetAllHistories(c *gin.Context) {
