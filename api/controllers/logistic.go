@@ -468,7 +468,7 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 		State:      strings.TrimSpace(parts[1]),
 	}
 
-	if logisticModel.Status != "COVERED" && logisticModel.CargoId != "" {
+	if logisticModel.Status != "COVERED" && logisticModel.CargoId == "" {
 		logistic.CargoId = nil
 		errUpd := h.service.Logistic().Update(c.Request.Context(), &logistic, models.RequestId{Id: id})
 		if errUpd != nil {
