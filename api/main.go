@@ -24,6 +24,7 @@ func Construct(cont controllers.Controller) *gin.Engine {
 		AllowCredentials: true,
 	}))
 
+	// To start again
 	r.Static("/images", "./public/images")
 
 	r.GET("/", func(c *gin.Context) { c.JSON(200, gin.H{"message": "pong"}) })
