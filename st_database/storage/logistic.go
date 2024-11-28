@@ -90,10 +90,6 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 		offset = (req.Page - 1) * req.Limit
 	)
 
-	if req.Name != "" {
-		query = query.Where("drivers.name ILIKE ?", "%"+req.Name+"%")
-	}
-
 	if req.Status != "" {
 		query = query.Where("logistics.status = ?", req.Status)
 	}
@@ -112,6 +108,10 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 
 	if req.State != "" {
 		query = query.Where("logistics.state = ?", req.State)
+	}
+
+	if req.Name != "" {
+		query = query.Where("drivers.name = ?", req.Name)
 	}
 
 	if req.Post != "" {
@@ -192,7 +192,7 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 
 	countQuery := s.db.WithContext(ctx).Model(&models.Logistic{})
 	if req.Name != "" {
-		countQuery = countQuery.Joins("Driver").
+		countQuery = countQuery.Joins("JOIN drivers ON drivers.id = logistics.driver_id").
 			Where("drivers.name ILIKE ?", "%"+req.Name+"%")
 
 		if req.Type != "" {
