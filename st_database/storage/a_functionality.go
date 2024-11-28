@@ -62,3 +62,11 @@ type Performance interface {
 	Get(ctx context.Context, req models.RequestId) (*models.Performance, error)
 	GetAll(ctx context.Context, req models.GetAllPerformancesReq) (*models.GetAllPerformancesResp, error)
 }
+
+type History interface {
+	Create(ctx context.Context, history *models.History, tx ...*gorm.DB) (string, error)
+	Update(ctx context.Context, history *models.History) error
+	Delete(ctx context.Context, req models.RequestId) error
+	Get(ctx context.Context, req models.RequestId) (*models.History, error)
+	GetAll(ctx context.Context, req models.GetAllHistoryReq) (*models.GetAllHistoryResp, error)
+}

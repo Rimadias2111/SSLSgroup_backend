@@ -28,8 +28,34 @@ func (s *LogisticService) Create(ctx context.Context, req *models.Logistic) (str
 	return id, nil
 }
 
-func (s *LogisticService) Update(ctx context.Context, req *models.Logistic) error {
-	err := s.store.Logistic().Update(ctx, req)
+func (s *LogisticService) Update(ctx context.Context, req *models.Logistic, by models.RequestId) error {
+	db := s.store.DB()
+	err := db.Transaction(func(tx *gorm.DB) error {
+		oldLogistic, getErr := s.store.Logistic().Get(ctx, models.RequestId{Id: req.Id})
+		if getErr != nil {
+			return getErr
+		}
+
+		err := s.store.Logistic().Update(ctx, req, tx)
+		if err != nil {
+			return err
+		}
+
+		_, err = s.store.History().Create(ctx, &models.History{
+			DriverName:   oldLogistic.Driver.Name + oldLogistic.Driver.Surname,
+			LogisticId:   req.Id,
+			FromLogistic: *oldLogistic,
+			ToLogistic:   *req,
+			FromCargo:    nil,
+			ToCargo:      nil,
+			EmployeeId:   by.Id,
+		}, tx)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
 	if err != nil {
 		return err
 	}
@@ -64,13 +90,18 @@ func (s *LogisticService) GetAll(ctx context.Context, req models.GetAllLogistics
 	return resp, nil
 }
 
-func (s *LogisticService) UpdateWithCargo(ctx context.Context, logistic *models.Logistic, cargo *models.Cargo, create bool) (string, error) {
+func (s *LogisticService) UpdateWithCargo(ctx context.Context, logistic *models.Logistic, cargo *models.Cargo, create bool, by models.RequestId) (string, error) {
 	var (
 		db  = s.store.DB()
 		id  string
 		err error
 	)
 	transErr := db.Transaction(func(tx *gorm.DB) error {
+		oldLogistic, errG := s.store.Logistic().Get(ctx, models.RequestId{Id: logistic.Id})
+		if errG != nil {
+			return errG
+		}
+
 		if create {
 			id, err = s.store.Cargo().Create(ctx, cargo, tx)
 			if err != nil {
@@ -82,6 +113,19 @@ func (s *LogisticService) UpdateWithCargo(ctx context.Context, logistic *models.
 				return errP
 			}
 
+			_, errH := s.store.History().Create(ctx, &models.History{
+				DriverName:   oldLogistic.Driver.Name + oldLogistic.Driver.Surname,
+				LogisticId:   logistic.Id,
+				FromLogistic: *oldLogistic,
+				ToLogistic:   *logistic,
+				FromCargo:    nil,
+				ToCargo:      cargo,
+				EmployeeId:   by.Id,
+			})
+			if errH != nil {
+				return errH
+			}
+
 			logistic.CargoId = &cargoId
 		} else {
 			err = s.store.Cargo().Update(ctx, cargo, tx)
@@ -89,6 +133,24 @@ func (s *LogisticService) UpdateWithCargo(ctx context.Context, logistic *models.
 				return err
 			}
 			id = cargo.Id.String()
+
+			oldCargo, errG := s.store.Cargo().Get(ctx, models.RequestId{Id: cargo.Id})
+			if errG != nil {
+				return errG
+			}
+
+			_, errH := s.store.History().Create(ctx, &models.History{
+				DriverName:   oldLogistic.Driver.Name + oldLogistic.Driver.Surname,
+				LogisticId:   logistic.Id,
+				FromLogistic: *oldLogistic,
+				ToLogistic:   *logistic,
+				FromCargo:    oldCargo,
+				ToCargo:      cargo,
+				EmployeeId:   by.Id,
+			})
+			if errH != nil {
+				return errH
+			}
 		}
 
 		err = s.store.Logistic().Update(ctx, logistic, tx)
@@ -105,7 +167,7 @@ func (s *LogisticService) UpdateWithCargo(ctx context.Context, logistic *models.
 	return id, nil
 }
 
-func (s *LogisticService) Terminate(ctx context.Context, req models.RequestId, success bool) error {
+func (s *LogisticService) Terminate(ctx context.Context, req models.RequestId, success bool, by models.RequestId) error {
 	db := s.store.DB()
 	err := db.Transaction(func(tx *gorm.DB) error {
 		logistic, err := s.store.Logistic().Get(ctx, req)
@@ -147,6 +209,30 @@ func (s *LogisticService) Terminate(ctx context.Context, req models.RequestId, s
 			return errU
 		}
 
+		_, errH := s.store.History().Create(ctx, &models.History{
+			DriverName:   logistic.Driver.Name + logistic.Driver.Surname,
+			LogisticId:   logistic.Id,
+			FromLogistic: *logistic,
+			ToLogistic: models.Logistic{
+				Id:         logistic.Id,
+				Post:       false,
+				Status:     "READY",
+				UpdateTime: Utime.Now(),
+				StTime:     nil,
+				State:      logistic.State,
+				Location:   logistic.Location,
+				Emoji:      "",
+				Notion:     "",
+				CargoId:    nil,
+			},
+			FromCargo:  &logistic.Cargo,
+			ToCargo:    nil,
+			EmployeeId: by.Id,
+		}, tx)
+		if errH != nil {
+			return errH
+		}
+
 		return nil
 	})
 	if err != nil {
@@ -170,14 +256,12 @@ func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogisti
 		}
 
 		var employee *models.Employee = &models.Employee{}
-		if idEmp.Id != uuid.Nil {
-			employee, getErr = s.store.Employee().Get(ctx, idEmp)
-			if getErr != nil {
-				return getErr
-			}
-		} else {
-			employee.Name = ""
-			employee.Surname = ""
+		if idEmp.Id == uuid.Nil {
+			return errors.New("employee not found")
+		}
+		employee, getErr = s.store.Employee().Get(ctx, idEmp)
+		if getErr != nil {
+			return getErr
 		}
 
 		if req.Cancel {
@@ -227,6 +311,30 @@ func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogisti
 			}, tx)
 			if errU != nil {
 				return errU
+			}
+
+			_, errH := s.store.History().Create(ctx, &models.History{
+				DriverName:   logistic.Driver.Name + logistic.Driver.Surname,
+				LogisticId:   logistic.Id,
+				FromLogistic: *logistic,
+				ToLogistic: models.Logistic{
+					Id:         logistic.Id,
+					Post:       false,
+					Status:     "READY",
+					UpdateTime: Utime.Now(),
+					StTime:     nil,
+					State:      logistic.State,
+					Location:   logistic.Location,
+					Emoji:      "",
+					Notion:     "",
+					CargoId:    nil,
+				},
+				FromCargo:  &logistic.Cargo,
+				ToCargo:    nil,
+				EmployeeId: idEmp.Id,
+			}, tx)
+			if errH != nil {
+				return errH
 			}
 		} else {
 			_, err := s.store.Performance().Create(ctx, &models.Performance{

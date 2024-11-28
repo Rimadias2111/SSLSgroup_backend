@@ -13,6 +13,7 @@ func New(store database.IStore) IService {
 		logisticService:    services.NewLogisticService(store),
 		transactionService: services.NewTransactionService(store),
 		performanceService: services.NewPerformanceService(store),
+		historyService:     services.NewHistoryService(store),
 	}
 }
 
@@ -27,3 +28,5 @@ func (s *Service) Logistic() *services.LogisticService { return s.logisticServic
 func (s *Service) Transaction() *services.TransactionService { return s.transactionService }
 
 func (s *Service) Performance() *services.PerformanceService { return s.performanceService }
+
+func (s *Service) History() *services.HistoryService { return s.historyService }

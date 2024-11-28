@@ -2,6 +2,7 @@ package jwt
 
 import (
 	"backend/etc/Utime"
+	"errors"
 	"github.com/golang-jwt/jwt/v4"
 	"os"
 	"time"
@@ -33,4 +34,20 @@ func GenerateToken(userID string, username string, accessLevel int) (string, err
 	}
 
 	return tokenString, nil
+}
+
+func ParseToken(tokenString string) (*Claims, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+		return JwtSecret, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	claims, ok := token.Claims.(*Claims)
+	if !ok || !token.Valid {
+		return nil, errors.New("invalid token")
+	}
+
+	return claims, nil
 }

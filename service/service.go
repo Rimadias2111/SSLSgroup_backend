@@ -9,6 +9,7 @@ type IService interface {
 	Logistic() *services.LogisticService
 	Transaction() *services.TransactionService
 	Performance() *services.PerformanceService
+	History() *services.HistoryService
 }
 
 type Service struct {
@@ -18,4 +19,5 @@ type Service struct {
 	logisticService    *services.LogisticService
 	transactionService *services.TransactionService
 	performanceService *services.PerformanceService
+	historyService     *services.HistoryService
 }

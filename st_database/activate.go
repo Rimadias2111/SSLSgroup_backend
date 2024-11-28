@@ -15,5 +15,6 @@ func New(db *gorm.DB) *Store {
 		cargo:       storage.NewCargoRepo(db),
 		transaction: storage.NewTransactionRepo(db),
 		performance: storage.NewPerformanceRepo(db),
+		history:     storage.NewHistoryRepo(db),
 	}
 }

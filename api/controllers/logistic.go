@@ -108,6 +108,23 @@ func (h *Controller) UpdateLogistic(c *gin.Context) {
 	var logisticModel swag.CreateUpdateLogistic
 	logisticIdStr := c.Param("logistic_id")
 
+	idStr, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, models.ResponseError{
+			ErrorMessage: "No user id found in context",
+			ErrorCode:    "Unauthorized",
+		})
+		return
+	}
+	id, err := uuid.Parse(idStr.(string))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
 	logisticId, err := uuid.Parse(logisticIdStr)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
@@ -164,7 +181,7 @@ func (h *Controller) UpdateLogistic(c *gin.Context) {
 		Post:       logisticModel.Post,
 	}
 
-	if err := h.service.Logistic().Update(c.Request.Context(), &logistic); err != nil {
+	if err := h.service.Logistic().Update(c.Request.Context(), &logistic, models.RequestId{Id: id}); err != nil {
 		c.JSON(http.StatusInternalServerError, models.ResponseError{
 			ErrorMessage: "Error while updating the logistic record: " + err.Error(),
 			ErrorCode:    "Internal Server Error",
@@ -344,7 +361,7 @@ func (h *Controller) GetAllLogistics(c *gin.Context) {
 // @Produce json
 // @Param logistic_id path string true "Logistic ID"
 // @Param logistic body swag.UpdateLogisticWithCargo true "Logistic data"
-// @Success 200 {object} models.ResponseId
+// @Success 200 {object} models.ResponseSuccess
 // @Failure 400 {object} models.ResponseError "Invalid input"
 // @Failure 500 {object} models.ResponseError "Internal server error"
 func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
@@ -355,6 +372,23 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Error while parsing cargo id: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	idStr, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, models.ResponseError{
+			ErrorMessage: "No user id found in context",
+			ErrorCode:    "Unauthorized",
+		})
+		return
+	}
+	id, err := uuid.Parse(idStr.(string))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: err.Error(),
 			ErrorCode:    "Bad Request",
 		})
 		return
@@ -389,6 +423,7 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 		})
 		return
 	}
+
 	var updateTime time.Time
 	if logisticModel.Status == "COVERED" {
 		updateTime, err = time.Parse("2006-01-02T15:04:05", logisticModel.PickUpTime)
@@ -431,6 +466,22 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 		StTime:     &stTime,
 		Location:   logisticModel.Location,
 		State:      strings.TrimSpace(parts[1]),
+	}
+
+	if logisticModel.Status != "COVERED" && logisticModel.CargoId != "" {
+		logistic.CargoId = nil
+		errUpd := h.service.Logistic().Update(c.Request.Context(), &logistic, models.RequestId{Id: id})
+		if errUpd != nil {
+			c.JSON(http.StatusInternalServerError, models.ResponseError{
+				ErrorMessage: "Error while updating logistic: " + errUpd.Error(),
+				ErrorCode:    "Internal Server Error",
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, models.ResponseSuccess{
+			Message: "Logistic updated",
+		})
 	}
 
 	pickUpTime, err := time.Parse("2006-01-02T15:04:05", logisticModel.PickUpTime)
@@ -493,7 +544,7 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 		}
 	}
 
-	id, err := h.service.Logistic().UpdateWithCargo(c.Request.Context(), &logistic, &cargo, logisticModel.Create)
+	_, err = h.service.Logistic().UpdateWithCargo(c.Request.Context(), &logistic, &cargo, logisticModel.Create, models.RequestId{Id: id})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ResponseError{
 			ErrorMessage: "Error while updating logistic: " + err.Error(),
@@ -502,8 +553,8 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, models.ResponseId{
-		Id: id,
+	c.JSON(http.StatusOK, models.ResponseSuccess{
+		Message: "Logistic updated with Cargo successfully",
 	})
 }
 
@@ -537,8 +588,24 @@ func (h *Controller) TerminateLogistic(c *gin.Context) {
 		})
 		return
 	}
+	idStr, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, models.ResponseError{
+			ErrorMessage: "No user id found in context",
+			ErrorCode:    "Unauthorized",
+		})
+		return
+	}
+	id, err := uuid.Parse(idStr.(string))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
 
-	err = h.service.Logistic().Terminate(c.Request.Context(), models.RequestId{Id: logisticId}, req.Success)
+	err = h.service.Logistic().Terminate(c.Request.Context(), models.RequestId{Id: logisticId}, req.Success, models.RequestId{Id: id})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ResponseError{
 			ErrorMessage: err.Error(),
@@ -622,7 +689,14 @@ func (h *Controller) CancelLateLogistic(c *gin.Context) {
 		return
 	}
 
-	empId, err := uuid.Parse("80c1d220-67b7-4dc9-82e4-393687b734a4")
+	empIdStr, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Not authorized",
+			ErrorCode:    "Not authorized",
+		})
+	}
+	empId, err := uuid.Parse(empIdStr.(string))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: err.Error(),
