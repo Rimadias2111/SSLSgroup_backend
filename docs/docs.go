@@ -1953,25 +1953,42 @@ const docTemplate = `{
                 }
             }
         },
+        "models.ByCompany": {
+            "type": "object",
+            "properties": {
+                "company_id": {
+                    "type": "string"
+                },
+                "company_name": {
+                    "type": "string"
+                },
+                "logistics": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.LogisticResponse"
+                    }
+                }
+            }
+        },
         "models.Cargo": {
             "type": "object",
             "properties": {
-                "cargoID": {
+                "cargo_id": {
                     "type": "string"
                 },
                 "cost": {
                     "type": "integer"
                 },
-                "createdAt": {
+                "created_at": {
                     "type": "string"
                 },
-                "deliveryTime": {
+                "delivery_time": {
                     "type": "string"
                 },
-                "employeeId": {
+                "employee_id": {
                     "type": "string"
                 },
-                "freeMiles": {
+                "free_miles": {
                     "type": "integer"
                 },
                 "from": {
@@ -1980,10 +1997,10 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "loadedMiles": {
+                "loaded_miles": {
                     "type": "integer"
                 },
-                "pickUpTime": {
+                "pick_up_time": {
                     "type": "string"
                 },
                 "provider": {
@@ -1995,7 +2012,7 @@ const docTemplate = `{
                 "to": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "updated_at": {
                     "type": "string"
                 }
             }
@@ -2006,13 +2023,13 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "createdAt": {
+                "created_at": {
                     "type": "string"
                 },
                 "dot": {
                     "type": "integer"
                 },
-                "driversNumber": {
+                "drivers_number": {
                     "type": "integer"
                 },
                 "id": {
@@ -2030,10 +2047,10 @@ const docTemplate = `{
                 "scac": {
                     "type": "string"
                 },
-                "startDate": {
+                "start_date": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "updated_at": {
                     "type": "string"
                 }
             }
@@ -2044,10 +2061,10 @@ const docTemplate = `{
                 "birthday": {
                     "type": "string"
                 },
-                "companyId": {
+                "company_id": {
                     "type": "string"
                 },
-                "createdAt": {
+                "created_at": {
                     "type": "string"
                 },
                 "id": {
@@ -2059,25 +2076,25 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "phoneNumber": {
+                "phone_number": {
                     "type": "string"
                 },
                 "position": {
                     "type": "string"
                 },
-                "startDate": {
+                "start_date": {
                     "type": "string"
                 },
                 "surname": {
                     "type": "string"
                 },
-                "truckNumber": {
+                "truck_number": {
                     "type": "string"
                 },
                 "type": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "updated_at": {
                     "type": "string"
                 }
             }
@@ -2085,7 +2102,7 @@ const docTemplate = `{
         "models.Employee": {
             "type": "object",
             "properties": {
-                "accessLevel": {
+                "access_level": {
                     "type": "integer"
                 },
                 "birthday": {
@@ -2094,7 +2111,7 @@ const docTemplate = `{
                 "company": {
                     "type": "string"
                 },
-                "createdAt": {
+                "created_at": {
                     "type": "string"
                 },
                 "email": {
@@ -2103,7 +2120,7 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "logoId": {
+                "logo_id": {
                     "type": "string"
                 },
                 "name": {
@@ -2112,19 +2129,19 @@ const docTemplate = `{
                 "password": {
                     "type": "string"
                 },
-                "phoneNumber": {
+                "phone_number": {
                     "type": "string"
                 },
                 "position": {
                     "type": "string"
                 },
-                "startDate": {
+                "start_date": {
                     "type": "string"
                 },
                 "surname": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "updated_at": {
                     "type": "string"
                 },
                 "username": {
@@ -2191,14 +2208,14 @@ const docTemplate = `{
         "models.GetAllLogisticsResp": {
             "type": "object",
             "properties": {
-                "count": {
-                    "type": "integer"
-                },
-                "logistics": {
+                "companies": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.LogisticResponse"
+                        "$ref": "#/definitions/models.ByCompany"
                     }
+                },
+                "count": {
+                    "type": "integer"
                 }
             }
         },
@@ -2315,13 +2332,13 @@ const docTemplate = `{
         "models.Logistic": {
             "type": "object",
             "properties": {
-                "cargoId": {
+                "cargo_id": {
                     "type": "string"
                 },
-                "createdAt": {
+                "created_at": {
                     "type": "string"
                 },
-                "driverId": {
+                "driver_id": {
                     "type": "string"
                 },
                 "emoji": {
@@ -2339,7 +2356,7 @@ const docTemplate = `{
                 "post": {
                     "type": "boolean"
                 },
-                "stTime": {
+                "st_time": {
                     "type": "string"
                 },
                 "state": {
@@ -2348,10 +2365,10 @@ const docTemplate = `{
                 "status": {
                     "type": "string"
                 },
-                "updateTime": {
+                "update_time": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "updated_at": {
                     "type": "string"
                 }
             }
@@ -2359,31 +2376,31 @@ const docTemplate = `{
         "models.LogisticResponse": {
             "type": "object",
             "properties": {
-                "cargoId": {
+                "cargo_id": {
                     "type": "string"
                 },
-                "companyId": {
+                "company_id": {
                     "type": "string"
                 },
-                "companyName": {
+                "company_name": {
                     "type": "string"
                 },
                 "countdown": {
                     "type": "string"
                 },
-                "driverId": {
+                "driver_id": {
                     "type": "string"
                 },
-                "driverName": {
+                "driver_name": {
                     "type": "string"
                 },
-                "driverPosition": {
+                "driver_position": {
                     "type": "string"
                 },
-                "driverSurname": {
+                "driver_surname": {
                     "type": "string"
                 },
-                "driverType": {
+                "driver_type": {
                     "type": "string"
                 },
                 "emoji": {
@@ -2401,7 +2418,7 @@ const docTemplate = `{
                 "post": {
                     "type": "boolean"
                 },
-                "stTime": {
+                "st_time": {
                     "type": "string"
                 },
                 "state": {
@@ -2410,7 +2427,7 @@ const docTemplate = `{
                 "status": {
                     "type": "string"
                 },
-                "updateTime": {
+                "update_time": {
                     "type": "string"
                 }
             }
@@ -2421,16 +2438,16 @@ const docTemplate = `{
                 "company": {
                     "type": "string"
                 },
-                "createdAt": {
+                "created_at": {
                     "type": "string"
                 },
-                "disputedBy": {
+                "disputed_by": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "loadId": {
+                "load_id": {
                     "type": "string"
                 },
                 "reason": {
@@ -2442,10 +2459,10 @@ const docTemplate = `{
                 "status": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "updated_at": {
                     "type": "string"
                 },
-                "whoseFault": {
+                "whose_fault": {
                     "type": "string"
                 }
             }
@@ -2480,25 +2497,25 @@ const docTemplate = `{
         "models.Transaction": {
             "type": "object",
             "properties": {
-                "cargoID": {
+                "cargo_id": {
                     "type": "string"
                 },
                 "cost": {
                     "type": "integer"
                 },
-                "createdAt": {
+                "created_at": {
                     "type": "string"
                 },
-                "deliveryTime": {
+                "delivery_time": {
                     "type": "string"
                 },
                 "driver": {
                     "$ref": "#/definitions/models.Driver"
                 },
-                "driverId": {
+                "driver_id": {
                     "type": "string"
                 },
-                "employeeId": {
+                "employee_id": {
                     "type": "string"
                 },
                 "from": {
@@ -2507,13 +2524,13 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "loadedMiles": {
+                "loaded_miles": {
                     "type": "integer"
                 },
                 "provider": {
                     "type": "string"
                 },
-                "puTime": {
+                "pu_time": {
                     "type": "string"
                 },
                 "rate": {
@@ -2525,10 +2542,10 @@ const docTemplate = `{
                 "to": {
                     "type": "string"
                 },
-                "totalMiles": {
+                "total_miles": {
                     "type": "integer"
                 },
-                "updatedAt": {
+                "updated_at": {
                     "type": "string"
                 }
             }

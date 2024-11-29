@@ -13,27 +13,38 @@ definitions:
       token:
         type: string
     type: object
+  models.ByCompany:
+    properties:
+      company_id:
+        type: string
+      company_name:
+        type: string
+      logistics:
+        items:
+          $ref: '#/definitions/models.LogisticResponse'
+        type: array
+    type: object
   models.Cargo:
     properties:
-      cargoID:
+      cargo_id:
         type: string
       cost:
         type: integer
-      createdAt:
+      created_at:
         type: string
-      deliveryTime:
+      delivery_time:
         type: string
-      employeeId:
+      employee_id:
         type: string
-      freeMiles:
+      free_miles:
         type: integer
       from:
         type: string
       id:
         type: string
-      loadedMiles:
+      loaded_miles:
         type: integer
-      pickUpTime:
+      pick_up_time:
         type: string
       provider:
         type: string
@@ -41,18 +52,18 @@ definitions:
         type: number
       to:
         type: string
-      updatedAt:
+      updated_at:
         type: string
     type: object
   models.Company:
     properties:
       address:
         type: string
-      createdAt:
+      created_at:
         type: string
       dot:
         type: integer
-      driversNumber:
+      drivers_number:
         type: integer
       id:
         type: string
@@ -64,18 +75,18 @@ definitions:
         type: string
       scac:
         type: string
-      startDate:
+      start_date:
         type: string
-      updatedAt:
+      updated_at:
         type: string
     type: object
   models.Driver:
     properties:
       birthday:
         type: string
-      companyId:
+      company_id:
         type: string
-      createdAt:
+      created_at:
         type: string
       id:
         type: string
@@ -83,50 +94,50 @@ definitions:
         type: string
       name:
         type: string
-      phoneNumber:
+      phone_number:
         type: string
       position:
         type: string
-      startDate:
+      start_date:
         type: string
       surname:
         type: string
-      truckNumber:
+      truck_number:
         type: string
       type:
         type: string
-      updatedAt:
+      updated_at:
         type: string
     type: object
   models.Employee:
     properties:
-      accessLevel:
+      access_level:
         type: integer
       birthday:
         type: string
       company:
         type: string
-      createdAt:
+      created_at:
         type: string
       email:
         type: string
       id:
         type: string
-      logoId:
+      logo_id:
         type: string
       name:
         type: string
       password:
         type: string
-      phoneNumber:
+      phone_number:
         type: string
       position:
         type: string
-      startDate:
+      start_date:
         type: string
       surname:
         type: string
-      updatedAt:
+      updated_at:
         type: string
       username:
         type: string
@@ -169,12 +180,12 @@ definitions:
     type: object
   models.GetAllLogisticsResp:
     properties:
+      companies:
+        items:
+          $ref: '#/definitions/models.ByCompany'
+        type: array
       count:
         type: integer
-      logistics:
-        items:
-          $ref: '#/definitions/models.LogisticResponse'
-        type: array
     type: object
   models.GetAllPerformancesResp:
     properties:
@@ -249,11 +260,11 @@ definitions:
     type: object
   models.Logistic:
     properties:
-      cargoId:
+      cargo_id:
         type: string
-      createdAt:
+      created_at:
         type: string
-      driverId:
+      driver_id:
         type: string
       emoji:
         type: string
@@ -265,36 +276,36 @@ definitions:
         type: string
       post:
         type: boolean
-      stTime:
+      st_time:
         type: string
       state:
         type: string
       status:
         type: string
-      updateTime:
+      update_time:
         type: string
-      updatedAt:
+      updated_at:
         type: string
     type: object
   models.LogisticResponse:
     properties:
-      cargoId:
+      cargo_id:
         type: string
-      companyId:
+      company_id:
         type: string
-      companyName:
+      company_name:
         type: string
       countdown:
         type: string
-      driverId:
+      driver_id:
         type: string
-      driverName:
+      driver_name:
         type: string
-      driverPosition:
+      driver_position:
         type: string
-      driverSurname:
+      driver_surname:
         type: string
-      driverType:
+      driver_type:
         type: string
       emoji:
         type: string
@@ -306,26 +317,26 @@ definitions:
         type: string
       post:
         type: boolean
-      stTime:
+      st_time:
         type: string
       state:
         type: string
       status:
         type: string
-      updateTime:
+      update_time:
         type: string
     type: object
   models.Performance:
     properties:
       company:
         type: string
-      createdAt:
+      created_at:
         type: string
-      disputedBy:
+      disputed_by:
         type: string
       id:
         type: string
-      loadId:
+      load_id:
         type: string
       reason:
         type: string
@@ -333,9 +344,9 @@ definitions:
         type: string
       status:
         type: string
-      updatedAt:
+      updated_at:
         type: string
-      whoseFault:
+      whose_fault:
         type: string
     type: object
   models.ResponseError:
@@ -357,29 +368,29 @@ definitions:
     type: object
   models.Transaction:
     properties:
-      cargoID:
+      cargo_id:
         type: string
       cost:
         type: integer
-      createdAt:
+      created_at:
         type: string
-      deliveryTime:
+      delivery_time:
         type: string
       driver:
         $ref: '#/definitions/models.Driver'
-      driverId:
+      driver_id:
         type: string
-      employeeId:
+      employee_id:
         type: string
       from:
         type: string
       id:
         type: string
-      loadedMiles:
+      loaded_miles:
         type: integer
       provider:
         type: string
-      puTime:
+      pu_time:
         type: string
       rate:
         type: number
@@ -387,9 +398,9 @@ definitions:
         type: boolean
       to:
         type: string
-      totalMiles:
+      total_miles:
         type: integer
-      updatedAt:
+      updated_at:
         type: string
     type: object
   swag.CancelLogistic:
