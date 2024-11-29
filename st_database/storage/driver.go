@@ -97,7 +97,7 @@ func (s *DriverRepo) GetAll(ctx context.Context, req models.GetAllDriversReq) (*
 		query = query.Where("company_id = ?", req.CompanyId)
 	}
 
-	if err := query.Find(&resp.Drivers).Offset(int(offset)).Limit(int(req.Limit)).Error; err != nil {
+	if err := query.Find(&resp.Drivers).Preload("Company").Offset(int(offset)).Limit(int(req.Limit)).Error; err != nil {
 		return nil, err
 	}
 
