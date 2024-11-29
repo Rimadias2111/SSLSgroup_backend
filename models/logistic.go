@@ -10,43 +10,43 @@ import (
 )
 
 type Logistic struct {
-	Id         uuid.UUID  `gorm:"primary_key;type:uuid;"`
-	Post       bool       `gorm:"default:false;"`
-	DriverId   uuid.UUID  `gorm:"type:uuid; unique; not null"`
-	Driver     Driver     `gorm:"foreignKey:DriverId;references:Id" swaggerignore:"true"`
-	Status     string     `gorm:"type:varchar(30);not null; default: 'READY'"`
-	UpdateTime time.Time  `gorm:"type:timestamp;not null;"`
-	StTime     *time.Time `gorm:"type:timestamp;"`
-	State      string     `gorm:"type:varchar(90);not null;"`
-	Location   string     `gorm:"type:varchar(90);not null;"`
-	Emoji      string     `gorm:"type:varchar(30);not null; default: ''"`
-	Notion     string     `gorm:"type:varchar(255);not null; default: ''"`
-	CargoId    *uuid.UUID `gorm:"type:uuid;"`
-	Cargo      Cargo      `gorm:"foreignKey:CargoId;references:Id" swaggerignore:"true"`
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
-	DeletedAt  gorm.DeletedAt `gorm:"index" swaggerignore:"true"`
+	Id         uuid.UUID      `gorm:"primary_key;type:uuid;" json:"id"`
+	Post       bool           `gorm:"default:false;" json:"post"`
+	DriverId   uuid.UUID      `gorm:"type:uuid; unique; not null" json:"driver_id"`
+	Driver     Driver         `gorm:"foreignKey:DriverId;references:Id" swaggerignore:"true" json:"driver"`
+	Status     string         `gorm:"type:varchar(30);not null; default: 'READY'" json:"status"`
+	UpdateTime time.Time      `gorm:"type:timestamp;not null;" json:"update_time"`
+	StTime     *time.Time     `gorm:"type:timestamp;" json:"st_time"`
+	State      string         `gorm:"type:varchar(90);not null;" json:"state"`
+	Location   string         `gorm:"type:varchar(90);not null;" json:"location"`
+	Emoji      string         `gorm:"type:varchar(30);not null; default: ''" json:"emoji"`
+	Notion     string         `gorm:"type:varchar(255);not null; default: ''" json:"notion"`
+	CargoId    *uuid.UUID     `gorm:"type:uuid;" json:"cargo_id"`
+	Cargo      Cargo          `gorm:"foreignKey:CargoId;references:Id" swaggerignore:"true" json:"cargo"`
+	CreatedAt  time.Time      `json:"created_at"`
+	UpdatedAt  time.Time      `json:"updated_at"`
+	DeletedAt  gorm.DeletedAt `gorm:"index" swaggerignore:"true" json:"deleted_at"`
 }
 
 type LogisticResponse struct {
-	Id             uuid.UUID
-	Post           bool
-	DriverId       uuid.UUID
-	Status         string
-	UpdateTime     time.Time
-	StTime         *time.Time
-	State          string
-	Location       string
-	Emoji          string
-	Notion         string
-	CargoId        *uuid.UUID
-	DriverName     string
-	DriverSurname  string
-	DriverType     string
-	DriverPosition string
-	Countdown      string
-	CompanyId      uuid.UUID
-	CompanyName    string
+	Id             uuid.UUID  `json:"id"`
+	Post           bool       `json:"post"`
+	DriverId       uuid.UUID  `json:"driver_id"`
+	Status         string     `json:"status"`
+	UpdateTime     time.Time  `json:"update_time"`
+	StTime         *time.Time `json:"st_time"`
+	State          string     `json:"state"`
+	Location       string     `json:"location"`
+	Emoji          string     `json:"emoji"`
+	Notion         string     `json:"notion"`
+	CargoId        *uuid.UUID `json:"cargo_id"`
+	DriverName     string     `json:"driver_name"`
+	DriverSurname  string     `json:"driver_surname"`
+	DriverType     string     `json:"driver_type"`
+	DriverPosition string     `json:"driver_position"`
+	Countdown      string     `json:"countdown"`
+	CompanyId      uuid.UUID  `json:"company_id"`
+	CompanyName    string     `json:"company_name"`
 }
 
 type GetAllLogisticsReq struct {
@@ -61,9 +61,15 @@ type GetAllLogisticsReq struct {
 	Status   string `json:"status"`
 }
 
+type ByCompany struct {
+	CompanyId   uuid.UUID          `json:"company_id"`
+	CompanyName string             `json:"company_name"`
+	Logistics   []LogisticResponse `json:"logistics"`
+}
+
 type GetAllLogisticsResp struct {
-	Logistics []LogisticResponse
-	Count     int64
+	Companies []ByCompany `json:"companies"`
+	Count     int64       `json:"count"`
 }
 
 type GetOverview struct {

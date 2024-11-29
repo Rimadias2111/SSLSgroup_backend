@@ -6,18 +6,21 @@ import (
 )
 
 func CountDown(resp *models.GetAllLogisticsResp) {
-	for i := range resp.Logistics {
-		logistic := &resp.Logistics[i]
-		if logistic.Status == "READY" || logistic.Status == "AT HOME" || logistic.Status == "ready" ||
-			logistic.Status == "READY AT HOME" || logistic.Status == "LET US KNOW" {
-			logistic.Countdown = Utime.Now().Sub(logistic.UpdateTime).String()
-		} else if logistic.Status == "COVERED" {
-			logistic.Countdown = logistic.UpdateTime.Sub(Utime.Now()).String()
-		} else if logistic.Status == "AT PU" || logistic.Status == "AT DEL" ||
-			logistic.Status == "TRUCK ISSUES" {
-			logistic.Countdown = ""
-		} else if logistic.Status == "ETA" || logistic.Status == "ETA WILL BE LATE" {
-			logistic.Countdown = logistic.UpdateTime.Sub(Utime.Now()).String()
+	now := Utime.Now()
+
+	for i := range resp.Companies {
+		for j := range resp.Companies[i].Logistics {
+			logistic := &resp.Companies[i].Logistics[j]
+			switch logistic.Status {
+			case "READY", "AT HOME", "READY AT HOME", "LET US KNOW":
+				logistic.Countdown = now.Sub(logistic.UpdateTime).String()
+			case "COVERED", "ETA", "ETA WILL BE LATE":
+				logistic.Countdown = logistic.UpdateTime.Sub(now).String()
+			case "AT PU", "AT DEL", "TRUCK ISSUES":
+				logistic.Countdown = ""
+			default:
+				logistic.Countdown = ""
+			}
 		}
 	}
 }

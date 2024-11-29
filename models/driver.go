@@ -7,21 +7,21 @@ import (
 )
 
 type Driver struct {
-	Id          uuid.UUID  `gorm:"primary_key;type:uuid;"`
-	Name        string     `gorm:"type:varchar(50);not null;"`
-	Surname     string     `gorm:"type:varchar(50);not null;"`
-	Type        string     `gorm:"type:varchar(50);not null;"`
-	Position    string     `gorm:"type:varchar(50);not null;"`
-	TruckNumber string     `gorm:"type:varchar; not null;"`
-	PhoneNumber string     `gorm:"type:varchar(20);not null;"`
-	Mail        string     `gorm:"type:varchar(50);not null;"`
-	Birthday    time.Time  `gorm:"type:date;not null;"`
-	StartDate   *time.Time `gorm:"type:date;"`
-	CompanyId   uuid.UUID  `gorm:"type:uuid;not null;"`
-	Company     Company    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" swaggerignore:"true"`
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	DeletedAt   gorm.DeletedAt `gorm:"index" swaggerignore:"true"`
+	Id          uuid.UUID      `gorm:"primary_key;type:uuid;" json:"id"`
+	Name        string         `gorm:"type:varchar(50);not null;" json:"name"`
+	Surname     string         `gorm:"type:varchar(50);not null;" json:"surname"`
+	Type        string         `gorm:"type:varchar(50);not null;" json:"type"`
+	Position    string         `gorm:"type:varchar(50);not null;" json:"position"`
+	TruckNumber string         `gorm:"type:varchar; not null;" json:"truck_number"`
+	PhoneNumber string         `gorm:"type:varchar(20);not null;" json:"phone_number"`
+	Mail        string         `gorm:"type:varchar(50);not null;" json:"mail"`
+	Birthday    time.Time      `gorm:"type:date;not null;" json:"birthday"`
+	StartDate   *time.Time     `gorm:"type:date;" json:"start_date"`
+	CompanyId   uuid.UUID      `gorm:"type:uuid;not null;" json:"company_id"`
+	Company     Company        `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" swaggerignore:"true" json:"company"`
+	CreatedAt   time.Time      `json:"created_at"`
+	UpdatedAt   time.Time      `json:"updated_at"`
+	DeletedAt   gorm.DeletedAt `gorm:"index" swaggerignore:"true" json:"deleted_at"`
 }
 
 type GetAllDriversResp struct {

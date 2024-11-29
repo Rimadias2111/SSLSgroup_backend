@@ -85,9 +85,11 @@ func (s *LogisticRepo) Get(ctx context.Context, req models.RequestId) (*models.L
 
 func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq) (*models.GetAllLogisticsResp, error) {
 	var (
-		resp   models.GetAllLogisticsResp
-		query  = s.db.WithContext(ctx).Model(&models.Logistic{}).Joins("JOIN drivers ON drivers.id = logistics.driver_id")
-		offset = (req.Page - 1) * req.Limit
+		resp       models.GetAllLogisticsResp
+		logistics  []models.LogisticResponse
+		query      = s.db.WithContext(ctx).Model(&models.Logistic{}).Joins("JOIN drivers ON drivers.id = logistics.driver_id")
+		offset     = (req.Page - 1) * req.Limit
+		companyIds []uuid.UUID
 	)
 
 	if req.Status != "" {
@@ -160,45 +162,53 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 			`).
 		Offset(int(offset)).
 		Limit(int(req.Limit)).
-		Scan(&resp.Logistics).
+		Scan(&logistics).
 		Error
 	if err != nil {
 		return nil, errors.New("cannot get all logistics")
 	}
 
-	var companyIds []uuid.UUID
-	var companies []models.Company
-	for _, body := range resp.Logistics {
-		companyIds = append(companyIds, body.CompanyId)
+	companyMap := map[uuid.UUID]*models.ByCompany{}
+	for _, logistic := range logistics {
+		if _, exists := companyMap[logistic.CompanyId]; !exists {
+			companyMap[logistic.CompanyId] = &models.ByCompany{
+				CompanyId:   logistic.CompanyId,
+				CompanyName: "",
+				Logistics:   []models.LogisticResponse{},
+			}
+			companyIds = append(companyIds, logistic.CompanyId)
+		}
+		companyMap[logistic.CompanyId].Logistics = append(companyMap[logistic.CompanyId].Logistics, logistic)
 	}
 
-	err = s.db.WithContext(ctx).Model(&models.Company{}).Where("id IN (?)", companyIds).Find(&companies).Error
+	var companies []models.Company
+	err = s.db.WithContext(ctx).Model(&models.Company{}).Where("id IN (?)", companyIds).Select(`id, name`).Scan(&companies).Error
 	if err != nil {
 		return nil, err
 	}
 
-	companyMap := make(map[uuid.UUID]string)
 	for _, company := range companies {
-		companyMap[company.Id] = company.Name
+		if companyInfo, exists := companyMap[company.Id]; exists {
+			companyInfo.CompanyName = company.Name
+		}
 	}
 
-	for i := range resp.Logistics {
-		if name, exists := companyMap[resp.Logistics[i].CompanyId]; exists {
-			resp.Logistics[i].CompanyName = name
-		}
+	resp.Companies = make([]models.ByCompany, 0, len(companyMap))
+	for _, company := range companyMap {
+		resp.Companies = append(resp.Companies, *company)
 	}
 
 	helpers.CountDown(&resp)
 
-	countQuery := s.db.WithContext(ctx).Model(&models.Logistic{})
+	countQuery := s.db.WithContext(ctx).Model(&models.Logistic{}).Joins("JOIN drivers ON drivers.id = logistics.driver_id")
 	if req.Name != "" {
-		countQuery = countQuery.Joins("JOIN drivers ON drivers.id = logistics.driver_id").
-			Where("drivers.name ILIKE ?", "%"+req.Name+"%")
-
-		if req.Type != "" {
-			countQuery = countQuery.Where("drivers.type = ?", req.Type)
-		}
+		countQuery = countQuery.Where("drivers.name ILIKE ?", "%"+req.Name+"%")
 	}
+
+	if req.Type != "" {
+		countQuery = countQuery.Where("drivers.type = ?", req.Type)
+	}
+
 	if req.Status != "" {
 		countQuery = countQuery.Where("logistics.status = ?", req.Status)
 	}

@@ -293,18 +293,7 @@ func (h *Controller) GetAllTransactions(c *gin.Context) {
 		return
 	}
 
-	cargoIdStr := c.Query("cargo_id")
-	var cargoId = uuid.Nil
-	if cargoIdStr != "" {
-		cargoId, err = uuid.Parse(cargoIdStr)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, models.ResponseError{
-				ErrorMessage: "Invalid cargo ID: " + err.Error(),
-				ErrorCode:    "Bad Request",
-			})
-		}
-		return
-	}
+	cargoId := c.Query("cargo_id")
 
 	provider := c.Query("provider")
 	driverName := c.Query("driver_name")

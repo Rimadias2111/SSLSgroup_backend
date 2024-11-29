@@ -7,17 +7,17 @@ import (
 )
 
 type Performance struct {
-	Id         uuid.UUID `gorm:"primary_key;type:uuid;"`
-	Reason     string    `gorm:"type:varchar(255);"`
-	WhoseFault string    `gorm:"type:varchar(255);"`
-	Status     string    `gorm:"type:varchar(30);"`
-	Section    string    `gorm:"type:varchar(255);"`
-	DisputedBy string    `gorm:"type:varchar(255);"`
-	Company    string    `gorm:"type:varchar(255);"`
-	LoadId     string    `gorm:"type:varchar(255); not null;"`
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
-	DeletedAt  gorm.DeletedAt `gorm:"index" swaggerignore:"true"`
+	Id         uuid.UUID      `gorm:"primary_key;type:uuid;" json:"id"`
+	Reason     string         `gorm:"type:varchar(255);" json:"reason"`
+	WhoseFault string         `gorm:"type:varchar(255);" json:"whose_fault"`
+	Status     string         `gorm:"type:varchar(30);" json:"status"`
+	Section    string         `gorm:"type:varchar(255);" json:"section"`
+	DisputedBy string         `gorm:"type:varchar(255);" json:"disputed_by"`
+	Company    string         `gorm:"type:varchar(255);" json:"company"`
+	LoadId     string         `gorm:"type:varchar(255); not null;" json:"load_id"`
+	CreatedAt  time.Time      `json:"created_at"`
+	UpdatedAt  time.Time      `json:"updated_at"`
+	DeletedAt  gorm.DeletedAt `gorm:"index" swaggerignore:"true" json:"deleted_at"`
 }
 
 type GetAllPerformancesReq struct {

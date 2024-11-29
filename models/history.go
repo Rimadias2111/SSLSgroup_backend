@@ -27,6 +27,6 @@ type GetAllHistoryReq struct {
 }
 
 type GetAllHistoryResp struct {
-	Histories []History
-	Count     int64
+	Histories []History `json:"histories"`
+	Count     int64     `json:"count"`
 }
