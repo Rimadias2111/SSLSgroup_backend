@@ -60,7 +60,7 @@ func (t *TransactionRepo) GetAll(ctx context.Context, req models.GetAllTransReq)
 		query  = t.db.WithContext(ctx).Model(&models.Transaction{}).Preload("Driver")
 	)
 
-	if req.CargoID != uuid.Nil {
+	if req.CargoID != "" {
 		query = query.Where("cargo_id = ?", req.CargoID)
 	}
 
