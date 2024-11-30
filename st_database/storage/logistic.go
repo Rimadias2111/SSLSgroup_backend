@@ -191,7 +191,7 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 	}
 
 	var companies []models.Company
-	err = s.db.WithContext(ctx).Model(&models.Company{}).Where("id IN (?)", companyIds).Select(`id, CONCAT(name, ' ', scac) AS name`).Scan(&companies).Error
+	err = s.db.WithContext(ctx).Model(&models.Company{}).Where("id IN (?)", companyIds).Select(`id, CONCAT(name, '   ', scac) AS name`).Scan(&companies).Error
 	if err != nil {
 		return nil, err
 	}
