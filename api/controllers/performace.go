@@ -29,14 +29,32 @@ func (h *Controller) CreatePerformance(c *gin.Context) {
 		return
 	}
 
+	employeeId, err := uuid.Parse(performanceModel.EmployeeId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing employee id: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	companyId, err := uuid.Parse(performanceModel.CompanyId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing company id: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
 	performance := models.Performance{
 		Reason:     performanceModel.Reason,
 		WhoseFault: performanceModel.WhoseFault,
 		Status:     performanceModel.Status,
 		LoadId:     performanceModel.LoadId,
 		Section:    performanceModel.Section,
-		DisputedBy: performanceModel.DisputedBy,
-		Company:    performanceModel.Company,
+		EmployeeId: employeeId,
+		CompanyId:  companyId,
 	}
 
 	id, err := h.service.Performance().Create(c.Request.Context(), &performance)
@@ -84,6 +102,24 @@ func (h *Controller) UpdatePerformance(c *gin.Context) {
 		return
 	}
 
+	employeeId, err := uuid.Parse(performanceModel.EmployeeId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing employee id: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
+	companyId, err := uuid.Parse(performanceModel.CompanyId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Error while parsing company id: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+
 	performance := models.Performance{
 		Id:         performanceId,
 		Reason:     performanceModel.Reason,
@@ -91,8 +127,8 @@ func (h *Controller) UpdatePerformance(c *gin.Context) {
 		Status:     performanceModel.Status,
 		LoadId:     performanceModel.LoadId,
 		Section:    performanceModel.Section,
-		DisputedBy: performanceModel.DisputedBy,
-		Company:    performanceModel.Company,
+		EmployeeId: employeeId,
+		CompanyId:  companyId,
 	}
 
 	if err := h.service.Performance().Update(c.Request.Context(), &performance); err != nil {
@@ -208,8 +244,26 @@ func (h *Controller) GetAllPerformances(c *gin.Context) {
 		return
 	}
 
-	company := c.Query("company")
-	disputedBy := c.Query("disputed_by")
+	companyIdStr := c.Query("company_id")
+	var companyId = uuid.Nil
+	companyId, err = uuid.Parse(companyIdStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid company ID format: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
+	employeeIdStr := c.Query("employee_id")
+	var employeeId = uuid.Nil
+	employeeId, err = uuid.Parse(employeeIdStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, models.ResponseError{
+			ErrorMessage: "Invalid employee ID format: " + err.Error(),
+			ErrorCode:    "Bad Request",
+		})
+		return
+	}
 	section := c.Query("section")
 	whoseFault := c.Query("whose_fault")
 	if whoseFault != "" && whoseFault != "Driver" && whoseFault != "Dispatcher" && whoseFault != "Company" {
@@ -231,11 +285,11 @@ func (h *Controller) GetAllPerformances(c *gin.Context) {
 	req := models.GetAllPerformancesReq{
 		Page:       page,
 		Limit:      limit,
-		Company:    company,
+		CompanyId:  companyId,
 		Section:    section,
 		WhoseFault: whoseFault,
 		Status:     status,
-		DisputedBy: disputedBy,
+		EmployeeId: employeeId,
 	}
 
 	performances, err := h.service.Performance().GetAll(c.Request.Context(), req)

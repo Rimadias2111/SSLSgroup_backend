@@ -650,9 +650,10 @@ func (h *Controller) CancelLateLogistic(c *gin.Context) {
 		return
 	}
 
-	if req.Company == "" {
+	compId, err := uuid.Parse(req.CompanyId)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
-			ErrorMessage: "Error while parsing company: ",
+			ErrorMessage: err.Error(),
 			ErrorCode:    "Bad Request",
 		})
 		return
@@ -706,7 +707,7 @@ func (h *Controller) CancelLateLogistic(c *gin.Context) {
 		return
 	}
 
-	err = h.service.Logistic().CancelLate(c.Request.Context(), req, models.RequestId{Id: logisticId}, models.RequestId{Id: empId})
+	err = h.service.Logistic().CancelLate(c.Request.Context(), req, models.RequestId{Id: logisticId}, models.RequestId{Id: empId}, models.RequestId{Id: compId})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ResponseError{
 			ErrorMessage: err.Error(),

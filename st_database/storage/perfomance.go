@@ -37,7 +37,7 @@ func (s *PerformanceRepo) Create(ctx context.Context, performance *models.Perfor
 
 func (s *PerformanceRepo) Update(ctx context.Context, performance *models.Performance) error {
 	return s.db.WithContext(ctx).Model(performance).
-		Omit("Id", "DisputedBy").Updates(performance).Error
+		Omit("Id", "EmployeeId").Updates(performance).Error
 }
 
 func (s *PerformanceRepo) Delete(ctx context.Context, req models.RequestId) error {
@@ -61,8 +61,8 @@ func (s *PerformanceRepo) GetAll(ctx context.Context, req models.GetAllPerforman
 		query  = s.db.WithContext(ctx).Model(&models.Performance{})
 	)
 
-	if req.Company != "" {
-		query = query.Where("company = ?", req.Company)
+	if req.CompanyId != uuid.Nil {
+		query = query.Where("company_id = ?", req.CompanyId)
 	}
 
 	if req.Status != "" {
@@ -77,8 +77,8 @@ func (s *PerformanceRepo) GetAll(ctx context.Context, req models.GetAllPerforman
 		query = query.Where("whose_fault = ?", req.WhoseFault)
 	}
 
-	if req.DisputedBy != "" {
-		query = query.Where("disputed_by = ?", req.DisputedBy)
+	if req.EmployeeId != uuid.Nil {
+		query = query.Where("employee_id = ?", req.EmployeeId)
 	}
 
 	err := query.Find(&resp.Performances).Offset(int(offset)).Limit(int(req.Limit)).Error

@@ -328,11 +328,11 @@ definitions:
     type: object
   models.Performance:
     properties:
-      company:
+      company_id:
         type: string
       created_at:
         type: string
-      disputed_by:
+      employee_id:
         type: string
       id:
         type: string
@@ -407,7 +407,7 @@ definitions:
     properties:
       cancel:
         type: boolean
-      company:
+      company_id:
         type: string
       logistic_id:
         type: string
@@ -506,9 +506,9 @@ definitions:
     type: object
   swag.CreateUpdatePerformance:
     properties:
-      company:
+      company_id:
         type: string
-      disputed_by:
+      employee_id:
         type: string
       load_id:
         type: string

@@ -5,7 +5,7 @@ type CreateUpdatePerformance struct {
 	WhoseFault string `json:"whose_fault"`
 	Status     string `json:"status"`
 	Section    string `json:"section"`
-	DisputedBy string `json:"disputed_by"`
-	Company    string `json:"company"`
+	EmployeeId string `json:"employee_id"`
+	CompanyId  string `json:"company_id"`
 	LoadId     string `json:"load_id"`
 }

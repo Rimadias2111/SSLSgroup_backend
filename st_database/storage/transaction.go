@@ -57,7 +57,7 @@ func (t *TransactionRepo) GetAll(ctx context.Context, req models.GetAllTransReq)
 	var (
 		resp   models.GetAllTransResp
 		offset = (req.Page - 1) * req.Limit
-		query  = t.db.WithContext(ctx).Model(&models.Transaction{}).Preload("Driver")
+		query  = t.db.WithContext(ctx).Model(&models.Transaction{}).Preload("Driver").Preload("Employee")
 	)
 
 	if req.CargoID != "" {

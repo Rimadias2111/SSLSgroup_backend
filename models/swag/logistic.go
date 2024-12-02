@@ -44,5 +44,5 @@ type CancelLogistic struct {
 	Status     string `json:"status"`
 	Section    string `json:"section"`
 	Reason     string `json:"reason"`
-	Company    string `json:"company"`
+	CompanyId  string `json:"company_id"`
 }

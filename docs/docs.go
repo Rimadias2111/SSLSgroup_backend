@@ -2435,13 +2435,13 @@ const docTemplate = `{
         "models.Performance": {
             "type": "object",
             "properties": {
-                "company": {
+                "company_id": {
                     "type": "string"
                 },
                 "created_at": {
                     "type": "string"
                 },
-                "disputed_by": {
+                "employee_id": {
                     "type": "string"
                 },
                 "id": {
@@ -2556,7 +2556,7 @@ const docTemplate = `{
                 "cancel": {
                     "type": "boolean"
                 },
-                "company": {
+                "company_id": {
                     "type": "string"
                 },
                 "logistic_id": {
@@ -2707,10 +2707,10 @@ const docTemplate = `{
         "swag.CreateUpdatePerformance": {
             "type": "object",
             "properties": {
-                "company": {
+                "company_id": {
                     "type": "string"
                 },
-                "disputed_by": {
+                "employee_id": {
                     "type": "string"
                 },
                 "load_id": {

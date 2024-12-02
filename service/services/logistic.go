@@ -247,7 +247,7 @@ func (s *LogisticService) Terminate(ctx context.Context, req models.RequestId, s
 	return nil
 }
 
-func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogistic, reqId models.RequestId, idEmp models.RequestId) error {
+func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogistic, reqId models.RequestId, empId models.RequestId, compId models.RequestId) error {
 	db := s.store.DB()
 
 	err := db.Transaction(func(tx *gorm.DB) error {
@@ -260,23 +260,14 @@ func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogisti
 			return errors.New("cargo not found")
 		}
 
-		var employee *models.Employee = &models.Employee{}
-		if idEmp.Id == uuid.Nil {
-			return errors.New("employee not found")
-		}
-		employee, getErr = s.store.Employee().Get(ctx, idEmp)
-		if getErr != nil {
-			return getErr
-		}
-
 		if req.Cancel {
 			_, err := s.store.Performance().Create(ctx, &models.Performance{
 				Reason:     req.Reason,
 				WhoseFault: req.WhoseFault,
 				Status:     req.Status,
 				Section:    req.Section,
-				DisputedBy: employee.Name + employee.Surname,
-				Company:    req.Company,
+				EmployeeId: empId.Id,
+				CompanyId:  compId.Id,
 				LoadId:     logistic.Cargo.CargoID,
 			}, tx)
 			if err != nil {
@@ -347,8 +338,8 @@ func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogisti
 				WhoseFault: req.WhoseFault,
 				Status:     req.Status,
 				Section:    req.Section,
-				DisputedBy: employee.Name + employee.Surname,
-				Company:    req.Company,
+				EmployeeId: empId.Id,
+				CompanyId:  compId.Id,
 				LoadId:     logistic.Cargo.CargoID,
 			}, tx)
 			if err != nil {
