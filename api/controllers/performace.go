@@ -246,24 +246,30 @@ func (h *Controller) GetAllPerformances(c *gin.Context) {
 
 	companyIdStr := c.Query("company_id")
 	var companyId = uuid.Nil
-	companyId, err = uuid.Parse(companyIdStr)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, models.ResponseError{
-			ErrorMessage: "Invalid company ID format: " + err.Error(),
-			ErrorCode:    "Bad Request",
-		})
-		return
+	if companyIdStr != "" {
+		companyId, err = uuid.Parse(companyIdStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, models.ResponseError{
+				ErrorMessage: "Invalid company ID format: " + err.Error(),
+				ErrorCode:    "Bad Request",
+			})
+			return
+		}
 	}
+
 	employeeIdStr := c.Query("employee_id")
 	var employeeId = uuid.Nil
-	employeeId, err = uuid.Parse(employeeIdStr)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, models.ResponseError{
-			ErrorMessage: "Invalid employee ID format: " + err.Error(),
-			ErrorCode:    "Bad Request",
-		})
-		return
+	if employeeIdStr != "" {
+		employeeId, err = uuid.Parse(employeeIdStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, models.ResponseError{
+				ErrorMessage: "Invalid employee ID format: " + err.Error(),
+				ErrorCode:    "Bad Request",
+			})
+			return
+		}
 	}
+
 	section := c.Query("section")
 	whoseFault := c.Query("whose_fault")
 	if whoseFault != "" && whoseFault != "Driver" && whoseFault != "Dispatcher" && whoseFault != "Company" {
