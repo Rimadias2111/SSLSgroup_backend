@@ -18,6 +18,8 @@ func CountDown(resp *models.GetAllLogisticsResp) {
 				logistic.Countdown = logistic.UpdateTime.Sub(now).String()
 			case "AT PU", "AT DEL", "TRUCK ISSUES":
 				logistic.Countdown = ""
+			case "WILL BE READY":
+				logistic.Countdown = logistic.StTime.Sub(now).String()
 			default:
 				logistic.Countdown = ""
 			}
