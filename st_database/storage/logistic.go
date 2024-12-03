@@ -137,6 +137,7 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 					logistics.notion as notion,
 					logistics.emoji as emoji,
 					logistics.cargo_id as cargo_id,
+					logistics.updated_at as updated_at,
 					drivers.name as driver_name,
 					drivers.surname as driver_surname,
 					drivers.type as driver_type,

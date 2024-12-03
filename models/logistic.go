@@ -47,6 +47,7 @@ type LogisticResponse struct {
 	Countdown      string     `json:"countdown"`
 	CompanyId      uuid.UUID  `json:"company_id"`
 	CompanyName    string     `json:"company_name"`
+	UpdatedAt      time.Time  `json:"updated_at"`
 }
 
 type GetAllLogisticsReq struct {
