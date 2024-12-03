@@ -281,7 +281,7 @@ func (h *Controller) GetAllPerformances(c *gin.Context) {
 	}
 
 	status := c.Query("status")
-	if status != "" && status != "success" && status != "cancelled" {
+	if status != "" && status != "success" && status != "canceled" {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Invalid query parameter: ",
 			ErrorCode:    "Bad Request",
