@@ -178,6 +178,7 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 		}
 	}
 
+	var companyOrder []uuid.UUID
 	companyMap := map[uuid.UUID]*models.ByCompany{}
 	for _, logistic := range logistics {
 		if _, exists := companyMap[logistic.CompanyId]; !exists {
@@ -187,6 +188,7 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 				Logistics:   []models.LogisticResponse{},
 			}
 			companyIds = append(companyIds, logistic.CompanyId)
+			companyOrder = append(companyOrder, logistic.CompanyId)
 		}
 		companyMap[logistic.CompanyId].Logistics = append(companyMap[logistic.CompanyId].Logistics, logistic)
 	}
@@ -203,9 +205,9 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 		}
 	}
 
-	resp.Companies = make([]models.ByCompany, 0, len(companyMap))
-	for _, company := range companyMap {
-		resp.Companies = append(resp.Companies, *company)
+	resp.Companies = make([]models.ByCompany, 0, len(companyOrder))
+	for _, companyId := range companyOrder {
+		resp.Companies = append(resp.Companies, *companyMap[companyId])
 	}
 
 	helpers.CountDown(&resp)
