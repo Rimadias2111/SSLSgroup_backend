@@ -58,7 +58,7 @@ func (s *PerformanceRepo) GetAll(ctx context.Context, req models.GetAllPerforman
 	var (
 		resp   models.GetAllPerformancesResp
 		offset = (req.Page - 1) * req.Limit
-		query  = s.db.WithContext(ctx).Model(&models.Performance{})
+		query  = s.db.WithContext(ctx).Model(&models.Performance{}).Preload("Company").Preload("Employee")
 	)
 
 	if req.CompanyId != uuid.Nil {
