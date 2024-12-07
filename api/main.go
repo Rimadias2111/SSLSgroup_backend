@@ -27,10 +27,10 @@ func Construct(cont controllers.Controller) *gin.Engine {
 	// To start again
 	r.Static("/images", "./public/images")
 
-	r.GET("/", func(c *gin.Context) { c.JSON(200, gin.H{"message": "pong"}) })
-
 	api := r.Group("/v1")
 	{
+		r.GET("/", func(c *gin.Context) { c.JSON(200, gin.H{"message": "pong"}) })
+
 		//Auth endpoints
 		api.POST("/login", cont.Login)
 

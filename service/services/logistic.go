@@ -46,18 +46,34 @@ func (s *LogisticService) Update(ctx context.Context, req *models.Logistic, by m
 			return err
 		}
 
-		//_, err = s.store.History().Create(ctx, &models.History{
-		//	DriverName:   oldLogistic.Driver.Name + oldLogistic.Driver.Surname,
-		//	LogisticId:   req.Id,
-		//	FromLogistic: models.JSONBLogistic{Logistic: *oldLogistic},
-		//	ToLogistic:   models.JSONBLogistic{Logistic: *req},
-		//	FromCargo:    nil,
-		//	ToCargo:      nil,
-		//	EmployeeId:   by.Id,
-		//}, tx)
-		//if err != nil {
-		//	return err
-		//}
+		_, err = s.store.History().Create(ctx, &models.History{
+			DriverName: oldLogistic.Driver.Name + oldLogistic.Driver.Surname,
+			LogisticId: req.Id,
+			FromLogistic: models.JSONBLogistic{
+				Post:       oldLogistic.Post,
+				Status:     oldLogistic.Status,
+				UpdateTime: oldLogistic.UpdateTime,
+				StTime:     oldLogistic.StTime,
+				State:      oldLogistic.State,
+				Location:   oldLogistic.Location,
+				Notion:     oldLogistic.Notion,
+			},
+			ToLogistic: models.JSONBLogistic{
+				Post:       req.Post,
+				Status:     req.Status,
+				UpdateTime: req.UpdateTime,
+				StTime:     req.StTime,
+				State:      req.State,
+				Location:   req.Location,
+				Notion:     req.Notion,
+			},
+			FromCargo:  nil,
+			ToCargo:    nil,
+			EmployeeId: by.Id,
+		}, tx)
+		if err != nil {
+			return err
+		}
 
 		return nil
 	})
@@ -102,10 +118,10 @@ func (s *LogisticService) UpdateWithCargo(ctx context.Context, logistic *models.
 		err error
 	)
 	transErr := db.Transaction(func(tx *gorm.DB) error {
-		//oldLogistic, errG := s.store.Logistic().Get(ctx, models.RequestId{Id: logistic.Id})
-		//if errG != nil {
-		//	return errG
-		//}
+		oldLogistic, errG := s.store.Logistic().Get(ctx, models.RequestId{Id: logistic.Id})
+		if errG != nil {
+			return errG
+		}
 
 		if create {
 			id, err = s.store.Cargo().Create(ctx, cargo, tx)
@@ -118,18 +134,47 @@ func (s *LogisticService) UpdateWithCargo(ctx context.Context, logistic *models.
 				return errP
 			}
 
-			//_, errH := s.store.History().Create(ctx, &models.History{
-			//	DriverName:   oldLogistic.Driver.Name + oldLogistic.Driver.Surname,
-			//	LogisticId:   logistic.Id,
-			//	FromLogistic: models.JSONBLogistic{Logistic: *oldLogistic},
-			//	ToLogistic:   models.JSONBLogistic{Logistic: *logistic},
-			//	FromCargo:    nil,
-			//	ToCargo:      &models.JSONBCargo{Cargo: *cargo},
-			//	EmployeeId:   by.Id,
-			//})
-			//if errH != nil {
-			//	return errH
-			//}
+			_, errH := s.store.History().Create(ctx, &models.History{
+				DriverName: oldLogistic.Driver.Name + oldLogistic.Driver.Surname,
+				LogisticId: logistic.Id,
+				FromLogistic: models.JSONBLogistic{
+					Post:       oldLogistic.Post,
+					Status:     oldLogistic.Status,
+					UpdateTime: oldLogistic.UpdateTime,
+					StTime:     oldLogistic.StTime,
+					State:      oldLogistic.State,
+					Location:   oldLogistic.Location,
+					Notion:     oldLogistic.Notion,
+				},
+				ToLogistic: models.JSONBLogistic{
+					Post:       logistic.Post,
+					Status:     logistic.Status,
+					UpdateTime: logistic.UpdateTime,
+					StTime:     logistic.StTime,
+					State:      logistic.State,
+					Location:   logistic.Location,
+					Notion:     logistic.Notion,
+				},
+				FromCargo: nil,
+				ToCargo: &models.JSONBCargo{
+					Id:           cargo.Id,
+					CargoID:      cargo.CargoID,
+					Provider:     cargo.Provider,
+					LoadedMiles:  cargo.LoadedMiles,
+					FreeMiles:    cargo.FreeMiles,
+					From:         cargo.From,
+					To:           cargo.To,
+					Cost:         cargo.Cost,
+					Rate:         cargo.Rate,
+					PickUpTime:   cargo.PickUpTime,
+					DeliveryTime: cargo.DeliveryTime,
+					EmployeeId:   cargo.EmployeeId,
+				},
+				EmployeeId: by.Id,
+			})
+			if errH != nil {
+				return errH
+			}
 
 			logistic.CargoId = &cargoId
 		} else {
@@ -139,23 +184,65 @@ func (s *LogisticService) UpdateWithCargo(ctx context.Context, logistic *models.
 			}
 			id = cargo.Id.String()
 
-			//oldCargo, errG := s.store.Cargo().Get(ctx, models.RequestId{Id: cargo.Id})
-			//if errG != nil {
-			//	return errG
-			//}
+			oldCargo, errG := s.store.Cargo().Get(ctx, models.RequestId{Id: cargo.Id})
+			if errG != nil {
+				return errG
+			}
 
-			//_, errH := s.store.History().Create(ctx, &models.History{
-			//	DriverName:   oldLogistic.Driver.Name + oldLogistic.Driver.Surname,
-			//	LogisticId:   logistic.Id,
-			//	FromLogistic: models.JSONBLogistic{Logistic: *oldLogistic},
-			//	ToLogistic:   models.JSONBLogistic{Logistic: *logistic},
-			//	FromCargo:    &models.JSONBCargo{Cargo: *oldCargo},
-			//	ToCargo:      &models.JSONBCargo{Cargo: *cargo},
-			//	EmployeeId:   by.Id,
-			//})
-			//if errH != nil {
-			//	return errH
-			//}
+			_, errH := s.store.History().Create(ctx, &models.History{
+				DriverName: oldLogistic.Driver.Name + oldLogistic.Driver.Surname,
+				LogisticId: logistic.Id,
+				FromLogistic: models.JSONBLogistic{
+					Post:       oldLogistic.Post,
+					Status:     oldLogistic.Status,
+					UpdateTime: oldLogistic.UpdateTime,
+					StTime:     oldLogistic.StTime,
+					State:      oldLogistic.State,
+					Location:   oldLogistic.Location,
+					Notion:     oldLogistic.Notion,
+				},
+				ToLogistic: models.JSONBLogistic{
+					Post:       logistic.Post,
+					Status:     logistic.Status,
+					UpdateTime: logistic.UpdateTime,
+					StTime:     logistic.StTime,
+					State:      logistic.State,
+					Location:   logistic.Location,
+					Notion:     logistic.Notion,
+				},
+				FromCargo: &models.JSONBCargo{
+					Id:           oldCargo.Id,
+					CargoID:      oldCargo.CargoID,
+					Provider:     oldCargo.Provider,
+					LoadedMiles:  oldCargo.LoadedMiles,
+					FreeMiles:    oldCargo.FreeMiles,
+					From:         oldCargo.From,
+					To:           oldCargo.To,
+					Cost:         oldCargo.Cost,
+					Rate:         oldCargo.Rate,
+					PickUpTime:   oldCargo.PickUpTime,
+					DeliveryTime: oldCargo.DeliveryTime,
+					EmployeeId:   oldCargo.EmployeeId,
+				},
+				ToCargo: &models.JSONBCargo{
+					Id:           cargo.Id,
+					CargoID:      cargo.CargoID,
+					Provider:     cargo.Provider,
+					LoadedMiles:  cargo.LoadedMiles,
+					FreeMiles:    cargo.FreeMiles,
+					From:         cargo.From,
+					To:           cargo.To,
+					Cost:         cargo.Cost,
+					Rate:         cargo.Rate,
+					PickUpTime:   cargo.PickUpTime,
+					DeliveryTime: cargo.DeliveryTime,
+					EmployeeId:   cargo.EmployeeId,
+				},
+				EmployeeId: by.Id,
+			})
+			if errH != nil {
+				return errH
+			}
 		}
 
 		err = s.store.Logistic().Update(ctx, logistic, tx)
@@ -214,29 +301,47 @@ func (s *LogisticService) Terminate(ctx context.Context, req models.RequestId, s
 			return errU
 		}
 
-		//_, errH := s.store.History().Create(ctx, &models.History{
-		//	DriverName:   logistic.Driver.Name + logistic.Driver.Surname,
-		//	LogisticId:   logistic.Id,
-		//	FromLogistic: models.JSONBLogistic{Logistic: *logistic},
-		//	ToLogistic: models.JSONBLogistic{Logistic: models.Logistic{
-		//		Id:         logistic.Id,
-		//		Post:       false,
-		//		Status:     "READY",
-		//		UpdateTime: Utime.Now(),
-		//		StTime:     nil,
-		//		State:      logistic.State,
-		//		Location:   logistic.Location,
-		//		Emoji:      "",
-		//		Notion:     "",
-		//		CargoId:    nil,
-		//	}},
-		//	FromCargo:  &models.JSONBCargo{Cargo: logistic.Cargo},
-		//	ToCargo:    nil,
-		//	EmployeeId: by.Id,
-		//}, tx)
-		//if errH != nil {
-		//	return errH
-		//}
+		_, errH := s.store.History().Create(ctx, &models.History{
+			DriverName: logistic.Driver.Name + logistic.Driver.Surname,
+			LogisticId: logistic.Id,
+			FromLogistic: models.JSONBLogistic{
+				Post:       logistic.Post,
+				Status:     logistic.Status,
+				UpdateTime: logistic.UpdateTime,
+				StTime:     logistic.StTime,
+				State:      logistic.State,
+				Location:   logistic.Location,
+				Notion:     logistic.Notion,
+			},
+			ToLogistic: models.JSONBLogistic{
+				Post:       false,
+				Status:     "READY",
+				UpdateTime: Utime.Now(),
+				StTime:     nil,
+				State:      logistic.State,
+				Location:   logistic.Location,
+				Notion:     "",
+			},
+			FromCargo: &models.JSONBCargo{
+				Id:           logistic.Cargo.Id,
+				CargoID:      logistic.Cargo.CargoID,
+				Provider:     logistic.Cargo.Provider,
+				LoadedMiles:  logistic.Cargo.LoadedMiles,
+				FreeMiles:    logistic.Cargo.FreeMiles,
+				From:         logistic.Cargo.From,
+				To:           logistic.Cargo.To,
+				Cost:         logistic.Cargo.Cost,
+				Rate:         logistic.Cargo.Rate,
+				PickUpTime:   logistic.Cargo.PickUpTime,
+				DeliveryTime: logistic.Cargo.DeliveryTime,
+				EmployeeId:   logistic.Cargo.EmployeeId,
+			},
+			ToCargo:    nil,
+			EmployeeId: by.Id,
+		}, tx)
+		if errH != nil {
+			return errH
+		}
 
 		return nil
 	})
@@ -309,29 +414,47 @@ func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogisti
 				return errU
 			}
 
-			//_, errH := s.store.History().Create(ctx, &models.History{
-			//	DriverName:   logistic.Driver.Name + logistic.Driver.Surname,
-			//	LogisticId:   logistic.Id,
-			//	FromLogistic: models.JSONBLogistic{Logistic: *logistic},
-			//	ToLogistic: models.JSONBLogistic{Logistic: models.Logistic{
-			//		Id:         logistic.Id,
-			//		Post:       false,
-			//		Status:     "READY",
-			//		UpdateTime: Utime.Now(),
-			//		StTime:     nil,
-			//		State:      logistic.State,
-			//		Location:   logistic.Location,
-			//		Emoji:      "",
-			//		Notion:     "",
-			//		CargoId:    nil,
-			//	}},
-			//	FromCargo:  &models.JSONBCargo{Cargo: logistic.Cargo},
-			//	ToCargo:    nil,
-			//	EmployeeId: idEmp.Id,
-			//}, tx)
-			//if errH != nil {
-			//	return errH
-			//}
+			_, errH := s.store.History().Create(ctx, &models.History{
+				DriverName: logistic.Driver.Name + logistic.Driver.Surname,
+				LogisticId: logistic.Id,
+				FromLogistic: models.JSONBLogistic{
+					Post:       logistic.Post,
+					Status:     logistic.Status,
+					UpdateTime: logistic.UpdateTime,
+					StTime:     logistic.StTime,
+					State:      logistic.State,
+					Location:   logistic.Location,
+					Notion:     logistic.Notion,
+				},
+				ToLogistic: models.JSONBLogistic{
+					Post:       false,
+					Status:     "READY",
+					UpdateTime: Utime.Now(),
+					StTime:     nil,
+					State:      logistic.State,
+					Location:   logistic.Location,
+					Notion:     "",
+				},
+				FromCargo: &models.JSONBCargo{
+					Id:           logistic.Cargo.Id,
+					CargoID:      logistic.Cargo.CargoID,
+					Provider:     logistic.Cargo.Provider,
+					LoadedMiles:  logistic.Cargo.LoadedMiles,
+					FreeMiles:    logistic.Cargo.FreeMiles,
+					From:         logistic.Cargo.From,
+					To:           logistic.Cargo.To,
+					Cost:         logistic.Cargo.Cost,
+					Rate:         logistic.Cargo.Rate,
+					PickUpTime:   logistic.Cargo.PickUpTime,
+					DeliveryTime: logistic.Cargo.DeliveryTime,
+					EmployeeId:   logistic.Cargo.EmployeeId,
+				},
+				ToCargo:    nil,
+				EmployeeId: empId.Id,
+			}, tx)
+			if errH != nil {
+				return errH
+			}
 		} else {
 			_, err := s.store.Performance().Create(ctx, &models.Performance{
 				Reason:     req.Reason,

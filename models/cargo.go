@@ -1,9 +1,6 @@
 package models
 
 import (
-	"database/sql/driver"
-	"encoding/json"
-	"fmt"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"time"
@@ -25,21 +22,4 @@ type Cargo struct {
 	CreatedAt    time.Time      `json:"created_at"`
 	UpdatedAt    time.Time      `json:"updated_at"`
 	DeletedAt    gorm.DeletedAt `gorm:"index" swaggerignore:"true" json:"deleted_at"`
-}
-
-type JSONBCargo struct {
-	Cargo Cargo
-}
-
-func (j *JSONBCargo) Scan(value interface{}) error {
-	bytes, ok := value.([]byte)
-	if !ok {
-		return fmt.Errorf("failed to unmarshal JSONB value: %v", value)
-	}
-
-	return json.Unmarshal(bytes, &j.Cargo)
-}
-
-func (j *JSONBCargo) Value() (driver.Value, error) {
-	return json.Marshal(j.Cargo)
 }
