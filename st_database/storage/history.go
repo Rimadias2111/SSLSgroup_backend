@@ -54,7 +54,7 @@ func (s *HistoryRepo) Delete(ctx context.Context, req models.RequestId) error {
 
 func (s *HistoryRepo) Get(ctx context.Context, req models.RequestId) (*models.History, error) {
 	var history models.History
-	err := s.db.WithContext(ctx).Model(&models.History{}).Where("id = ?", req.Id).First(&history).Error
+	err := s.db.WithContext(ctx).Model(&models.History{}).Preload("Employee").Where("id = ?", req.Id).First(&history).Error
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +66,7 @@ func (s *HistoryRepo) GetAll(ctx context.Context, req models.GetAllHistoryReq) (
 	var (
 		resp   models.GetAllHistoryResp
 		offset = int((req.Page - 1) * req.Limit)
-		query  = s.db.WithContext(ctx).Model(&models.History{})
+		query  = s.db.WithContext(ctx).Model(&models.History{}).Preload("Employee")
 	)
 
 	err := query.Find(&resp.Histories).Offset(offset).Limit(int(req.Limit)).
