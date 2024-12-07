@@ -13,8 +13,8 @@ type History struct {
 	Id           uuid.UUID      `gorm:"primary_key;type:uuid" json:"id"`
 	DriverName   string         `gorm:"size:255;not null" json:"driver_name"`
 	LogisticId   uuid.UUID      `gorm:"type:uuid; not null" json:"logistic_id"`
-	FromLogistic JSONBLogistic  `gorm:"type:jsonb;" json:"from_logistic"`
-	ToLogistic   JSONBLogistic  `gorm:"type:jsonb;" json:"to_logistic"`
+	FromLogistic JSONBLogistic  `gorm:"type:jsonb;" json:"from_logistics"`
+	ToLogistic   JSONBLogistic  `gorm:"type:jsonb;" json:"to_logistics"`
 	FromCargo    *JSONBCargo    `gorm:"type:jsonb;" json:"from_cargo"`
 	ToCargo      *JSONBCargo    `gorm:"type:jsonb;" json:"to_cargo"`
 	EmployeeId   uuid.UUID      `gorm:"type:uuid; not null" json:"employee_id"`
