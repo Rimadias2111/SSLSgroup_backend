@@ -4,132 +4,84 @@
         "state": "NY"
     },
     {
+        "city": "Buffalo",
+        "state": "NY"
+    },
+    {
+        "city": "Rochester",
+        "state": "NY"
+    },
+    {
+        "city": "Yonkers",
+        "state": "NY"
+    },
+    {
+        "city": "Syracuse",
+        "state": "NY"
+    },
+    {
+        "city": "Albany",
+        "state": "NY"
+    },
+    {
+        "city": "New Rochelle",
+        "state": "NY"
+    },
+    {
+        "city": "Mount Vernon",
+        "state": "NY"
+    },
+    {
+        "city": "Schenectady",
+        "state": "NY"
+    },
+    {
+        "city": "Utica",
+        "state": "NY"
+    },
+    {
+        "city": "White Plains",
+        "state": "NY"
+    },
+    {
+        "city": "Hempstead",
+        "state": "NY"
+    },
+    {
+        "city": "Troy",
+        "state": "NY"
+    },
+    {
+        "city": "Niagara Falls",
+        "state": "NY"
+    },
+    {
+        "city": "Binghamton",
+        "state": "NY"
+    },
+    {
+        "city": "Freeport",
+        "state": "NY"
+    },
+    {
+        "city": "Valley Stream",
+        "state": "NY"
+    },
+    {
         "city": "Los Angeles",
         "state": "CA"
-    },
-    {
-        "city": "Chicago",
-        "state": "IL"
-    },
-    {
-        "city": "Houston",
-        "state": "TX"
-    },
-    {
-        "city": "Phoenix",
-        "state": "AZ"
-    },
-    {
-        "city": "Philadelphia",
-        "state": "PA"
-    },
-    {
-        "city": "San Antonio",
-        "state": "TX"
     },
     {
         "city": "San Diego",
         "state": "CA"
     },
     {
-        "city": "Dallas",
-        "state": "TX"
-    },
-    {
         "city": "San Jose",
         "state": "CA"
     },
     {
-        "city": "Austin",
-        "state": "TX"
-    },
-    {
-        "city": "Jacksonville",
-        "state": "FL"
-    },
-    {
-        "city": "Fort Worth",
-        "state": "TX"
-    },
-    {
-        "city": "Columbus",
-        "state": "OH"
-    },
-    {
-        "city": "Charlotte",
-        "state": "NC"
-    },
-    {
         "city": "San Francisco",
         "state": "CA"
-    },
-    {
-        "city": "Indianapolis",
-        "state": "IN"
-    },
-    {
-        "city": "Seattle",
-        "state": "WA"
-    },
-    {
-        "city": "Denver",
-        "state": "CO"
-    },
-    {
-        "city": "Washington",
-        "state": "DC"
-    },
-    {
-        "city": "Boston",
-        "state": "MA"
-    },
-    {
-        "city": "El Paso",
-        "state": "TX"
-    },
-    {
-        "city": "Nashville",
-        "state": "TN"
-    },
-    {
-        "city": "Detroit",
-        "state": "MI"
-    },
-    {
-        "city": "Portland",
-        "state": "OR"
-    },
-    {
-        "city": "Memphis",
-        "state": "TN"
-    },
-    {
-        "city": "Oklahoma City",
-        "state": "OK"
-    },
-    {
-        "city": "Las Vegas",
-        "state": "NV"
-    },
-    {
-        "city": "Louisville",
-        "state": "KY"
-    },
-    {
-        "city": "Baltimore",
-        "state": "MD"
-    },
-    {
-        "city": "Milwaukee",
-        "state": "WI"
-    },
-    {
-        "city": "Albuquerque",
-        "state": "NM"
-    },
-    {
-        "city": "Tucson",
-        "state": "AZ"
     },
     {
         "city": "Fresno",
@@ -140,1263 +92,847 @@
         "state": "CA"
     },
     {
-        "city": "Kansas City",
-        "state": "MO"
+        "city": "Long Beach",
+        "state": "CA"
     },
     {
-        "city": "Atlanta",
-        "state": "GA"
+        "city": "Oakland",
+        "state": "CA"
     },
     {
-        "city": "Omaha",
-        "state": "NE"
+        "city": "Bakersfield",
+        "state": "CA"
     },
     {
-        "city": "Raleigh",
-        "state": "NC"
+        "city": "Anaheim",
+        "state": "CA"
+    },
+    {
+        "city": "Houston",
+        "state": "TX"
+    },
+    {
+        "city": "San Antonio",
+        "state": "TX"
+    },
+    {
+        "city": "Dallas",
+        "state": "TX"
+    },
+    {
+        "city": "Austin",
+        "state": "TX"
+    },
+    {
+        "city": "Fort Worth",
+        "state": "TX"
+    },
+    {
+        "city": "El Paso",
+        "state": "TX"
+    },
+    {
+        "city": "Arlington",
+        "state": "TX"
+    },
+    {
+        "city": "Corpus Christi",
+        "state": "TX"
+    },
+    {
+        "city": "Plano",
+        "state": "TX"
+    },
+    {
+        "city": "Laredo",
+        "state": "TX"
+    },
+    {
+        "city": "Jacksonville",
+        "state": "FL"
     },
     {
         "city": "Miami",
         "state": "FL"
     },
     {
-        "city": "City40",
-        "state": "XX"
+        "city": "Tampa",
+        "state": "FL"
     },
     {
-        "city": "City41",
-        "state": "XX"
+        "city": "Orlando",
+        "state": "FL"
     },
     {
-        "city": "City42",
-        "state": "XX"
+        "city": "St. Petersburg",
+        "state": "FL"
     },
     {
-        "city": "City43",
-        "state": "XX"
+        "city": "Hialeah",
+        "state": "FL"
     },
     {
-        "city": "City44",
-        "state": "XX"
+        "city": "Tallahassee",
+        "state": "FL"
     },
     {
-        "city": "City45",
-        "state": "XX"
+        "city": "Fort Lauderdale",
+        "state": "FL"
     },
     {
-        "city": "City46",
-        "state": "XX"
+        "city": "Port St. Lucie",
+        "state": "FL"
     },
     {
-        "city": "City47",
-        "state": "XX"
+        "city": "Cape Coral",
+        "state": "FL"
     },
     {
-        "city": "City48",
-        "state": "XX"
+        "city": "Chicago",
+        "state": "IL"
     },
     {
-        "city": "City49",
-        "state": "XX"
+        "city": "Aurora",
+        "state": "IL"
     },
     {
-        "city": "City50",
-        "state": "XX"
+        "city": "Rockford",
+        "state": "IL"
     },
     {
-        "city": "City51",
-        "state": "XX"
+        "city": "Joliet",
+        "state": "IL"
     },
     {
-        "city": "City52",
-        "state": "XX"
+        "city": "Naperville",
+        "state": "IL"
     },
     {
-        "city": "City53",
-        "state": "XX"
+        "city": "Springfield",
+        "state": "IL"
     },
     {
-        "city": "City54",
-        "state": "XX"
+        "city": "Peoria",
+        "state": "IL"
     },
     {
-        "city": "City55",
-        "state": "XX"
+        "city": "Elgin",
+        "state": "IL"
     },
     {
-        "city": "City56",
-        "state": "XX"
+        "city": "Waukegan",
+        "state": "IL"
     },
     {
-        "city": "City57",
-        "state": "XX"
+        "city": "Cicero",
+        "state": "IL"
     },
     {
-        "city": "City58",
-        "state": "XX"
+        "city": "Philadelphia",
+        "state": "PA"
     },
     {
-        "city": "City59",
-        "state": "XX"
+        "city": "Pittsburgh",
+        "state": "PA"
     },
     {
-        "city": "City60",
-        "state": "XX"
+        "city": "Allentown",
+        "state": "PA"
     },
     {
-        "city": "City61",
-        "state": "XX"
+        "city": "Erie",
+        "state": "PA"
     },
     {
-        "city": "City62",
-        "state": "XX"
+        "city": "Reading",
+        "state": "PA"
     },
     {
-        "city": "City63",
-        "state": "XX"
+        "city": "Phoenix",
+        "state": "AZ"
     },
     {
-        "city": "City64",
-        "state": "XX"
+        "city": "Tucson",
+        "state": "AZ"
     },
     {
-        "city": "City65",
-        "state": "XX"
+        "city": "Mesa",
+        "state": "AZ"
     },
     {
-        "city": "City66",
-        "state": "XX"
+        "city": "Chandler",
+        "state": "AZ"
     },
     {
-        "city": "City67",
-        "state": "XX"
+        "city": "Glendale",
+        "state": "AZ"
     },
     {
-        "city": "City68",
-        "state": "XX"
+        "city": "Columbus",
+        "state": "OH"
     },
     {
-        "city": "City69",
-        "state": "XX"
+        "city": "Cleveland",
+        "state": "OH"
     },
     {
-        "city": "City70",
-        "state": "XX"
+        "city": "Cincinnati",
+        "state": "OH"
     },
     {
-        "city": "City71",
-        "state": "XX"
+        "city": "Toledo",
+        "state": "OH"
     },
     {
-        "city": "City72",
-        "state": "XX"
+        "city": "Akron",
+        "state": "OH"
     },
     {
-        "city": "City73",
-        "state": "XX"
+        "city": "Detroit",
+        "state": "MI"
     },
     {
-        "city": "City74",
-        "state": "XX"
+        "city": "Grand Rapids",
+        "state": "MI"
     },
     {
-        "city": "City75",
-        "state": "XX"
+        "city": "Warren",
+        "state": "MI"
     },
     {
-        "city": "City76",
-        "state": "XX"
+        "city": "Sterling Heights",
+        "state": "MI"
     },
     {
-        "city": "City77",
-        "state": "XX"
+        "city": "Ann Arbor",
+        "state": "MI"
     },
     {
-        "city": "City78",
-        "state": "XX"
+        "city": "Charlotte",
+        "state": "NC"
     },
     {
-        "city": "City79",
-        "state": "XX"
+        "city": "Raleigh",
+        "state": "NC"
     },
     {
-        "city": "City80",
-        "state": "XX"
+        "city": "Greensboro",
+        "state": "NC"
     },
     {
-        "city": "City81",
-        "state": "XX"
+        "city": "Durham",
+        "state": "NC"
     },
     {
-        "city": "City82",
-        "state": "XX"
+        "city": "Winston-Salem",
+        "state": "NC"
     },
     {
-        "city": "City83",
-        "state": "XX"
+        "city": "Atlanta",
+        "state": "GA"
     },
     {
-        "city": "City84",
-        "state": "XX"
+        "city": "Columbus",
+        "state": "GA"
     },
     {
-        "city": "City85",
-        "state": "XX"
+        "city": "Augusta-Richmond County",
+        "state": "GA"
     },
     {
-        "city": "City86",
-        "state": "XX"
+        "city": "Savannah",
+        "state": "GA"
     },
     {
-        "city": "City87",
-        "state": "XX"
+        "city": "Athens-Clarke County",
+        "state": "GA"
     },
     {
-        "city": "City88",
-        "state": "XX"
+        "city": "Seattle",
+        "state": "WA"
     },
     {
-        "city": "City89",
-        "state": "XX"
+        "city": "Spokane",
+        "state": "WA"
     },
     {
-        "city": "City90",
-        "state": "XX"
+        "city": "Tacoma",
+        "state": "WA"
     },
     {
-        "city": "City91",
-        "state": "XX"
+        "city": "Vancouver",
+        "state": "WA"
     },
     {
-        "city": "City92",
-        "state": "XX"
+        "city": "Bellevue",
+        "state": "WA"
     },
     {
-        "city": "City93",
-        "state": "XX"
+        "city": "Boston",
+        "state": "MA"
     },
     {
-        "city": "City94",
-        "state": "XX"
+        "city": "Worcester",
+        "state": "MA"
     },
     {
-        "city": "City95",
-        "state": "XX"
+        "city": "Springfield",
+        "state": "MA"
     },
     {
-        "city": "City96",
-        "state": "XX"
+        "city": "Lowell",
+        "state": "MA"
     },
     {
-        "city": "City97",
-        "state": "XX"
+        "city": "Cambridge",
+        "state": "MA"
     },
     {
-        "city": "City98",
-        "state": "XX"
+        "city": "Indianapolis",
+        "state": "IN"
     },
     {
-        "city": "City99",
-        "state": "XX"
+        "city": "Fort Wayne",
+        "state": "IN"
     },
     {
-        "city": "City100",
-        "state": "XX"
+        "city": "Evansville",
+        "state": "IN"
     },
     {
-        "city": "City101",
-        "state": "XX"
+        "city": "South Bend",
+        "state": "IN"
     },
     {
-        "city": "City102",
-        "state": "XX"
+        "city": "Carmel",
+        "state": "IN"
     },
     {
-        "city": "City103",
-        "state": "XX"
+        "city": "Memphis",
+        "state": "TN"
     },
     {
-        "city": "City104",
-        "state": "XX"
+        "city": "Nashville-Davidson",
+        "state": "TN"
     },
     {
-        "city": "City105",
-        "state": "XX"
+        "city": "Knoxville",
+        "state": "TN"
     },
     {
-        "city": "City106",
-        "state": "XX"
+        "city": "Chattanooga",
+        "state": "TN"
     },
     {
-        "city": "City107",
-        "state": "XX"
+        "city": "Clarksville",
+        "state": "TN"
     },
     {
-        "city": "City108",
-        "state": "XX"
+        "city": "Kansas City",
+        "state": "MO"
     },
     {
-        "city": "City109",
-        "state": "XX"
+        "city": "St. Louis",
+        "state": "MO"
     },
     {
-        "city": "City110",
-        "state": "XX"
+        "city": "Springfield",
+        "state": "MO"
     },
     {
-        "city": "City111",
-        "state": "XX"
+        "city": "Independence",
+        "state": "MO"
     },
     {
-        "city": "City112",
-        "state": "XX"
+        "city": "Columbia",
+        "state": "MO"
     },
     {
-        "city": "City113",
-        "state": "XX"
+        "city": "Milwaukee",
+        "state": "WI"
     },
     {
-        "city": "City114",
-        "state": "XX"
+        "city": "Madison",
+        "state": "WI"
     },
     {
-        "city": "City115",
-        "state": "XX"
+        "city": "Green Bay",
+        "state": "WI"
     },
     {
-        "city": "City116",
-        "state": "XX"
+        "city": "Kenosha",
+        "state": "WI"
     },
     {
-        "city": "City117",
-        "state": "XX"
+        "city": "Racine",
+        "state": "WI"
     },
     {
-        "city": "City118",
-        "state": "XX"
+        "city": "Denver",
+        "state": "CO"
     },
     {
-        "city": "City119",
-        "state": "XX"
+        "city": "Colorado Springs",
+        "state": "CO"
     },
     {
-        "city": "City120",
-        "state": "XX"
+        "city": "Aurora",
+        "state": "CO"
     },
     {
-        "city": "City121",
-        "state": "XX"
+        "city": "Fort Collins",
+        "state": "CO"
     },
     {
-        "city": "City122",
-        "state": "XX"
+        "city": "Lakewood",
+        "state": "CO"
     },
     {
-        "city": "City123",
-        "state": "XX"
+        "city": "Minneapolis",
+        "state": "MN"
     },
     {
-        "city": "City124",
-        "state": "XX"
+        "city": "St. Paul",
+        "state": "MN"
     },
     {
-        "city": "City125",
-        "state": "XX"
+        "city": "Rochester",
+        "state": "MN"
     },
     {
-        "city": "City126",
-        "state": "XX"
+        "city": "Duluth",
+        "state": "MN"
     },
     {
-        "city": "City127",
-        "state": "XX"
+        "city": "Bloomington",
+        "state": "MN"
     },
     {
-        "city": "City128",
-        "state": "XX"
+        "city": "Columbia",
+        "state": "SC"
     },
     {
-        "city": "City129",
-        "state": "XX"
+        "city": "Charleston",
+        "state": "SC"
     },
     {
-        "city": "City130",
-        "state": "XX"
+        "city": "North Charleston",
+        "state": "SC"
     },
     {
-        "city": "City131",
-        "state": "XX"
+        "city": "Mount Pleasant",
+        "state": "SC"
     },
     {
-        "city": "City132",
-        "state": "XX"
+        "city": "Rock Hill",
+        "state": "SC"
     },
     {
-        "city": "City133",
-        "state": "XX"
+        "city": "Birmingham",
+        "state": "AL"
     },
     {
-        "city": "City134",
-        "state": "XX"
+        "city": "Montgomery",
+        "state": "AL"
     },
     {
-        "city": "City135",
-        "state": "XX"
+        "city": "Mobile",
+        "state": "AL"
     },
     {
-        "city": "City136",
-        "state": "XX"
+        "city": "Huntsville",
+        "state": "AL"
     },
     {
-        "city": "City137",
-        "state": "XX"
+        "city": "Tuscaloosa",
+        "state": "AL"
     },
     {
-        "city": "City138",
-        "state": "XX"
+        "city": "New Orleans",
+        "state": "LA"
     },
     {
-        "city": "City139",
-        "state": "XX"
+        "city": "Baton Rouge",
+        "state": "LA"
     },
     {
-        "city": "City140",
-        "state": "XX"
+        "city": "Shreveport",
+        "state": "LA"
     },
     {
-        "city": "City141",
-        "state": "XX"
+        "city": "Lafayette",
+        "state": "LA"
     },
     {
-        "city": "City142",
-        "state": "XX"
+        "city": "Lake Charles",
+        "state": "LA"
     },
     {
-        "city": "City143",
-        "state": "XX"
+        "city": "Louisville/Jefferson County",
+        "state": "KY"
     },
     {
-        "city": "City144",
-        "state": "XX"
+        "city": "Lexington-Fayette",
+        "state": "KY"
     },
     {
-        "city": "City145",
-        "state": "XX"
+        "city": "Bowling Green",
+        "state": "KY"
     },
     {
-        "city": "City146",
-        "state": "XX"
+        "city": "Owensboro",
+        "state": "KY"
     },
     {
-        "city": "City147",
-        "state": "XX"
+        "city": "Covington",
+        "state": "KY"
     },
     {
-        "city": "City148",
-        "state": "XX"
+        "city": "Portland",
+        "state": "OR"
     },
     {
-        "city": "City149",
-        "state": "XX"
+        "city": "Eugene",
+        "state": "OR"
     },
     {
-        "city": "City150",
-        "state": "XX"
+        "city": "Salem",
+        "state": "OR"
     },
     {
-        "city": "City151",
-        "state": "XX"
+        "city": "Gresham",
+        "state": "OR"
     },
     {
-        "city": "City152",
-        "state": "XX"
+        "city": "Hillsboro",
+        "state": "OR"
     },
     {
-        "city": "City153",
-        "state": "XX"
+        "city": "Oklahoma City",
+        "state": "OK"
     },
     {
-        "city": "City154",
-        "state": "XX"
+        "city": "Tulsa",
+        "state": "OK"
     },
     {
-        "city": "City155",
-        "state": "XX"
+        "city": "Norman",
+        "state": "OK"
     },
     {
-        "city": "City156",
-        "state": "XX"
+        "city": "Broken Arrow",
+        "state": "OK"
     },
     {
-        "city": "City157",
-        "state": "XX"
+        "city": "Lawton",
+        "state": "OK"
     },
     {
-        "city": "City158",
-        "state": "XX"
+        "city": "Las Vegas",
+        "state": "NV"
     },
     {
-        "city": "City159",
-        "state": "XX"
+        "city": "Henderson",
+        "state": "NV"
     },
     {
-        "city": "City160",
-        "state": "XX"
+        "city": "Reno",
+        "state": "NV"
     },
     {
-        "city": "City161",
-        "state": "XX"
+        "city": "North Las Vegas",
+        "state": "NV"
     },
     {
-        "city": "City162",
-        "state": "XX"
+        "city": "Sparks",
+        "state": "NV"
     },
     {
-        "city": "City163",
-        "state": "XX"
+        "city": "Little Rock",
+        "state": "AR"
     },
     {
-        "city": "City164",
-        "state": "XX"
+        "city": "Fort Smith",
+        "state": "AR"
     },
     {
-        "city": "City165",
-        "state": "XX"
+        "city": "Fayetteville",
+        "state": "AR"
     },
     {
-        "city": "City166",
-        "state": "XX"
+        "city": "Springdale",
+        "state": "AR"
     },
     {
-        "city": "City167",
-        "state": "XX"
+        "city": "Jonesboro",
+        "state": "AR"
     },
     {
-        "city": "City168",
-        "state": "XX"
+        "city": "Jackson",
+        "state": "MS"
     },
     {
-        "city": "City169",
-        "state": "XX"
+        "city": "Gulfport",
+        "state": "MS"
     },
     {
-        "city": "City170",
-        "state": "XX"
+        "city": "Southaven",
+        "state": "MS"
     },
     {
-        "city": "City171",
-        "state": "XX"
+        "city": "Hattiesburg",
+        "state": "MS"
     },
     {
-        "city": "City172",
-        "state": "XX"
+        "city": "Biloxi",
+        "state": "MS"
     },
     {
-        "city": "City173",
-        "state": "XX"
+        "city": "Wichita",
+        "state": "KS"
     },
     {
-        "city": "City174",
-        "state": "XX"
+        "city": "Overland Park",
+        "state": "KS"
     },
     {
-        "city": "City175",
-        "state": "XX"
+        "city": "Kansas City",
+        "state": "KS"
     },
     {
-        "city": "City176",
-        "state": "XX"
+        "city": "Olathe",
+        "state": "KS"
     },
     {
-        "city": "City177",
-        "state": "XX"
+        "city": "Topeka",
+        "state": "KS"
     },
     {
-        "city": "City178",
-        "state": "XX"
+        "city": "Salt Lake City",
+        "state": "UT"
     },
     {
-        "city": "City179",
-        "state": "XX"
+        "city": "West Valley City",
+        "state": "UT"
     },
     {
-        "city": "City180",
-        "state": "XX"
+        "city": "Provo",
+        "state": "UT"
     },
     {
-        "city": "City181",
-        "state": "XX"
+        "city": "West Jordan",
+        "state": "UT"
     },
     {
-        "city": "City182",
-        "state": "XX"
+        "city": "Orem",
+        "state": "UT"
     },
     {
-        "city": "City183",
-        "state": "XX"
+        "city": "Des Moines",
+        "state": "IA"
     },
     {
-        "city": "City184",
-        "state": "XX"
+        "city": "Cedar Rapids",
+        "state": "IA"
     },
     {
-        "city": "City185",
-        "state": "XX"
+        "city": "Davenport",
+        "state": "IA"
     },
     {
-        "city": "City186",
-        "state": "XX"
+        "city": "Sioux City",
+        "state": "IA"
     },
     {
-        "city": "City187",
-        "state": "XX"
+        "city": "Iowa City",
+        "state": "IA"
     },
     {
-        "city": "City188",
-        "state": "XX"
+        "city": "Bridgeport",
+        "state": "CT"
     },
     {
-        "city": "City189",
-        "state": "XX"
+        "city": "New Haven",
+        "state": "CT"
     },
     {
-        "city": "City190",
-        "state": "XX"
+        "city": "Stamford",
+        "state": "CT"
     },
     {
-        "city": "City191",
-        "state": "XX"
+        "city": "Hartford",
+        "state": "CT"
     },
     {
-        "city": "City192",
-        "state": "XX"
+        "city": "Waterbury",
+        "state": "CT"
     },
     {
-        "city": "City193",
-        "state": "XX"
+        "city": "Albuquerque",
+        "state": "NM"
     },
     {
-        "city": "City194",
-        "state": "XX"
+        "city": "Las Cruces",
+        "state": "NM"
     },
     {
-        "city": "City195",
-        "state": "XX"
+        "city": "Rio Rancho",
+        "state": "NM"
     },
     {
-        "city": "City196",
-        "state": "XX"
+        "city": "Santa Fe",
+        "state": "NM"
     },
     {
-        "city": "City197",
-        "state": "XX"
+        "city": "Roswell",
+        "state": "NM"
     },
     {
-        "city": "City198",
-        "state": "XX"
+        "city": "Charleston",
+        "state": "WV"
     },
     {
-        "city": "City199",
-        "state": "XX"
+        "city": "Huntington",
+        "state": "WV"
     },
     {
-        "city": "City200",
-        "state": "XX"
+        "city": "Omaha",
+        "state": "NE"
     },
     {
-        "city": "City201",
-        "state": "XX"
+        "city": "Lincoln",
+        "state": "NE"
     },
     {
-        "city": "City202",
-        "state": "XX"
+        "city": "Bellevue",
+        "state": "NE"
     },
     {
-        "city": "City203",
-        "state": "XX"
+        "city": "Grand Island",
+        "state": "NE"
     },
     {
-        "city": "City204",
-        "state": "XX"
+        "city": "Boise City",
+        "state": "ID"
     },
     {
-        "city": "City205",
-        "state": "XX"
+        "city": "Nampa",
+        "state": "ID"
     },
     {
-        "city": "City206",
-        "state": "XX"
+        "city": "Meridian",
+        "state": "ID"
     },
     {
-        "city": "City207",
-        "state": "XX"
+        "city": "Idaho Falls",
+        "state": "ID"
     },
     {
-        "city": "City208",
-        "state": "XX"
+        "city": "Pocatello",
+        "state": "ID"
     },
     {
-        "city": "City209",
-        "state": "XX"
+        "city": "Honolulu",
+        "state": "HI"
     },
     {
-        "city": "City210",
-        "state": "XX"
+        "city": "Portland",
+        "state": "ME"
     },
     {
-        "city": "City211",
-        "state": "XX"
+        "city": "Manchester",
+        "state": "NH"
     },
     {
-        "city": "City212",
-        "state": "XX"
+        "city": "Nashua",
+        "state": "NH"
     },
     {
-        "city": "City213",
-        "state": "XX"
+        "city": "Concord",
+        "state": "NH"
     },
     {
-        "city": "City214",
-        "state": "XX"
+        "city": "Billings",
+        "state": "MT"
     },
     {
-        "city": "City215",
-        "state": "XX"
+        "city": "Missoula",
+        "state": "MT"
     },
     {
-        "city": "City216",
-        "state": "XX"
+        "city": "Great Falls",
+        "state": "MT"
     },
     {
-        "city": "City217",
-        "state": "XX"
+        "city": "Bozeman",
+        "state": "MT"
     },
     {
-        "city": "City218",
-        "state": "XX"
+        "city": "Wilmington",
+        "state": "DE"
     },
     {
-        "city": "City219",
-        "state": "XX"
+        "city": "Dover",
+        "state": "DE"
     },
     {
-        "city": "City220",
-        "state": "XX"
+        "city": "Sioux Falls",
+        "state": "SD"
     },
     {
-        "city": "City221",
-        "state": "XX"
+        "city": "Rapid City",
+        "state": "SD"
     },
     {
-        "city": "City222",
-        "state": "XX"
+        "city": "Fargo",
+        "state": "ND"
     },
     {
-        "city": "City223",
-        "state": "XX"
+        "city": "Bismarck",
+        "state": "ND"
     },
     {
-        "city": "City224",
-        "state": "XX"
+        "city": "Grand Forks",
+        "state": "ND"
     },
     {
-        "city": "City225",
-        "state": "XX"
+        "city": "Minot",
+        "state": "ND"
     },
     {
-        "city": "City226",
-        "state": "XX"
+        "city": "Providence",
+        "state": "RI"
     },
     {
-        "city": "City227",
-        "state": "XX"
+        "city": "Warwick",
+        "state": "RI"
     },
     {
-        "city": "City228",
-        "state": "XX"
+        "city": "Cranston",
+        "state": "RI"
     },
     {
-        "city": "City229",
-        "state": "XX"
+        "city": "Pawtucket",
+        "state": "RI"
     },
     {
-        "city": "City230",
-        "state": "XX"
+        "city": "East Providence",
+        "state": "RI"
     },
     {
-        "city": "City231",
-        "state": "XX"
+        "city": "Anchorage",
+        "state": "AK"
     },
     {
-        "city": "City232",
-        "state": "XX"
+        "city": "Burlington",
+        "state": "VT"
     },
     {
-        "city": "City233",
-        "state": "XX"
+        "city": "Cheyenne",
+        "state": "WY"
     },
     {
-        "city": "City234",
-        "state": "XX"
-    },
-    {
-        "city": "City235",
-        "state": "XX"
-    },
-    {
-        "city": "City236",
-        "state": "XX"
-    },
-    {
-        "city": "City237",
-        "state": "XX"
-    },
-    {
-        "city": "City238",
-        "state": "XX"
-    },
-    {
-        "city": "City239",
-        "state": "XX"
-    },
-    {
-        "city": "City240",
-        "state": "XX"
-    },
-    {
-        "city": "City241",
-        "state": "XX"
-    },
-    {
-        "city": "City242",
-        "state": "XX"
-    },
-    {
-        "city": "City243",
-        "state": "XX"
-    },
-    {
-        "city": "City244",
-        "state": "XX"
-    },
-    {
-        "city": "City245",
-        "state": "XX"
-    },
-    {
-        "city": "City246",
-        "state": "XX"
-    },
-    {
-        "city": "City247",
-        "state": "XX"
-    },
-    {
-        "city": "City248",
-        "state": "XX"
-    },
-    {
-        "city": "City249",
-        "state": "XX"
-    },
-    {
-        "city": "City250",
-        "state": "XX"
-    },
-    {
-        "city": "City251",
-        "state": "XX"
-    },
-    {
-        "city": "City252",
-        "state": "XX"
-    },
-    {
-        "city": "City253",
-        "state": "XX"
-    },
-    {
-        "city": "City254",
-        "state": "XX"
-    },
-    {
-        "city": "City255",
-        "state": "XX"
-    },
-    {
-        "city": "City256",
-        "state": "XX"
-    },
-    {
-        "city": "City257",
-        "state": "XX"
-    },
-    {
-        "city": "City258",
-        "state": "XX"
-    },
-    {
-        "city": "City259",
-        "state": "XX"
-    },
-    {
-        "city": "City260",
-        "state": "XX"
-    },
-    {
-        "city": "City261",
-        "state": "XX"
-    },
-    {
-        "city": "City262",
-        "state": "XX"
-    },
-    {
-        "city": "City263",
-        "state": "XX"
-    },
-    {
-        "city": "City264",
-        "state": "XX"
-    },
-    {
-        "city": "City265",
-        "state": "XX"
-    },
-    {
-        "city": "City266",
-        "state": "XX"
-    },
-    {
-        "city": "City267",
-        "state": "XX"
-    },
-    {
-        "city": "City268",
-        "state": "XX"
-    },
-    {
-        "city": "City269",
-        "state": "XX"
-    },
-    {
-        "city": "City270",
-        "state": "XX"
-    },
-    {
-        "city": "City271",
-        "state": "XX"
-    },
-    {
-        "city": "City272",
-        "state": "XX"
-    },
-    {
-        "city": "City273",
-        "state": "XX"
-    },
-    {
-        "city": "City274",
-        "state": "XX"
-    },
-    {
-        "city": "City275",
-        "state": "XX"
-    },
-    {
-        "city": "City276",
-        "state": "XX"
-    },
-    {
-        "city": "City277",
-        "state": "XX"
-    },
-    {
-        "city": "City278",
-        "state": "XX"
-    },
-    {
-        "city": "City279",
-        "state": "XX"
-    },
-    {
-        "city": "City280",
-        "state": "XX"
-    },
-    {
-        "city": "City281",
-        "state": "XX"
-    },
-    {
-        "city": "City282",
-        "state": "XX"
-    },
-    {
-        "city": "City283",
-        "state": "XX"
-    },
-    {
-        "city": "City284",
-        "state": "XX"
-    },
-    {
-        "city": "City285",
-        "state": "XX"
-    },
-    {
-        "city": "City286",
-        "state": "XX"
-    },
-    {
-        "city": "City287",
-        "state": "XX"
-    },
-    {
-        "city": "City288",
-        "state": "XX"
-    },
-    {
-        "city": "City289",
-        "state": "XX"
-    },
-    {
-        "city": "City290",
-        "state": "XX"
-    },
-    {
-        "city": "City291",
-        "state": "XX"
-    },
-    {
-        "city": "City292",
-        "state": "XX"
-    },
-    {
-        "city": "City293",
-        "state": "XX"
-    },
-    {
-        "city": "City294",
-        "state": "XX"
-    },
-    {
-        "city": "City295",
-        "state": "XX"
-    },
-    {
-        "city": "City296",
-        "state": "XX"
-    },
-    {
-        "city": "City297",
-        "state": "XX"
-    },
-    {
-        "city": "City298",
-        "state": "XX"
-    },
-    {
-        "city": "City299",
-        "state": "XX"
-    },
-    {
-        "city": "City300",
-        "state": "XX"
-    },
-    {
-        "city": "City301",
-        "state": "XX"
-    },
-    {
-        "city": "City302",
-        "state": "XX"
-    },
-    {
-        "city": "City303",
-        "state": "XX"
-    },
-    {
-        "city": "City304",
-        "state": "XX"
-    },
-    {
-        "city": "City305",
-        "state": "XX"
-    },
-    {
-        "city": "City306",
-        "state": "XX"
-    },
-    {
-        "city": "City307",
-        "state": "XX"
-    },
-    {
-        "city": "City308",
-        "state": "XX"
-    },
-    {
-        "city": "City309",
-        "state": "XX"
-    },
-    {
-        "city": "City310",
-        "state": "XX"
-    },
-    {
-        "city": "City311",
-        "state": "XX"
-    },
-    {
-        "city": "City312",
-        "state": "XX"
-    },
-    {
-        "city": "City313",
-        "state": "XX"
-    },
-    {
-        "city": "City314",
-        "state": "XX"
-    },
-    {
-        "city": "City315",
-        "state": "XX"
-    },
-    {
-        "city": "City316",
-        "state": "XX"
-    },
-    {
-        "city": "City317",
-        "state": "XX"
-    },
-    {
-        "city": "City318",
-        "state": "XX"
-    },
-    {
-        "city": "City319",
-        "state": "XX"
-    },
-    {
-        "city": "City320",
-        "state": "XX"
-    },
-    {
-        "city": "City321",
-        "state": "XX"
-    },
-    {
-        "city": "City322",
-        "state": "XX"
-    },
-    {
-        "city": "City323",
-        "state": "XX"
-    },
-    {
-        "city": "City324",
-        "state": "XX"
-    },
-    {
-        "city": "City325",
-        "state": "XX"
-    },
-    {
-        "city": "City326",
-        "state": "XX"
-    },
-    {
-        "city": "City327",
-        "state": "XX"
-    },
-    {
-        "city": "City328",
-        "state": "XX"
-    },
-    {
-        "city": "City329",
-        "state": "XX"
-    },
-    {
-        "city": "City330",
-        "state": "XX"
-    },
-    {
-        "city": "City331",
-        "state": "XX"
-    },
-    {
-        "city": "City332",
-        "state": "XX"
-    },
-    {
-        "city": "City333",
-        "state": "XX"
-    },
-    {
-        "city": "City334",
-        "state": "XX"
-    },
-    {
-        "city": "City335",
-        "state": "XX"
-    },
-    {
-        "city": "City336",
-        "state": "XX"
-    },
-    {
-        "city": "City337",
-        "state": "XX"
-    },
-    {
-        "city": "City338",
-        "state": "XX"
-    },
-    {
-        "city": "City339",
-        "state": "XX"
-    },
-    {
-        "city": "City340",
-        "state": "XX"
-    },
-    {
-        "city": "City341",
-        "state": "XX"
-    },
-    {
-        "city": "City342",
-        "state": "XX"
-    },
-    {
-        "city": "City343",
-        "state": "XX"
-    },
-    {
-        "city": "City344",
-        "state": "XX"
-    },
-    {
-        "city": "City345",
-        "state": "XX"
-    },
-    {
-        "city": "City346",
-        "state": "XX"
-    },
-    {
-        "city": "City347",
-        "state": "XX"
-    },
-    {
-        "city": "City348",
-        "state": "XX"
-    },
-    {
-        "city": "City349",
-        "state": "XX"
+        "city": "Casper",
+        "state": "WY"
     }
 ]

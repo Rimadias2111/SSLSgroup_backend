@@ -36,7 +36,7 @@ func LoadLocations(filePath string) error {
 	}
 
 	model = fuzzy.NewModel()
-	model.SetThreshold(1)
+	model.SetThreshold(2)
 	model.SetDepth(3)
 	model.Train(trainData)
 
@@ -61,7 +61,7 @@ func GetLocations(query string) ([]Location, error) {
 		return results, nil
 	}
 
-	if len(query) < 3 {
+	if len(query) < 5 {
 		results := []Location{}
 		for _, loc := range locations {
 			if strings.Contains(strings.ToLower(loc.State), query) || strings.Contains(strings.ToLower(loc.City), query) {
