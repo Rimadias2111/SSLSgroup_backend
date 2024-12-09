@@ -3,6 +3,7 @@ package main
 import (
 	"backend/api"
 	"backend/api/controllers"
+	"backend/etc/search"
 	"backend/models"
 	"backend/service"
 	database "backend/st_database"
@@ -61,6 +62,11 @@ func main() {
 	serviceS := service.New(store)
 
 	cont := controllers.NewController(serviceS)
+
+	errLoc := search.LoadLocations("data/locations.json")
+	if errLoc != nil {
+		log.Fatalf("Ошибка загрузки данных: %v", errLoc)
+	}
 
 	router := api.Construct(*cont)
 

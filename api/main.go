@@ -34,6 +34,9 @@ func Construct(cont controllers.Controller) *gin.Engine {
 		//Auth endpoints
 		api.POST("/login", cont.Login)
 
+		//Search endpoints
+		api.GET("/search", cont.SearchHandler)
+
 		// Company endpoints
 		api.POST("/companies", middleware.AuthMiddleware(2), cont.CreateCompany)
 		api.PUT("/companies/:company_id", middleware.AuthMiddleware(2), cont.UpdateCompany)
