@@ -13,7 +13,7 @@ FROM scratch
 
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 
-COPY data /app/data
+COPY --from=builder /app/data /app/data
 
 COPY --from=builder /app/myapp /myapp
 
