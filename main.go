@@ -13,8 +13,19 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"os"
+	"path/filepath"
 	"time"
 )
+
+func getAbsolutePath(relativePath string) string {
+	wd, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Ошибка получения рабочей директории: %v", err)
+	}
+
+	absPath := filepath.Join(wd, relativePath)
+	return absPath
+}
 
 func setupDatabase() (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
@@ -63,7 +74,8 @@ func main() {
 
 	cont := controllers.NewController(serviceS)
 
-	errLoc := search.LoadLocations("data/locations.json")
+	filePath := getAbsolutePath("data/locations.json")
+	errLoc := search.LoadLocations(filePath)
 	if errLoc != nil {
 		log.Fatalf("Ошибка загрузки данных: %v", errLoc)
 	}

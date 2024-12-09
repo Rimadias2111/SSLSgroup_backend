@@ -13,8 +13,6 @@ FROM scratch
 
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 
-COPY --from=builder /app/data /app/data
-
 COPY --from=builder /app/myapp /myapp
 
 EXPOSE 8080
