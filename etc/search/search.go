@@ -50,6 +50,27 @@ func GetLocations(query string) ([]Location, error) {
 
 	query = strings.ToLower(query)
 
+	if strings.HasPrefix(query, ",") {
+		stateQuery := strings.TrimSpace(strings.TrimPrefix(query, ","))
+		results := []Location{}
+		for _, loc := range locations {
+			if strings.ToLower(loc.State) == stateQuery {
+				results = append(results, loc)
+			}
+		}
+		return results, nil
+	}
+
+	if len(query) < 3 {
+		results := []Location{}
+		for _, loc := range locations {
+			if strings.Contains(strings.ToLower(loc.State), query) || strings.Contains(strings.ToLower(loc.City), query) {
+				results = append(results, loc)
+			}
+		}
+		return results, nil
+	}
+
 	matches := model.Suggestions(query, false)
 
 	results := []Location{}
