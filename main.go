@@ -63,7 +63,7 @@ func main() {
 
 	cont := controllers.NewController(serviceS)
 
-	errLoc := search.LoadLocations("/myapp/data/locations.json")
+	errLoc := search.LoadLocations("/app/data/locations.json")
 	if errLoc != nil {
 		log.Fatalf("Ошибка загрузки данных: %v", errLoc)
 	}
