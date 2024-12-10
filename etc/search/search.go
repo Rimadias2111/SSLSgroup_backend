@@ -39,7 +39,7 @@ func LoadLocations(filePath string) error {
 	fmt.Println("Train Data:", trainData)
 
 	model = fuzzy.NewModel()
-	model.SetThreshold(3)
+	model.SetThreshold(1)
 	model.SetDepth(3)
 	model.Train(trainData)
 
