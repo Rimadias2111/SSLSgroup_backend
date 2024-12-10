@@ -52,6 +52,7 @@ func GetLocations(query string) ([]Location, error) {
 	}
 
 	query = strings.ToLower(query)
+	fmt.Println("Query:", query)
 
 	if strings.HasPrefix(query, ",") {
 		stateQuery := strings.TrimSpace(strings.TrimPrefix(query, ","))
@@ -75,6 +76,7 @@ func GetLocations(query string) ([]Location, error) {
 	}
 
 	matches := model.Suggestions(query, false)
+	fmt.Println("Matches: ", matches)
 
 	results := []Location{}
 	for _, match := range matches {
