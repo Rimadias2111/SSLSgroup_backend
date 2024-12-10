@@ -3,6 +3,7 @@ package search
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 	"strings"
 
@@ -34,6 +35,8 @@ func LoadLocations(filePath string) error {
 	for _, loc := range locations {
 		trainData = append(trainData, strings.ToLower(loc.City+", "+loc.State))
 	}
+
+	fmt.Println("Train Data:", trainData)
 
 	model = fuzzy.NewModel()
 	model.SetThreshold(2)
