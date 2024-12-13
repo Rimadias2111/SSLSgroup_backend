@@ -61,6 +61,9 @@ func GetLocations(query string) ([]Location, error) {
 			if strings.ToLower(loc.State) == stateQuery {
 				results = append(results, loc)
 			}
+			if len(results) >= 15 {
+				break
+			}
 		}
 		return results, nil
 	}
@@ -70,6 +73,9 @@ func GetLocations(query string) ([]Location, error) {
 		for _, loc := range locations {
 			if strings.Contains(strings.ToLower(loc.State), query) || strings.Contains(strings.ToLower(loc.City), query) {
 				results = append(results, loc)
+			}
+			if len(results) >= 15 {
+				break
 			}
 		}
 		return results, nil
