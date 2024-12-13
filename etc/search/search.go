@@ -33,14 +33,14 @@ func LoadLocations(filePath string) error {
 
 	var trainData []string
 	for _, loc := range locations {
-		trainData = append(trainData, strings.ToLower(loc.City))
+		trainData = append(trainData, strings.ToLower(loc.City+", "+loc.State))
 	}
 
 	fmt.Println("Train Data:", trainData)
 
 	model = fuzzy.NewModel()
 	model.SetThreshold(1)
-	model.SetDepth(2)
+	model.SetDepth(3)
 	model.Train(trainData)
 
 	return nil
@@ -54,30 +54,39 @@ func GetLocations(query string) ([]Location, error) {
 	query = strings.ToLower(query)
 	fmt.Println("Query:", query)
 
+	if strings.HasPrefix(query, ",") {
+		stateQuery := strings.TrimSpace(strings.TrimPrefix(query, ","))
+		results := []Location{}
+		for _, loc := range locations {
+			if strings.ToLower(loc.State) == stateQuery {
+				results = append(results, loc)
+			}
+		}
+		return results, nil
+	}
+
+	if len(query) < 7 && len(query) >= 3 {
+		results := []Location{}
+		for _, loc := range locations {
+			if strings.Contains(strings.ToLower(loc.State), query) || strings.Contains(strings.ToLower(loc.City), query) {
+				results = append(results, loc)
+			}
+		}
+		return results, nil
+	}
+
 	matches := model.Suggestions(query, false)
 	fmt.Println("Matches: ", matches)
 
 	results := []Location{}
 	for _, match := range matches {
 		for _, loc := range locations {
-			if len(query) >= 3 && len(query) < 7 {
-				if strings.HasPrefix(strings.ToLower(loc.City), query) {
-					results = append(results, loc)
-					break
-				}
-			} else if len(query) == 2 {
-				if strings.HasPrefix(strings.ToLower(loc.State), query) {
-					results = append(results, loc)
-					break
-				}
-			} else {
-				if strings.ToLower(loc.City) == match {
-					results = append(results, loc)
-					break
-				}
+			if strings.ToLower(loc.City+", "+loc.State) == match {
+				results = append(results, loc)
+				break
 			}
 		}
-		if len(results) >= 15 {
+		if len(results) >= 10 {
 			break
 		}
 	}
