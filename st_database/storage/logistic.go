@@ -1,7 +1,6 @@
 package storage
 
 import (
-	"backend/etc/Utime"
 	"backend/etc/helpers"
 	"backend/models"
 	"context"
@@ -79,12 +78,6 @@ func (s *LogisticRepo) Get(ctx context.Context, req models.RequestId) (*models.L
 	err := s.db.WithContext(ctx).Model(&models.Logistic{}).Preload("Driver").Preload("Cargo").Where("id = ?", req.Id).First(&update).Error
 	if err != nil {
 		return nil, err
-	}
-
-	update.UpdateTime = Utime.Parse(update.UpdateTime)
-	if update.StTime != nil {
-		parsed := Utime.Parse(*update.StTime)
-		update.StTime = &parsed
 	}
 
 	return &update, nil
@@ -174,14 +167,6 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 		Error
 	if err != nil {
 		return nil, errors.New("cannot get all logistics")
-	}
-
-	for i := 0; i < len(logistics); i++ {
-		logistics[i].UpdateTime = Utime.Parse(logistics[i].UpdateTime)
-		if logistics[i].StTime != nil {
-			parsed := Utime.Parse(*logistics[i].StTime)
-			logistics[i].StTime = &parsed
-		}
 	}
 
 	var companyOrder []uuid.UUID
