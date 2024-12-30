@@ -123,7 +123,7 @@ func (s *LogisticService) UpdateWithCargo(ctx context.Context, logistic *models.
 			return errG
 		}
 
-		if create {
+		if create && cargo.Id == uuid.Nil {
 			id, err = s.store.Cargo().Create(ctx, cargo, tx)
 			if err != nil {
 				return err

@@ -81,6 +81,12 @@ func (s *LogisticRepo) Get(ctx context.Context, req models.RequestId) (*models.L
 		return nil, err
 	}
 
+	update.UpdateTime = Utime.Parse(update.UpdateTime)
+	if update.StTime != nil {
+		parsed := Utime.Parse(*update.StTime)
+		update.StTime = &parsed
+	}
+
 	return &update, nil
 }
 

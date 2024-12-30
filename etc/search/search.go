@@ -3,7 +3,6 @@ package search
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"os"
 	"strings"
 
@@ -36,8 +35,6 @@ func LoadLocations(filePath string) error {
 		trainData = append(trainData, strings.ToLower(loc.City+", "+loc.State))
 	}
 
-	fmt.Println("Train Data:", trainData)
-
 	model = fuzzy.NewModel()
 	model.SetThreshold(1)
 	model.SetDepth(3)
@@ -52,7 +49,6 @@ func GetLocations(query string) ([]Location, error) {
 	}
 
 	query = strings.ToLower(query)
-	fmt.Println("Query:", query)
 
 	if strings.HasPrefix(query, ",") {
 		stateQuery := strings.TrimSpace(strings.TrimPrefix(query, ","))
@@ -82,7 +78,6 @@ func GetLocations(query string) ([]Location, error) {
 	}
 
 	matches := model.Suggestions(query, false)
-	fmt.Println("Matches: ", matches)
 
 	results := []Location{}
 	for _, match := range matches {

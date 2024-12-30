@@ -371,7 +371,7 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 	err := c.ShouldBindJSON(&logisticModel)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
-			ErrorMessage: "Error while parsing cargo id: " + err.Error(),
+			ErrorMessage: "Error while parsing json body: " + err.Error(),
 			ErrorCode:    "Bad Request",
 		})
 		return
@@ -468,7 +468,7 @@ func (h *Controller) UpdateLogisticCargo(c *gin.Context) {
 		State:      strings.TrimSpace(parts[1]),
 	}
 
-	if logisticModel.Status != "COVERED" && logisticModel.CargoId == "" {
+	if logisticModel.Status != "COVERED" && cargoId == uuid.Nil {
 		logistic.CargoId = nil
 		errUpd := h.service.Logistic().Update(c.Request.Context(), &logistic, models.RequestId{Id: id})
 		if errUpd != nil {
