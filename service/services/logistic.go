@@ -285,11 +285,16 @@ func (s *LogisticService) Terminate(ctx context.Context, req models.RequestId, s
 			return err
 		}
 
+		if logistic.StTime == nil {
+			time := Utime.Now()
+			logistic.StTime = &time
+		}
+
 		errU := s.store.Logistic().Update(ctx, &models.Logistic{
 			Id:         logistic.Id,
 			Post:       false,
 			Status:     "READY",
-			UpdateTime: Utime.Now(),
+			UpdateTime: *logistic.StTime,
 			StTime:     nil,
 			State:      logistic.State,
 			Location:   logistic.Location,
@@ -398,11 +403,15 @@ func (s *LogisticService) CancelLate(ctx context.Context, req swag.CancelLogisti
 				return err
 			}
 
+			if logistic.StTime == nil {
+				time := Utime.Now()
+				logistic.StTime = &time
+			}
 			errU := s.store.Logistic().Update(ctx, &models.Logistic{
 				Id:         logistic.Id,
 				Post:       false,
 				Status:     "READY",
-				UpdateTime: Utime.Now(),
+				UpdateTime: *logistic.StTime,
 				StTime:     nil,
 				State:      logistic.State,
 				Location:   logistic.Location,
