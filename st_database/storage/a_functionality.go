@@ -38,6 +38,7 @@ type Logistic interface {
 	Get(ctx context.Context, req models.RequestId) (*models.Logistic, error)
 	GetAll(ctx context.Context, req models.GetAllLogisticsReq) (*models.GetAllLogisticsResp, error)
 	Overview(ctx context.Context) (models.GetOverview, error)
+	Emoji(ctx context.Context) error
 }
 
 type Cargo interface {

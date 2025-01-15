@@ -3,10 +3,12 @@ package main
 import (
 	"backend/api"
 	"backend/api/controllers"
+	emoji "backend/etc/emoji_updater"
 	"backend/etc/search"
 	"backend/models"
 	"backend/service"
 	database "backend/st_database"
+	"context"
 	"fmt"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
@@ -61,6 +63,10 @@ func main() {
 	store := database.New(db)
 	serviceS := service.New(store)
 
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	emoji.StartEmojiUpdater(ctx, store)
+
 	cont := controllers.NewController(serviceS)
 
 	errLoc := search.LoadLocations("/app/data/locations.json")
@@ -69,7 +75,6 @@ func main() {
 	}
 
 	router := api.Construct(*cont)
-
 	if err := router.Run(":8080"); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
