@@ -294,7 +294,7 @@ func (s *LogisticRepo) Emoji(ctx context.Context) error {
 		query := `
 			UPDATE logistics
 			SET emoji = CASE
-				WHEN status = 'READY' AND EXTRACT(EPOCH FROM (? - st_time)) > 86400 THEN '🗿'
+				WHEN status IN ('READY', 'READY AT HOME') AND EXTRACT(EPOCH FROM (? - st_time)) > 86400 THEN '🗿'
 				WHEN status = 'ETA' AND EXTRACT(EPOCH FROM (st_time - ?)) < 86400 THEN '⏰'
 				WHEN status IN ('ETA, WILL BE LATE', 'ETA') AND st_time < ? THEN '❗️'
 				ELSE ''
