@@ -6,9 +6,12 @@ import (
 	"backend/models"
 	"context"
 	"errors"
+	"fmt"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"log"
 	"strconv"
+	"sync"
 )
 
 type LogisticRepo struct {
@@ -265,24 +268,72 @@ func (s *LogisticRepo) Overview(ctx context.Context) (models.GetOverview, error)
 }
 
 func (s *LogisticRepo) Emoji(ctx context.Context) error {
+	const limit = 500
 	now := Utime.Parse(Utime.Now())
-	query := `UPDATE logistics
-                        SET emoji = CASE
-                                WHEN status = 'READY' AND EXTRACT(EPOCH FROM (:now - st_time)) > 86400 THEN '🗿'
-                                WHEN status = 'ETA' AND EXTRACT(EPOCH FROM (st_time - :now)) < 86400 THEN '⏰'
-                                WHEN status IN ('ETA, WILL BE LATE', 'ETA') AND st_time < :now THEN '❗️'
-                                ELSE ''
-                        END
-                        WHERE status IN ('READY', 'READY AT HOME', 'WILL BE READY', 'LET US KNOW', 
-                                                                 'ETA', 'ETA, WILL BE LATE', 'AT DEL', 'AT PU', 'COVERED', 'AT HOME')
-                                  AND st_time IS NOT NULL
-	`
+	var (
+		offset  int
+		wg      sync.WaitGroup
+		errChan = make(chan error, 10)
+	)
 
-	err := s.db.WithContext(ctx).Exec(query, map[string]interface{}{
-		"now": now,
-	}).Error
-	if err != nil {
-		return err
+	for {
+		var count int64
+		err := s.db.WithContext(ctx).Model(&models.Logistic{}).
+			Where("status IN (?) AND st_time IS NOT NULL", []string{
+				"READY", "READY AT HOME", "WILL BE READY", "LET US KNOW",
+				"ETA", "ETA, WILL BE LATE", "AT DEL", "AT PU", "COVERED", "AT HOME"}).
+			Count(&count).Error
+		if err != nil {
+			return err
+		}
+
+		if count == 0 {
+			break
+		}
+
+		query := `
+			UPDATE logistics
+			SET emoji = CASE
+				WHEN status = 'READY' AND EXTRACT(EPOCH FROM (? - st_time)) > 86400 THEN '🗿'
+				WHEN status = 'ETA' AND EXTRACT(EPOCH FROM (st_time - ?)) < 86400 THEN '⏰'
+				WHEN status IN ('ETA, WILL BE LATE', 'ETA') AND st_time < ? THEN '❗️'
+				ELSE ''
+			END
+			WHERE id IN (
+				SELECT id FROM logistics
+				WHERE status IN ('READY', 'READY AT HOME', 'WILL BE READY', 'LET US KNOW', 
+								 'ETA', 'ETA, WILL BE LATE', 'AT DEL', 'AT PU', 'COVERED', 'AT HOME')
+				  AND st_time IS NOT NULL
+				LIMIT ? OFFSET ?
+			);
+		`
+
+		wg.Add(1)
+		go func(offset int) {
+			defer wg.Done()
+			err := s.db.WithContext(ctx).Exec(query, now, now, now, limit, offset).Error
+			if err != nil {
+				errChan <- err
+			}
+		}(offset)
+
+		offset += limit
+		if offset >= int(count) {
+			break
+		}
+	}
+
+	wg.Wait()
+	close(errChan)
+
+	var hasError bool
+	for err := range errChan {
+		log.Println("Error updating logistics:", err)
+		hasError = true
+	}
+
+	if hasError {
+		return fmt.Errorf("one or more updates failed")
 	}
 
 	return nil
