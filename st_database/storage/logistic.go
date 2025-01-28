@@ -128,6 +128,10 @@ func (s *LogisticRepo) GetAll(ctx context.Context, req models.GetAllLogisticsReq
 		query = query.Where("logistics.post = ?", post)
 	}
 
+	if len(req.CompanyIds) > 0 {
+		query = query.Where("drivers.company_id IN (?)", req.CompanyIds)
+	}
+
 	err := query.Select(`
 					logistics.id as id,
 					logistics.post as post,

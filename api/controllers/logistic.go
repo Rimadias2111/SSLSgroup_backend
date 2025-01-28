@@ -274,6 +274,7 @@ func (h *Controller) GetLogistic(c *gin.Context) {
 // @Param status query string false "Status"
 // @Param location query string false "Location"
 // @Param state query string false "state"
+// @Param company_ids query array false "Company IDs"
 // @Success 200 {object} models.GetAllLogisticsResp
 // @Failure 400 {object} models.ResponseError "Invalid input"
 // @Failure 500 {object} models.ResponseError "Internal server error"
@@ -323,21 +324,39 @@ func (h *Controller) GetAllLogistics(c *gin.Context) {
 		return
 	}
 
+	companyIdsStr := c.Query("company_ids")
+	var companyIds []uuid.UUID
+	if companyIdsStr != "" {
+		ids := strings.Split(companyIdsStr, ",")
+		for _, idStr := range ids {
+			id, err := uuid.Parse(idStr)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, models.ResponseError{
+					ErrorMessage: "Invalid company ID: " + err.Error(),
+					ErrorCode:    "Bad Request",
+				})
+				return
+			}
+			companyIds = append(companyIds, id)
+		}
+	}
+
 	name := c.Query("name")
 	status := c.Query("status")
 	location := c.Query("location")
 	state := c.Query("state")
 
 	req := models.GetAllLogisticsReq{
-		Page:     page,
-		Limit:    limit,
-		Post:     post,
-		Type:     driverType,
-		Position: position,
-		Name:     name,
-		Status:   status,
-		Location: location,
-		State:    state,
+		Page:       page,
+		Limit:      limit,
+		Post:       post,
+		Type:       driverType,
+		Position:   position,
+		Name:       name,
+		Status:     status,
+		Location:   location,
+		State:      state,
+		CompanyIds: companyIds,
 	}
 
 	logistics, err := h.service.Logistic().GetAll(c.Request.Context(), req)

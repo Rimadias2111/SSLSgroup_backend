@@ -1039,6 +1039,12 @@ const docTemplate = `{
                         "description": "state",
                         "name": "state",
                         "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "description": "Company IDs",
+                        "name": "company_ids",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1970,53 +1976,6 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Cargo": {
-            "type": "object",
-            "properties": {
-                "cargo_id": {
-                    "type": "string"
-                },
-                "cost": {
-                    "type": "integer"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "delivery_time": {
-                    "type": "string"
-                },
-                "employee_id": {
-                    "type": "string"
-                },
-                "free_miles": {
-                    "type": "integer"
-                },
-                "from": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "loaded_miles": {
-                    "type": "integer"
-                },
-                "pick_up_time": {
-                    "type": "string"
-                },
-                "provider": {
-                    "type": "string"
-                },
-                "rate": {
-                    "type": "number"
-                },
-                "to": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
         "models.Company": {
             "type": "object",
             "properties": {
@@ -2281,34 +2240,34 @@ const docTemplate = `{
         "models.History": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "created_at": {
                     "type": "string"
                 },
-                "driverName": {
+                "driver_name": {
                     "type": "string"
                 },
-                "employeeId": {
+                "employee_id": {
                     "type": "string"
                 },
-                "fromCargo": {
+                "from_cargo": {
                     "$ref": "#/definitions/models.JSONBCargo"
                 },
-                "fromLogistic": {
+                "from_logistics": {
                     "$ref": "#/definitions/models.JSONBLogistic"
                 },
                 "id": {
                     "type": "string"
                 },
-                "logisticId": {
+                "logistic_id": {
                     "type": "string"
                 },
-                "toCargo": {
+                "to_cargo": {
                     "$ref": "#/definitions/models.JSONBCargo"
                 },
-                "toLogistic": {
+                "to_logistics": {
                     "$ref": "#/definitions/models.JSONBLogistic"
                 },
-                "updatedAt": {
+                "updated_at": {
                     "type": "string"
                 }
             }
@@ -2316,16 +2275,67 @@ const docTemplate = `{
         "models.JSONBCargo": {
             "type": "object",
             "properties": {
-                "cargo": {
-                    "$ref": "#/definitions/models.Cargo"
+                "cargo_id": {
+                    "type": "string"
+                },
+                "cost": {
+                    "type": "integer"
+                },
+                "delivery_time": {
+                    "type": "string"
+                },
+                "employee_id": {
+                    "type": "string"
+                },
+                "free_miles": {
+                    "type": "integer"
+                },
+                "from": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "loaded_miles": {
+                    "type": "integer"
+                },
+                "pick_up_time": {
+                    "type": "string"
+                },
+                "provider": {
+                    "type": "string"
+                },
+                "rate": {
+                    "type": "number"
+                },
+                "to": {
+                    "type": "string"
                 }
             }
         },
         "models.JSONBLogistic": {
             "type": "object",
             "properties": {
-                "logistic": {
-                    "$ref": "#/definitions/models.Logistic"
+                "location": {
+                    "type": "string"
+                },
+                "notion": {
+                    "type": "string"
+                },
+                "post": {
+                    "type": "boolean"
+                },
+                "st_time": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "update_time": {
+                    "type": "string"
                 }
             }
         },
@@ -2428,6 +2438,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "update_time": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }
