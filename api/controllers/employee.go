@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -49,7 +50,7 @@ func (h *Controller) CreateEmployee(c *gin.Context) {
 		return
 	}
 
-	passwordHash, err := helpers.GeneratePassword(employeeModel.Password)
+	passwordHash, err := helpers.GeneratePassword(strings.TrimSpace(employeeModel.Password))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, models.ResponseError{
 			ErrorMessage: "Error while generating password: " + err.Error(),
@@ -61,7 +62,7 @@ func (h *Controller) CreateEmployee(c *gin.Context) {
 	employee := models.Employee{
 		Name:        employeeModel.Name,
 		Surname:     employeeModel.Surname,
-		Username:    employeeModel.Username,
+		Username:    strings.TrimSpace(employeeModel.Username),
 		Password:    string(passwordHash),
 		LogoId:      employeeModel.LogoId,
 		Email:       employeeModel.Email,
@@ -122,7 +123,7 @@ func (h *Controller) UpdateEmployee(c *gin.Context) {
 		Id:          employeeId,
 		Name:        employeeModel.Name,
 		Surname:     employeeModel.Surname,
-		Username:    employeeModel.Username,
+		Username:    strings.TrimSpace(employeeModel.Username),
 		LogoId:      employeeModel.LogoId,
 		Email:       employeeModel.Email,
 		PhoneNumber: employeeModel.PhoneNumber,
