@@ -69,7 +69,7 @@ func (s *HistoryRepo) GetAll(ctx context.Context, req models.GetAllHistoryReq) (
 		query  = s.db.WithContext(ctx).Model(&models.History{}).Preload("Employee")
 	)
 
-	err := query.Find(&resp.Histories).Offset(offset).Limit(int(req.Limit)).
+	err := query.Find(&resp.Histories).Offset(offset).Limit(int(req.Limit)).Order("created_at DESC").
 		Error
 	if err != nil {
 		return nil, err
