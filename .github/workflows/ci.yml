@@ -24,19 +24,41 @@ jobs:
         run: |
           docker compose build
 
-
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - run: ssh-keyscan -H 135.181.101.161 >> ~/.ssh/known_hosts
+      - run: ssh-keyscan -H 95.216.215.118 >> ~/.ssh/known_hosts
 
       - name: Deploy to Server
         run: |
-          ssh -o StrictHostKeyChecking=no root@135.181.101.161 "\
-            cd /root/ssls_group_backend && \
-            git pull && \
-            docker compose up -d --build"
+          ssh -o StrictHostKeyChecking=no root@95.216.215.118 '
+            set -e
+
+            # First-run bootstrap: clone repo if not exists
+            if [ ! -d /root/ssls_group_backend/.git ]; then
+              git clone https://github.com/Rimadias2111/SSLSgroup_backend.git /root/ssls_group_backend
+            fi
+
+            cd /root/ssls_group_backend
+
+            # Create .env if not exists
+            if [ ! -f .env ]; then
+              cat > .env << "ENVEOF"
+            DB_HOST=db
+            DB_USER=ssls_user
+            DB_PASSWORD=SslsGr0up_2024_Sec
+            DB_NAME=ssls_db
+            SECRET_KEY=ssls_jwt_secret_key_prod_2024
+            REDIS_URL=redis://redis:6379
+            ENVEOF
+            fi
+
+            git pull
+            docker compose down
+            docker compose up -d --build
+          '
